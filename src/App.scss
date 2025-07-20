@@ -12,10 +12,12 @@ $animation-duration: 20s;
 
 // App container
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 // Logo styles with SCSS nesting and variables
@@ -89,6 +91,30 @@ $animation-duration: 20s;
       min-height: 70px;
     }
   }
+  
+  // Prevent any hover effects that might cause movement
+  *, 
+  .MuiTypography-root {
+    transform: none !important;
+    
+    &:hover {
+      transform: none !important;
+    }
+  }
+  
+  // Special handling for buttons in header
+  .MuiButton-root {
+    transform: none !important;
+    transition: background-color 0.2s ease, color 0.2s ease !important;
+    
+    &:hover {
+      transform: none !important;
+    }
+  }
+  
+  &:hover {
+    transform: none !important;
+  }
 }
 
 .mui-container {
@@ -108,7 +134,107 @@ $animation-duration: 20s;
   }
 }
 
-// Logo container for MUI version
+// Professional hero section styling
+.hero-section {
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(44, 62, 80, 0.95) 0%, rgba(52, 152, 219, 0.9) 100%);
+    z-index: 1;
+  }
+  
+  .MuiContainer-root {
+    position: relative;
+    z-index: 2;
+  }
+  
+  h1 {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    animation: fadeInUp 0.8s ease-out;
+  }
+  
+  h5 {
+    animation: fadeInUp 0.8s ease-out 0.2s both;
+  }
+  
+  p {
+    animation: fadeInUp 0.8s ease-out 0.4s both;
+  }
+  
+  .MuiButton-root {
+    animation: fadeInUp 0.8s ease-out 0.6s both;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    }
+  }
+}
+
+// Animations
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Features section styling
+.MuiPaper-root {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12) !important;
+  }
+}
+
+// Footer styling
+footer {
+  margin-top: auto;
+  
+  .MuiContainer-root {
+    .MuiGrid-container {
+      align-items: flex-start;
+      
+      @include respond-to(md) {
+        align-items: center;
+      }
+    }
+  }
+  
+  .MuiTypography-h6 {
+    color: rgba(255, 255, 255, 0.95);
+  }
+  
+  .MuiTypography-body2 {
+    line-height: 1.6;
+  }
+}
+
+// Feature icons animation
+.MuiSvgIcon-root {
+  transition: transform 0.3s ease;
+  
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+// Logo container for MUI version (kept for future use)
 .logo-container {
   display: flex;
   justify-content: center;
@@ -126,6 +252,21 @@ $animation-duration: 20s;
     
     @include respond-to(sm) {
       height: 70px;
+    }
+  }
+}
+
+// Enhanced button styling
+.MuiButton-root {
+  text-transform: none;
+  font-weight: 600;
+  border-radius: 8px;
+  
+  &.MuiButton-contained {
+    box-shadow: 0 4px 12px rgba(25, 118, 210, 0.3);
+    
+    &:hover {
+      box-shadow: 0 8px 20px rgba(25, 118, 210, 0.4);
     }
   }
 }

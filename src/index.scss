@@ -1,13 +1,13 @@
 // Import map functions for modern Sass
 @use 'sass:map';
 
-// SCSS Variables
-$primary-color: #1976d2;
-$secondary-color: #dc004e;
+// Professional SCSS Variables
+$primary-color: #2c3e50;
+$secondary-color: #3498db;
 $text-light: rgba(255, 255, 255, 0.87);
-$text-dark: #213547;
-$bg-dark: #242424;
-$bg-light: #ffffff;
+$text-dark: #2c3e50;
+$bg-dark: #2c3e50;
+$bg-light: #f8f9fa;
 $link-color: #646cff;
 $link-hover: #535bf2;
 $link-hover-light: #747bff;
@@ -66,10 +66,9 @@ a {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  font-family: 'Roboto', $font-family-base;
 }
 
 h1 {

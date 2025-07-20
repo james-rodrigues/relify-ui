@@ -1,6 +1,18 @@
-# Relify UI - React 19 + Vite + MUI
+# Relify - Release Automation Platform
 
-A modern React application built with React 19.1.0, Vite, TypeScript, and Material-UI (MUI) components.
+A modern web application for release automation built with React 19.1.0, Vite, TypeScript, Material-UI (MUI) components, and SCSS styling.
+
+## 🚀 About Relify
+
+**"Streamline your software releases with intelligent automation"**
+
+Relify is a comprehensive release automation platform that eliminates the complexity of release management. From code commits to production deployment, Relify automates your entire release pipeline, ensuring consistent and reliable software delivery.
+
+### Key Features:
+- **Intelligent Automation** - Smart release pipelines that adapt to your workflow
+- **Lightning Fast** - Deploy releases 10x faster with optimized processes
+- **Complete Visibility** - Track every release with detailed analytics
+- **Zero Downtime** - Blue-green deployments with rollback capabilities
 
 ## 🚀 Features
 

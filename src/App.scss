@@ -1,0 +1,132 @@
+// Use modern Sass syntax
+@use './index.scss' as *;
+
+// App-specific variables
+$logo-size: 6em;
+$logo-padding: 1.5em;
+$logo-transition: 300ms;
+$card-padding: 2em;
+$vite-glow: #646cffaa;
+$react-glow: #61dafbaa;
+$animation-duration: 20s;
+
+// App container
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+// Logo styles with SCSS nesting and variables
+.logo {
+  height: $logo-size;
+  padding: $logo-padding;
+  will-change: filter;
+  transition: filter $logo-transition;
+  
+  &:hover {
+    filter: drop-shadow(0 0 2em $vite-glow);
+  }
+  
+  &.react:hover {
+    filter: drop-shadow(0 0 2em $react-glow);
+  }
+}
+
+// Keyframe animations
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Reduced motion preference support
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite $animation-duration linear;
+  }
+}
+
+// Card component
+.card {
+  padding: $card-padding;
+  border-radius: $border-radius;
+  
+  // Nested button styling
+  button {
+    margin: 1rem 0;
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+  }
+}
+
+// Documentation text
+.read-the-docs {
+  color: #888;
+  font-size: 0.9em;
+  margin-top: 2rem;
+  
+  @include respond-to(md) {
+    font-size: 1em;
+  }
+}
+
+// MUI customizations
+.mui-app-bar {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+  
+  .MuiToolbar-root {
+    min-height: 64px;
+    
+    @include respond-to(sm) {
+      min-height: 70px;
+    }
+  }
+}
+
+.mui-container {
+  padding-top: 2rem;
+  
+  @include respond-to(md) {
+    padding-top: 3rem;
+  }
+}
+
+.mui-card {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  }
+}
+
+// Logo container for MUI version
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  
+  img {
+    height: 60px;
+    transition: transform 0.3s ease;
+    
+    &:hover {
+      transform: scale(1.1) rotate(5deg);
+    }
+    
+    @include respond-to(sm) {
+      height: 70px;
+    }
+  }
+}
+

@@ -38,70 +38,105 @@
   }
 
   .dialog-content {
-    padding: 24px;
+    padding: 32px;
     padding-top: 0;
+    max-height: 70vh;
+    overflow-y: auto;
 
     .form-container {
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 32px;
     }
 
     .section-title {
       color: #1976d2;
       font-weight: bold;
-      margin-bottom: 16px;
+      margin-bottom: 24px;
+      font-size: 1.1rem;
     }
 
     .form-section {
-      margin-bottom: 32px;
+      margin-bottom: 40px;
       display: flex;
       flex-direction: column;
-      gap: 24px;
+      gap: 32px;
     }
 
     .section-divider {
-      margin: 24px 0;
+      margin: 32px 0;
+      border-color: #e0e0e0;
     }
 
     .form-field {
       width: 100%;
+      margin-bottom: 8px;
+      
+      .MuiOutlinedInput-root {
+        border-radius: 8px;
+      }
+      
+      .MuiInputLabel-root {
+        font-weight: 500;
+      }
     }
 
     .radio-group-container {
-      margin-bottom: 24px;
+      margin-bottom: 32px;
+      padding: 16px 0;
       
       .radio-label {
         font-weight: 600;
         color: #2c3e50;
-        margin-bottom: 8px;
+        margin-bottom: 12px;
+        font-size: 0.95rem;
+      }
+      
+      .MuiRadioGroup-root {
+        margin-top: 8px;
+        gap: 16px;
       }
     }
   }
 
   .dialog-actions {
-    padding: 24px;
-    padding-top: 0;
+    padding: 32px;
+    padding-top: 16px;
     display: flex;
     gap: 16px;
     justify-content: flex-end;
+    border-top: 1px solid #e0e0e0;
+    margin-top: 16px;
 
     .action-button {
-      min-width: 120px;
+      min-width: 140px;
       border-radius: 8px;
       text-transform: none;
       font-weight: 600;
-      padding: 12px 24px;
+      padding: 12px 32px;
+      transition: all 0.3s ease;
 
       &.cancel-button {
-        // Material-UI outlined button styles handled by component
+        color: #666;
+        border-color: #ddd;
+        
+        &:hover {
+          background-color: #f5f5f5;
+          color: #333;
+          border-color: #bbb;
+        }
       }
 
       &.submit-button {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #6495ED 0%, #9370DB 100%);
+        color: white;
+        box-shadow: 0 4px 8px rgba(100, 149, 237, 0.3);
+        border: none;
         
         &:hover {
-          background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+          background: linear-gradient(135deg, #4169E1 0%, #8A2BE2 100%);
+          box-shadow: 0 6px 12px rgba(100, 149, 237, 0.4);
+          transform: translateY(-2px);
         }
       }
     }

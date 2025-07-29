@@ -215,6 +215,24 @@ const ReleaseScope: React.FC = () => {
           variant="contained"
           startIcon={<AddIcon />}
           onClick={() => setDialogOpen(true)}
+          sx={{
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            color: 'white',
+            padding: '10px 20px',
+            borderRadius: '8px',
+            fontWeight: 600,
+            textTransform: 'none',
+            boxShadow: '0 4px 12px rgba(102, 126, 234, 0.3)',
+            transition: 'all 0.3s ease',
+            '&:hover': {
+              transform: 'translateY(-2px)',
+              boxShadow: '0 8px 20px rgba(102, 126, 234, 0.4)',
+            },
+            '&:disabled': {
+              opacity: 0.7,
+              transform: 'none',
+            }
+          }}
         >
           Add Entry
         </Button>
@@ -239,8 +257,36 @@ const ReleaseScope: React.FC = () => {
           </Stack>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDialog}>Cancel</Button>
-          <Button onClick={handleAddOrUpdateEntry} variant="contained" color="primary">
+          <Button 
+            onClick={handleCloseDialog}
+            sx={{
+              borderColor: '#ccc',
+              color: '#666',
+              textTransform: 'none',
+              borderRadius: '6px',
+              fontWeight: 600,
+              '&:hover': {
+                borderColor: '#999',
+                backgroundColor: 'rgba(0, 0, 0, 0.04)',
+              }
+            }}
+          >
+            Cancel
+          </Button>
+          <Button 
+            onClick={handleAddOrUpdateEntry} 
+            variant="contained"
+            sx={{
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              color: 'white',
+              textTransform: 'none',
+              borderRadius: '6px',
+              fontWeight: 600,
+              '&:hover': {
+                background: 'linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%)',
+              }
+            }}
+          >
             {editingIndex !== null ? 'Update' : 'Add'}
           </Button>
         </DialogActions>

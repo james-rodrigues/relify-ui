@@ -127,6 +127,20 @@ const EvidenceTab: React.FC<EvidenceTabProps> = ({
           variant="contained"
           startIcon={<AddIcon />}
           onClick={() => setDialogOpen(true)}
+          sx={{
+            background: 'linear-gradient(135deg, #6495ED 0%, #9370DB 100%)',
+            color: 'white',
+            fontWeight: 'bold',
+            borderRadius: '8px',
+            boxShadow: '0 4px 8px rgba(100, 149, 237, 0.3)',
+            textTransform: 'none',
+            '&:hover': {
+              background: 'linear-gradient(135deg, #4169E1 0%, #8A2BE2 100%)',
+              boxShadow: '0 6px 12px rgba(100, 149, 237, 0.4)',
+              transform: 'translateY(-2px)',
+            },
+            transition: 'all 0.3s ease',
+          }}
         >
           Add Entry
         </Button>
@@ -209,11 +223,44 @@ const EvidenceTab: React.FC<EvidenceTabProps> = ({
           )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleDialogClose}>Cancel</Button>
+          <Button 
+            onClick={handleDialogClose}
+            sx={{
+              color: '#666',
+              fontWeight: 'bold',
+              textTransform: 'none',
+              '&:hover': {
+                backgroundColor: '#f5f5f5',
+                color: '#333',
+              },
+            }}
+          >
+            Cancel
+          </Button>
           <Button 
             variant="contained" 
             onClick={handleAddEntry}
             disabled={!newEntry.repoName.trim() || !newEntry.uploadedFile}
+            sx={{
+              background: 'linear-gradient(135deg, #6495ED 0%, #9370DB 100%)',
+              color: 'white',
+              fontWeight: 'bold',
+              borderRadius: '8px',
+              boxShadow: '0 4px 8px rgba(100, 149, 237, 0.3)',
+              textTransform: 'none',
+              '&:hover': {
+                background: 'linear-gradient(135deg, #4169E1 0%, #8A2BE2 100%)',
+                boxShadow: '0 6px 12px rgba(100, 149, 237, 0.4)',
+                transform: 'translateY(-2px)',
+              },
+              '&:disabled': {
+                background: '#ccc',
+                color: '#999',
+                boxShadow: 'none',
+                transform: 'none',
+              },
+              transition: 'all 0.3s ease',
+            }}
           >
             Add Evidence
           </Button>
@@ -224,36 +271,84 @@ const EvidenceTab: React.FC<EvidenceTabProps> = ({
         <Table sx={{ minWidth: 650 }}>
           <TableHead>
             <TableRow>
-              <TableCell sx={{ fontWeight: 'bold', bgcolor: '#1976d2', color: 'white' }}>
+              <TableCell sx={{ 
+                fontWeight: 'bold', 
+                background: 'linear-gradient(135deg, #6495ED 0%, #9370DB 100%)', 
+                color: 'white',
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px',
+              }}>
                 Repository Name
               </TableCell>
-              <TableCell sx={{ fontWeight: 'bold', bgcolor: '#1976d2', color: 'white' }}>
+              <TableCell sx={{ 
+                fontWeight: 'bold', 
+                background: 'linear-gradient(135deg, #6495ED 0%, #9370DB 100%)', 
+                color: 'white',
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px',
+              }}>
                 Evidence Link
               </TableCell>
-              <TableCell sx={{ fontWeight: 'bold', bgcolor: '#1976d2', color: 'white' }}>
+              <TableCell sx={{ 
+                fontWeight: 'bold', 
+                background: 'linear-gradient(135deg, #6495ED 0%, #9370DB 100%)', 
+                color: 'white',
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px',
+              }}>
                 File Name
               </TableCell>
-              <TableCell sx={{ fontWeight: 'bold', bgcolor: '#1976d2', color: 'white' }}>
+              <TableCell sx={{ 
+                fontWeight: 'bold', 
+                background: 'linear-gradient(135deg, #6495ED 0%, #9370DB 100%)', 
+                color: 'white',
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px',
+              }}>
                 Upload Date
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {entries.map((entry, index) => (
-              <TableRow key={index}>
-                <TableCell>{entry.repoName}</TableCell>
+              <TableRow 
+                key={index}
+                sx={{
+                  backgroundColor: index % 2 === 0 ? '#f8f9fa' : 'white',
+                  '&:hover': {
+                    backgroundColor: '#e3f2fd',
+                    transform: 'scale(1.01)',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                  },
+                  transition: 'all 0.2s ease',
+                }}
+              >
+                <TableCell sx={{ fontWeight: 500 }}>{entry.repoName}</TableCell>
                 <TableCell>
-                  <Link href={entry.evidenceLink} target="_blank" rel="noopener">
+                  <Link 
+                    href={entry.evidenceLink} 
+                    target="_blank" 
+                    rel="noopener"
+                    sx={{
+                      color: '#6495ED',
+                      textDecoration: 'none',
+                      fontWeight: 500,
+                      '&:hover': {
+                        textDecoration: 'underline',
+                        color: '#4169E1',
+                      },
+                    }}
+                  >
                     View Evidence
                   </Link>
                 </TableCell>
                 <TableCell>
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                     <FileIcon fontSize="small" color="action" />
-                    {entry.fileName}
+                    <span style={{ fontWeight: 500 }}>{entry.fileName}</span>
                   </Box>
                 </TableCell>
-                <TableCell>{entry.uploadDate}</TableCell>
+                <TableCell sx={{ fontWeight: 500 }}>{entry.uploadDate}</TableCell>
               </TableRow>
             ))}
           </TableBody>

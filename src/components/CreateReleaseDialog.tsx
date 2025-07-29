@@ -129,6 +129,7 @@ const CreateReleaseDialog: React.FC<CreateReleaseDialogProps> = ({
                 required
                 variant="outlined"
                 className="form-field"
+                sx={{ mb: 3 }}
               />
               <TextField
                 fullWidth
@@ -138,6 +139,7 @@ const CreateReleaseDialog: React.FC<CreateReleaseDialogProps> = ({
                 required
                 variant="outlined"
                 className="form-field"
+                sx={{ mb: 3 }}
               />
               <TextField
                 fullWidth
@@ -151,6 +153,7 @@ const CreateReleaseDialog: React.FC<CreateReleaseDialogProps> = ({
                 }}
                 variant="outlined"
                 className="form-field"
+                sx={{ mb: 3 }}
               />
               <TextField
                 fullWidth
@@ -160,8 +163,9 @@ const CreateReleaseDialog: React.FC<CreateReleaseDialogProps> = ({
                 placeholder="Enter comma-separated seal IDs"
                 variant="outlined"
                 className="form-field"
+                sx={{ mb: 3 }}
               />
-              <FormControl component="fieldset" className="radio-group-container">
+              <FormControl component="fieldset" className="radio-group-container" sx={{ mb: 3 }}>
                 <FormLabel component="legend" className="radio-label">
                   Client Impact
                 </FormLabel>
@@ -169,6 +173,7 @@ const CreateReleaseDialog: React.FC<CreateReleaseDialogProps> = ({
                   value={formData.clientImpact}
                   onChange={handleInputChange('clientImpact')}
                   row
+                  sx={{ mt: 1 }}
                 >
                   <FormControlLabel value="yes" control={<Radio />} label="Yes" />
                   <FormControlLabel value="no" control={<Radio />} label="No" />
@@ -191,6 +196,7 @@ const CreateReleaseDialog: React.FC<CreateReleaseDialogProps> = ({
                 required
                 variant="outlined"
                 className="form-field"
+                sx={{ mb: 3 }}
               />
               <TextField
                 fullWidth
@@ -199,6 +205,7 @@ const CreateReleaseDialog: React.FC<CreateReleaseDialogProps> = ({
                 onChange={handleInputChange('changeNumber')}
                 variant="outlined"
                 className="form-field"
+                sx={{ mb: 3 }}
               />
               <TextField
                 fullWidth
@@ -208,6 +215,7 @@ const CreateReleaseDialog: React.FC<CreateReleaseDialogProps> = ({
                 placeholder="https://..."
                 variant="outlined"
                 className="form-field"
+                sx={{ mb: 3 }}
               />
               <TextField
                 fullWidth
@@ -217,6 +225,7 @@ const CreateReleaseDialog: React.FC<CreateReleaseDialogProps> = ({
                 placeholder="https://..."
                 variant="outlined"
                 className="form-field"
+                sx={{ mb: 3 }}
               />
             </div>
 
@@ -235,6 +244,7 @@ const CreateReleaseDialog: React.FC<CreateReleaseDialogProps> = ({
                 required
                 variant="outlined"
                 className="form-field"
+                sx={{ mb: 3 }}
               />
               <TextField
                 fullWidth
@@ -244,6 +254,7 @@ const CreateReleaseDialog: React.FC<CreateReleaseDialogProps> = ({
                 required
                 variant="outlined"
                 className="form-field"
+                sx={{ mb: 3 }}
               />
             </div>
           </div>
@@ -255,6 +266,17 @@ const CreateReleaseDialog: React.FC<CreateReleaseDialogProps> = ({
             variant="outlined"
             size="large"
             className="action-button cancel-button"
+            sx={{
+              color: '#666',
+              fontWeight: 'bold',
+              textTransform: 'none',
+              borderColor: '#ddd',
+              '&:hover': {
+                backgroundColor: '#f5f5f5',
+                color: '#333',
+                borderColor: '#bbb',
+              },
+            }}
           >
             Cancel
           </Button>
@@ -263,6 +285,20 @@ const CreateReleaseDialog: React.FC<CreateReleaseDialogProps> = ({
             variant="contained"
             size="large"
             className="action-button submit-button"
+            sx={{
+              background: 'linear-gradient(135deg, #6495ED 0%, #9370DB 100%)',
+              color: 'white',
+              fontWeight: 'bold',
+              borderRadius: '8px',
+              boxShadow: '0 4px 8px rgba(100, 149, 237, 0.3)',
+              textTransform: 'none',
+              '&:hover': {
+                background: 'linear-gradient(135deg, #4169E1 0%, #8A2BE2 100%)',
+                boxShadow: '0 6px 12px rgba(100, 149, 237, 0.4)',
+                transform: 'translateY(-2px)',
+              },
+              transition: 'all 0.3s ease',
+            }}
           >
             Create Release
           </Button>

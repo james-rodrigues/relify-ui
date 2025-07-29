@@ -458,6 +458,11 @@ const ReleaseDetailView: React.FC<ReleaseDetailViewProps> = ({
     setDialogOpen(false)
   }
 
+  const handleSyncToConfluence = async () => {
+    // Mock function for syncing to Confluence
+    showSnackbar('Successfully synced Release Scope to Confluence!', 'success')
+  }
+
   const tabs = [
     'Overview',
     'Release Scope',
@@ -543,6 +548,7 @@ const ReleaseDetailView: React.FC<ReleaseDetailViewProps> = ({
                   handleAddEntry={handleAddEntry}
                   entries={entries}
                   handleEditEntry={handleEditEntry}
+                  handleSyncToConfluence={handleSyncToConfluence}
                 />
               </TabPanel>
 

@@ -17,7 +17,7 @@ import {
   Paper,
   IconButton
 } from '@mui/material';
-import { Add as AddIcon, Edit as EditIcon } from '@mui/icons-material';
+import { Add as AddIcon, Edit as EditIcon, Sync as SyncIcon } from '@mui/icons-material';
 
 interface ReleaseScopeEntry {
   changeRequestNumber: string;
@@ -53,6 +53,7 @@ interface ReleaseScopeTabProps {
   handleAddEntry: () => void;
   entries: ReleaseScopeEntry[];
   handleEditEntry: (index: number) => void;
+  handleSyncToConfluence?: () => void;
 }
 
 const ReleaseScopeTab: React.FC<ReleaseScopeTabProps> = ({
@@ -63,15 +64,24 @@ const ReleaseScopeTab: React.FC<ReleaseScopeTabProps> = ({
   handleAddEntry,
   entries,
   handleEditEntry,
+  handleSyncToConfluence,
 }) => {
   return (
-    <div className="scope-content" style={{ overflowX: 'auto' }}>
-      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '20px' }}>
+    <div className="scope-content" style={{ width: '100%', overflowX: 'auto' }}>
+      <div className="scope-actions" style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', marginBottom: '20px' }}>
+        <Button
+          variant="outlined"
+          startIcon={<SyncIcon />}
+          onClick={handleSyncToConfluence}
+          className="sync-confluence-btn"
+        >
+          Sync to Confluence
+        </Button>
         <Button
           variant="contained"
           startIcon={<AddIcon />}
           onClick={() => setDialogOpen(true)}
-          style={{ margin: '10px 0' }}
+          className="add-entry-btn"
         >
           Add Entry
         </Button>
@@ -245,45 +255,93 @@ const ReleaseScopeTab: React.FC<ReleaseScopeTabProps> = ({
           </Button>
         </DialogActions>
       </Dialog>
-      <TableContainer component={Paper}>
-        <Table>
+      <TableContainer 
+        component={Paper} 
+        className="scope-table" 
+        sx={{ 
+          width: '100%', 
+          maxWidth: '100%',
+          overflowX: 'scroll',
+          '&::-webkit-scrollbar': {
+            height: '8px',
+          },
+          '&::-webkit-scrollbar-track': {
+            backgroundColor: '#f1f1f1',
+          },
+          '&::-webkit-scrollbar-thumb': {
+            backgroundColor: '#888',
+            borderRadius: '4px',
+          },
+          '&::-webkit-scrollbar-thumb:hover': {
+            backgroundColor: '#555',
+          }
+        }}
+      >
+        <Table sx={{ minWidth: '3500px', tableLayout: 'fixed' }}>
           <TableHead>
             <TableRow>
-              <TableCell>Edit</TableCell>
-              <TableCell>Change Request Number</TableCell>
-              <TableCell>Seal Id</TableCell>
-              <TableCell>Team Name</TableCell>
-              <TableCell>Key Dev Lead</TableCell>
-              <TableCell>Product Contact</TableCell>
-              <TableCell>Tech Lead</TableCell>
-              <TableCell>SRE KT Done</TableCell>
-              <TableCell>Runbook Update Done</TableCell>
-              <TableCell>DRM Comments</TableCell>
-              <TableCell>Snowflake Impact</TableCell>
-              <TableCell>Initiative Link</TableCell>
-              <TableCell>Epic Link</TableCell>
-              <TableCell>Story Link</TableCell>
-              <TableCell>Primary On Call</TableCell>
-              <TableCell>Secondary On Call</TableCell>
-              <TableCell>Changes Involved</TableCell>
-              <TableCell>Services To Be Deployed</TableCell>
-              <TableCell>Upstream/Downstream Impact</TableCell>
-              <TableCell>IST Tested</TableCell>
-              <TableCell>UAT Tested</TableCell>
-              <TableCell>Related Incidents</TableCell>
-              <TableCell>Release Branch Name</TableCell>
-              <TableCell>Manual Task Comments</TableCell>
+              <TableCell 
+                className="table-header" 
+                sx={{ 
+                  minWidth: '80px', 
+                  width: '80px',
+                  position: 'sticky', 
+                  left: 0, 
+                  zIndex: 3, 
+                  bgcolor: '#1976d2',
+                  color: 'white',
+                  fontWeight: 'bold'
+                }}
+              >
+                Action
+              </TableCell>
+              <TableCell 
+                className="table-header" 
+                sx={{ 
+                  minWidth: '150px', 
+                  width: '150px',
+                  position: 'sticky', 
+                  left: '80px', 
+                  zIndex: 3, 
+                  bgcolor: '#1976d2',
+                  color: 'white',
+                  fontWeight: 'bold'
+                }}
+              >
+                Change Request Number
+              </TableCell>
+              <TableCell className="table-header" sx={{ minWidth: '120px', width: '120px', bgcolor: '#1976d2', color: 'white', fontWeight: 'bold' }}>Seal Id</TableCell>
+              <TableCell className="table-header" sx={{ minWidth: '120px', width: '120px', bgcolor: '#1976d2', color: 'white', fontWeight: 'bold' }}>Team Name</TableCell>
+              <TableCell className="table-header" sx={{ minWidth: '120px', width: '120px', bgcolor: '#1976d2', color: 'white', fontWeight: 'bold' }}>Key Dev Lead</TableCell>
+              <TableCell className="table-header" sx={{ minWidth: '120px', width: '120px', bgcolor: '#1976d2', color: 'white', fontWeight: 'bold' }}>Product Contact</TableCell>
+              <TableCell className="table-header" sx={{ minWidth: '120px', width: '120px', bgcolor: '#1976d2', color: 'white', fontWeight: 'bold' }}>Tech Lead</TableCell>
+              <TableCell className="table-header" sx={{ minWidth: '120px', width: '120px', bgcolor: '#1976d2', color: 'white', fontWeight: 'bold' }}>SRE KT Done</TableCell>
+              <TableCell className="table-header" sx={{ minWidth: '150px', width: '150px', bgcolor: '#1976d2', color: 'white', fontWeight: 'bold' }}>Runbook Update Done</TableCell>
+              <TableCell className="table-header" sx={{ minWidth: '150px', width: '150px', bgcolor: '#1976d2', color: 'white', fontWeight: 'bold' }}>DRM Comments</TableCell>
+              <TableCell className="table-header" sx={{ minWidth: '130px', width: '130px', bgcolor: '#1976d2', color: 'white', fontWeight: 'bold' }}>Snowflake Impact</TableCell>
+              <TableCell className="table-header" sx={{ minWidth: '150px', width: '150px', bgcolor: '#1976d2', color: 'white', fontWeight: 'bold' }}>Initiative Link</TableCell>
+              <TableCell className="table-header" sx={{ minWidth: '120px', width: '120px', bgcolor: '#1976d2', color: 'white', fontWeight: 'bold' }}>Epic Link</TableCell>
+              <TableCell className="table-header" sx={{ minWidth: '120px', width: '120px', bgcolor: '#1976d2', color: 'white', fontWeight: 'bold' }}>Story Link</TableCell>
+              <TableCell className="table-header" sx={{ minWidth: '180px', width: '180px', bgcolor: '#1976d2', color: 'white', fontWeight: 'bold' }}>Point of Contact</TableCell>
+              <TableCell className="table-header" sx={{ minWidth: '200px', width: '200px', bgcolor: '#1976d2', color: 'white', fontWeight: 'bold' }}>Changes Involved</TableCell>
+              <TableCell className="table-header" sx={{ minWidth: '180px', width: '180px', bgcolor: '#1976d2', color: 'white', fontWeight: 'bold' }}>Services To Be Deployed</TableCell>
+              <TableCell className="table-header" sx={{ minWidth: '180px', width: '180px', bgcolor: '#1976d2', color: 'white', fontWeight: 'bold' }}>Upstream/Downstream Impact</TableCell>
+              <TableCell className="table-header" sx={{ minWidth: '100px', width: '100px', bgcolor: '#1976d2', color: 'white', fontWeight: 'bold' }}>IST Tested</TableCell>
+              <TableCell className="table-header" sx={{ minWidth: '100px', width: '100px', bgcolor: '#1976d2', color: 'white', fontWeight: 'bold' }}>UAT Tested</TableCell>
+              <TableCell className="table-header" sx={{ minWidth: '150px', width: '150px', bgcolor: '#1976d2', color: 'white', fontWeight: 'bold' }}>Related Incidents</TableCell>
+              <TableCell className="table-header" sx={{ minWidth: '160px', width: '160px', bgcolor: '#1976d2', color: 'white', fontWeight: 'bold' }}>Release Branch Name</TableCell>
+              <TableCell className="table-header" sx={{ minWidth: '200px', width: '200px', bgcolor: '#1976d2', color: 'white', fontWeight: 'bold' }}>Manual Task Comments</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {entries.map((entry, index) => (
               <TableRow key={index}>
-                <TableCell>
+                <TableCell sx={{ position: 'sticky', left: 0, zIndex: 2, bgcolor: 'background.paper' }}>
                   <IconButton size="small" onClick={() => handleEditEntry(index)}>
                     <EditIcon fontSize="inherit" />
                   </IconButton>
                 </TableCell>
-                <TableCell>{entry.changeRequestNumber}</TableCell>
+                <TableCell sx={{ position: 'sticky', left: '80px', zIndex: 2, bgcolor: 'background.paper' }}>{entry.changeRequestNumber}</TableCell>
                 <TableCell>{entry.sealId}</TableCell>
                 <TableCell>{entry.teamName}</TableCell>
                 <TableCell>{entry.keyDevLead}</TableCell>
@@ -296,8 +354,12 @@ const ReleaseScopeTab: React.FC<ReleaseScopeTabProps> = ({
                 <TableCell>{entry.initiativeLink}</TableCell>
                 <TableCell>{entry.epicLink}</TableCell>
                 <TableCell>{entry.storyLink}</TableCell>
-                <TableCell>{entry.personOnCallPrimary}</TableCell>
-                <TableCell>{entry.personOnCallSecondary}</TableCell>
+                <TableCell>
+                  <div style={{ fontSize: '0.875rem' }}>
+                    <div><strong>Primary:</strong> {entry.personOnCallPrimary}</div>
+                    <div><strong>Secondary:</strong> {entry.personOnCallSecondary}</div>
+                  </div>
+                </TableCell>
                 <TableCell>{entry.changesInvolved}</TableCell>
                 <TableCell>{entry.servicesToBeDeployed}</TableCell>
                 <TableCell>{entry.upstreamDownstreamImpact}</TableCell>

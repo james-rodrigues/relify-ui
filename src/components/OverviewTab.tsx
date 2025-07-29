@@ -234,7 +234,6 @@ const OverviewTab: React.FC<OverviewTabProps> = ({
                 <TableCell className="table-header">Activity Name</TableCell>
                 <TableCell className="table-header">Activity Due Date</TableCell>
                 <TableCell className="table-header">Status</TableCell>
-                <TableCell className="table-header">Assignee</TableCell>
                 <TableCell className="table-header" align="center">
                   Action
                 </TableCell>
@@ -259,9 +258,6 @@ const OverviewTab: React.FC<OverviewTabProps> = ({
                       size="small"
                       className="status-chip"
                     />
-                  </TableCell>
-                  <TableCell className="assignee">
-                    {activity.assignee}
                   </TableCell>
                   <TableCell align="center">
                     <Button

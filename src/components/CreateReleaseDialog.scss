@@ -1,0 +1,66 @@
+.create-release-dialog {
+  .dialog-paper {
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  }
+
+  .dialog-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e9ecef;
+    padding-bottom: 16px;
+    margin-bottom: 16px;
+
+    .title-text {
+      font-weight: 700;
+      color: #2c3e50;
+    }
+  }
+
+  .dialog-content {
+    padding: 0 24px;
+
+    .form-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .form-field {
+      width: 100%;
+    }
+
+    .radio-group-container {
+      .radio-label {
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 8px;
+      }
+    }
+  }
+
+  .dialog-actions {
+    padding: 24px;
+    padding-top: 0;
+
+    .action-button {
+      border-radius: 8px;
+      text-transform: none;
+      font-weight: 600;
+      padding: 0 24px;
+
+      &.cancel-button {
+        // Material-UI outlined button styles handled by component
+      }
+
+      &.submit-button {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        
+        &:hover {
+          background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+        }
+      }
+    }
+  }
+}

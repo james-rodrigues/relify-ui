@@ -1,0 +1,168 @@
+.release-card {
+  height: 260px;
+  min-height: 260px;
+  border-radius: 16px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+
+  // Dynamic styles will be applied via sx prop for status colors
+  &:hover {
+    transform: translateY(-8px);
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    // Background gradient applied dynamically
+  }
+
+  .card-content {
+    padding: 24px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .header-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+
+      .title-link {
+        font-weight: 700;
+        color: #2c3e50;
+        font-size: 1.1rem;
+        text-decoration: none;
+        cursor: pointer;
+        background: none;
+        border: none;
+        padding: 0;
+        text-align: left;
+        font-family: inherit;
+
+        &:hover {
+          text-decoration: underline;
+          // Color will be applied dynamically based on status
+        }
+      }
+
+      .status-chip {
+        font-weight: 600;
+        font-size: 0.75rem;
+
+        .chip-icon {
+          color: white;
+        }
+      }
+    }
+
+    .type-section {
+      margin-bottom: 16px;
+
+      .type-chip {
+        font-weight: 500;
+        margin-bottom: 8px;
+      }
+    }
+
+    .date-section {
+      display: flex;
+      align-items: center;
+      margin-bottom: 16px;
+      color: #666;
+
+      .date-icon {
+        font-size: 1rem;
+        margin-right: 8px;
+      }
+
+      .date-text {
+        font-weight: 500;
+      }
+    }
+
+    .description-section {
+      margin-bottom: 16px;
+      flex: 1;
+      line-height: 1.5;
+    }
+
+    .progress-section {
+      margin-top: auto;
+
+      .progress-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 8px;
+
+        .progress-label,
+        .progress-value {
+          font-weight: 500;
+        }
+
+        .progress-value {
+          font-weight: 600;
+        }
+      }
+
+      .progress-bar {
+        height: 6px;
+        border-radius: 3px;
+
+        .progress-bar-fill {
+          border-radius: 3px;
+        }
+      }
+    }
+  }
+}
+
+// Status-specific color classes
+.release-card--planned-monthly {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(102, 126, 234, 0.08) 100%);
+  border: 2px solid rgba(102, 126, 234, 0.3);
+
+  &:hover {
+    box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
+    border: 2px solid rgba(102, 126, 234, 0.6);
+  }
+
+  &::before {
+    background: linear-gradient(90deg, #667eea, rgba(102, 126, 234, 0.8));
+  }
+}
+
+.release-card--planned-offcycle {
+  background: linear-gradient(135deg, rgba(118, 75, 162, 0.15) 0%, rgba(118, 75, 162, 0.08) 100%);
+  border: 2px solid rgba(118, 75, 162, 0.3);
+
+  &:hover {
+    box-shadow: 0 20px 40px rgba(118, 75, 162, 0.3);
+    border: 2px solid rgba(118, 75, 162, 0.6);
+  }
+
+  &::before {
+    background: linear-gradient(90deg, #764ba2, rgba(118, 75, 162, 0.8));
+  }
+}
+
+.release-card--completed {
+  background: linear-gradient(135deg, rgba(76, 175, 80, 0.15) 0%, rgba(76, 175, 80, 0.08) 100%);
+  border: 2px solid rgba(76, 175, 80, 0.3);
+
+  &:hover {
+    box-shadow: 0 20px 40px rgba(76, 175, 80, 0.3);
+    border: 2px solid rgba(76, 175, 80, 0.6);
+  }
+
+  &::before {
+    background: linear-gradient(90deg, #4caf50, rgba(76, 175, 80, 0.8));
+  }
+}

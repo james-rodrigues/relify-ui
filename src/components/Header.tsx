@@ -1,5 +1,6 @@
 import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material'
 import { Code as CodeIcon } from '@mui/icons-material'
+import './Header.scss'
 
 const Header = () => {
   return (

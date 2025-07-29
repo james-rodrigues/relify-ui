@@ -16,6 +16,7 @@ import {
   Typography
 } from '@mui/material'
 import { Close as CloseIcon } from '@mui/icons-material'
+import './CreateReleaseDialog.scss'
 
 interface CreateReleaseDialogProps {
   open: boolean
@@ -28,7 +29,7 @@ export interface ReleaseFormData {
   fixVersion: string
   releaseDate: string
   sealIds: string
-  clientImpact: 'high' | 'medium' | 'low'
+  clientImpact: 'yes' | 'no'
   releaseBranchName: string
   changeNumber: string
   implementationPlanLink: string
@@ -47,7 +48,7 @@ const CreateReleaseDialog: React.FC<CreateReleaseDialogProps> = ({
     fixVersion: '',
     releaseDate: '',
     sealIds: '',
-    clientImpact: 'medium',
+    clientImpact: 'no',
     releaseBranchName: '',
     changeNumber: '',
     implementationPlanLink: '',
@@ -73,7 +74,7 @@ const CreateReleaseDialog: React.FC<CreateReleaseDialogProps> = ({
       fixVersion: '',
       releaseDate: '',
       sealIds: '',
-      clientImpact: 'medium',
+      clientImpact: 'no',
       releaseBranchName: '',
       changeNumber: '',
       implementationPlanLink: '',
@@ -120,147 +121,113 @@ const CreateReleaseDialog: React.FC<CreateReleaseDialogProps> = ({
       </DialogTitle>
 
       <DialogContent sx={{ px: 3 }}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              label="Release Name"
-              value={formData.releaseName}
-              onChange={handleInputChange('releaseName')}
-              required
-              variant="outlined"
-              sx={{ mb: 2 }}
-            />
-          </Grid>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <TextField
+            fullWidth
+            label="Release Name"
+            value={formData.releaseName}
+            onChange={handleInputChange('releaseName')}
+            required
+            variant="outlined"
+          />
           
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              label="Fix Version"
-              value={formData.fixVersion}
-              onChange={handleInputChange('fixVersion')}
-              required
-              variant="outlined"
-              sx={{ mb: 2 }}
-            />
-          </Grid>
+          <TextField
+            fullWidth
+            label="Fix Version"
+            value={formData.fixVersion}
+            onChange={handleInputChange('fixVersion')}
+            required
+            variant="outlined"
+          />
 
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              label="Release Date"
-              type="date"
-              value={formData.releaseDate}
-              onChange={handleInputChange('releaseDate')}
-              required
-              InputLabelProps={{
-                shrink: true,
-              }}
-              variant="outlined"
-              sx={{ mb: 2 }}
-            />
-          </Grid>
+          <TextField
+            fullWidth
+            label="Release Date"
+            type="date"
+            value={formData.releaseDate}
+            onChange={handleInputChange('releaseDate')}
+            required
+            InputLabelProps={{
+              shrink: true,
+            }}
+            variant="outlined"
+          />
 
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              label="Seal IDs"
-              value={formData.sealIds}
-              onChange={handleInputChange('sealIds')}
-              placeholder="Enter comma-separated seal IDs"
-              variant="outlined"
-              sx={{ mb: 2 }}
-            />
-          </Grid>
+          <TextField
+            fullWidth
+            label="Seal IDs"
+            value={formData.sealIds}
+            onChange={handleInputChange('sealIds')}
+            placeholder="Enter comma-separated seal IDs"
+            variant="outlined"
+          />
 
-          <Grid item xs={12}>
-            <FormControl component="fieldset" sx={{ mb: 2 }}>
-              <FormLabel component="legend" sx={{ fontWeight: 600, color: '#2c3e50', mb: 1 }}>
-                Client Impact
-              </FormLabel>
-              <RadioGroup
-                row
-                value={formData.clientImpact}
-                onChange={handleInputChange('clientImpact')}
-              >
-                <FormControlLabel value="low" control={<Radio />} label="Low" />
-                <FormControlLabel value="medium" control={<Radio />} label="Medium" />
-                <FormControlLabel value="high" control={<Radio />} label="High" />
-              </RadioGroup>
-            </FormControl>
-          </Grid>
+          <FormControl component="fieldset">
+            <FormLabel component="legend" sx={{ fontWeight: 600, color: '#2c3e50', mb: 1 }}>
+              Client Impact
+            </FormLabel>
+            <RadioGroup
+              value={formData.clientImpact}
+              onChange={handleInputChange('clientImpact')}
+            >
+              <FormControlLabel value="yes" control={<Radio />} label="Yes" />
+              <FormControlLabel value="no" control={<Radio />} label="No" />
+            </RadioGroup>
+          </FormControl>
 
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              label="Release Branch Name"
-              value={formData.releaseBranchName}
-              onChange={handleInputChange('releaseBranchName')}
-              required
-              variant="outlined"
-              sx={{ mb: 2 }}
-            />
-          </Grid>
+          <TextField
+            fullWidth
+            label="Release Branch Name"
+            value={formData.releaseBranchName}
+            onChange={handleInputChange('releaseBranchName')}
+            required
+            variant="outlined"
+          />
 
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              label="Change Number"
-              value={formData.changeNumber}
-              onChange={handleInputChange('changeNumber')}
-              variant="outlined"
-              sx={{ mb: 2 }}
-            />
-          </Grid>
+          <TextField
+            fullWidth
+            label="Change Number"
+            value={formData.changeNumber}
+            onChange={handleInputChange('changeNumber')}
+            variant="outlined"
+          />
 
-          <Grid item xs={12}>
-            <TextField
-              fullWidth
-              label="Implementation Plan Link"
-              value={formData.implementationPlanLink}
-              onChange={handleInputChange('implementationPlanLink')}
-              placeholder="https://..."
-              variant="outlined"
-              sx={{ mb: 2 }}
-            />
-          </Grid>
+          <TextField
+            fullWidth
+            label="Implementation Plan Link"
+            value={formData.implementationPlanLink}
+            onChange={handleInputChange('implementationPlanLink')}
+            placeholder="https://..."
+            variant="outlined"
+          />
 
-          <Grid item xs={12}>
-            <TextField
-              fullWidth
-              label="Release Scope Page Link"
-              value={formData.releaseScopePageLink}
-              onChange={handleInputChange('releaseScopePageLink')}
-              placeholder="https://..."
-              variant="outlined"
-              sx={{ mb: 2 }}
-            />
-          </Grid>
+          <TextField
+            fullWidth
+            label="Release Scope Page Link"
+            value={formData.releaseScopePageLink}
+            onChange={handleInputChange('releaseScopePageLink')}
+            placeholder="https://..."
+            variant="outlined"
+          />
 
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              label="Release Coordinator Name"
-              value={formData.releaseCoordinatorName}
-              onChange={handleInputChange('releaseCoordinatorName')}
-              required
-              variant="outlined"
-              sx={{ mb: 2 }}
-            />
-          </Grid>
+          <TextField
+            fullWidth
+            label="Release Coordinator Name"
+            value={formData.releaseCoordinatorName}
+            onChange={handleInputChange('releaseCoordinatorName')}
+            required
+            variant="outlined"
+          />
 
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              label="Release Supervisor Name"
-              value={formData.releaseSupervisorName}
-              onChange={handleInputChange('releaseSupervisorName')}
-              required
-              variant="outlined"
-              sx={{ mb: 2 }}
-            />
-          </Grid>
-        </Grid>
+          <TextField
+            fullWidth
+            label="Release Supervisor Name"
+            value={formData.releaseSupervisorName}
+            onChange={handleInputChange('releaseSupervisorName')}
+            required
+            variant="outlined"
+          />
+        </div>
       </DialogContent>
 
       <DialogActions sx={{ p: 3, pt: 0 }}>

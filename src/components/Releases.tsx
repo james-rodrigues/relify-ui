@@ -14,6 +14,7 @@ import { Search as SearchIcon, Add as AddIcon } from '@mui/icons-material'
 import { useState } from 'react'
 import ReleaseCard from './ReleaseCard'
 import CreateReleaseDialog, { type ReleaseFormData } from './CreateReleaseDialog'
+import './Releases.scss'
 
 const Releases = () => {
   const [searchTerm, setSearchTerm] = useState('')
@@ -43,7 +44,7 @@ const Releases = () => {
       >
         <TextField
           variant="outlined"
-          placeholder="Search by Release ID or Release Name or Fix Version"
+          placeholder="Search by Release ID, Release Name, or Fix Version"
           value={searchTerm}
           onChange={handleSearchChange}
           sx={{ 
@@ -57,6 +58,11 @@ const Releases = () => {
               '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
                 borderColor: '#667eea',
               }
+            },
+            '& .MuiInputBase-input::placeholder': {
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis'
             }
           }}
           InputProps={{
@@ -130,22 +136,24 @@ const Releases = () => {
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6}>
               <ReleaseCard 
-                title="Release Monthly" 
+                title="July Monthly" 
                 type="monthly" 
                 status="planned" 
                 progress={65} 
                 date="July 30, 2025" 
                 description="Monthly release with new features, bug fixes, and performance improvements." 
+                onTitleClick={() => console.log('Navigate to July Monthly details')}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
               <ReleaseCard 
-                title="Release Offcycle" 
+                title="July Offcycle" 
                 type="offcycle" 
                 status="planned" 
                 progress={30} 
-                date="August 15, 2025" 
+                date="July 15, 2025" 
                 description="Critical hotfix release for security vulnerabilities and urgent issues." 
+                onTitleClick={() => console.log('Navigate to July Offcycle details')}
               />
             </Grid>
           </Grid>
@@ -188,29 +196,22 @@ const Releases = () => {
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6}>
               <ReleaseCard 
-                title="June Offcycle" 
-                type="offcycle" 
-                status="completed" 
-                date="June 20, 2025" 
-                description="Emergency security patch and critical bug fixes deployed successfully." 
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <ReleaseCard 
                 title="June Monthly" 
                 type="monthly" 
                 status="completed" 
                 date="June 30, 2025" 
                 description="Major feature release with enhanced UI, new integrations, and performance optimizations." 
+                onTitleClick={() => console.log('Navigate to June Monthly details')}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
               <ReleaseCard 
-                title="May Offcycle" 
+                title="June Offcycle" 
                 type="offcycle" 
                 status="completed" 
-                date="May 15, 2025" 
-                description="Quick deployment for API improvements and database optimizations." 
+                date="June 20, 2025" 
+                description="Emergency security patch and critical bug fixes deployed successfully." 
+                onTitleClick={() => console.log('Navigate to June Offcycle details')}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -220,15 +221,17 @@ const Releases = () => {
                 status="completed" 
                 date="May 31, 2025" 
                 description="Comprehensive release with new dashboard, analytics features, and mobile support." 
+                onTitleClick={() => console.log('Navigate to May Monthly details')}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
               <ReleaseCard 
-                title="April Offcycle" 
+                title="May Offcycle" 
                 type="offcycle" 
                 status="completed" 
-                date="April 10, 2025" 
-                description="Hotfix release addressing user-reported issues and performance bottlenecks." 
+                date="May 15, 2025" 
+                description="Quick deployment for API improvements and database optimizations." 
+                onTitleClick={() => console.log('Navigate to May Offcycle details')}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -238,6 +241,17 @@ const Releases = () => {
                 status="completed" 
                 date="April 30, 2025" 
                 description="Spring release featuring redesigned interface and enhanced automation capabilities." 
+                onTitleClick={() => console.log('Navigate to April Monthly details')}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <ReleaseCard 
+                title="April Offcycle" 
+                type="offcycle" 
+                status="completed" 
+                date="April 10, 2025" 
+                description="Hotfix release addressing user-reported issues and performance bottlenecks." 
+                onTitleClick={() => console.log('Navigate to April Offcycle details')}
               />
             </Grid>
           </Grid>

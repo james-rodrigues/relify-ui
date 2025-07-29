@@ -1,10 +1,11 @@
-import { Card, CardContent, Typography, Chip, Box, LinearProgress } from '@mui/material'
+import { Card, CardContent, Typography, Chip, Box, LinearProgress, Link } from '@mui/material'
 import { 
   Schedule as ScheduleIcon, 
   CheckCircle as CheckCircleIcon,
   PlayArrow as PlayIcon,
   CalendarToday as CalendarIcon
 } from '@mui/icons-material'
+import './ReleaseCard.scss'
 
 interface ReleaseCardProps {
   title: string
@@ -13,9 +14,10 @@ interface ReleaseCardProps {
   progress?: number
   date?: string
   description?: string
+  onTitleClick?: () => void
 }
 
-const ReleaseCard = ({ title, type, status, progress = 0, date, description }: ReleaseCardProps) => {
+const ReleaseCard = ({ title, type, status, progress = 0, date, description, onTitleClick }: ReleaseCardProps) => {
   const getStatusColor = () => {
     switch (status) {
       case 'planned':
@@ -41,8 +43,8 @@ const ReleaseCard = ({ title, type, status, progress = 0, date, description }: R
   return (
     <Card 
       sx={{ 
-        height: '320px', // Fixed height for consistent sizing
-        minHeight: '320px',
+        height: '260px', // Reduced height for more compact design
+        minHeight: '260px',
         background: `linear-gradient(135deg, ${getStatusColor()}15 0%, ${getStatusColor()}08 100%)`,
         border: `2px solid ${getStatusColor()}30`,
         borderRadius: '16px',
@@ -69,16 +71,29 @@ const ReleaseCard = ({ title, type, status, progress = 0, date, description }: R
     >
       <CardContent sx={{ p: 3, height: '100%', display: 'flex', flexDirection: 'column' }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
-          <Typography 
-            variant="h6" 
+          <Link
+            component="button"
+            variant="h6"
+            onClick={onTitleClick}
             sx={{ 
               fontWeight: 700,
               color: '#2c3e50',
-              fontSize: '1.3rem'
+              fontSize: '1.1rem',
+              textDecoration: 'none',
+              cursor: 'pointer',
+              '&:hover': {
+                color: getStatusColor(),
+                textDecoration: 'underline'
+              },
+              background: 'none',
+              border: 'none',
+              padding: 0,
+              textAlign: 'left',
+              fontFamily: 'inherit'
             }}
           >
             {title}
-          </Typography>
+          </Link>
           
           <Chip
             icon={getStatusIcon()}

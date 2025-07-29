@@ -1,5 +1,5 @@
-import { Box, Container, Typography, Button, Chip } from '@mui/material'
-import { Rocket as RocketIcon, Star as StarIcon } from '@mui/icons-material'
+import { Box, Container, Typography } from '@mui/material'
+import './HeroSection.scss'
 
 const HeroSection = () => {
   return (

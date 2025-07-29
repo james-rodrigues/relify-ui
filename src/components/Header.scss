@@ -1,0 +1,84 @@
+.header {
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid #e9ecef;
+
+  .header-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 24px;
+    min-height: 64px;
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      .logo-icon {
+        font-size: 2rem;
+        color: #667eea;
+      }
+
+      .logo-text {
+        font-weight: 700;
+        color: #2c3e50;
+        font-size: 1.5rem;
+        text-decoration: none;
+        
+        &:hover {
+          color: #667eea;
+        }
+      }
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      
+      @media (max-width: 768px) {
+        display: none; // Hide on mobile - could add mobile menu later
+      }
+
+      .nav-link {
+        color: #2c3e50;
+        text-decoration: none;
+        font-weight: 500;
+        padding: 8px 16px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+
+        &:hover {
+          background-color: rgba(102, 126, 234, 0.1);
+          color: #667eea;
+        }
+
+        &.active {
+          background-color: rgba(102, 126, 234, 0.15);
+          color: #667eea;
+          font-weight: 600;
+        }
+      }
+    }
+
+    .user-section {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+
+      .notification-button {
+        color: #666;
+        
+        &:hover {
+          color: #667eea;
+        }
+      }
+
+      .user-avatar {
+        background-color: #667eea;
+        color: white;
+        font-weight: 600;
+      }
+    }
+  }
+}

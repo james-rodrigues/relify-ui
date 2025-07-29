@@ -7,26 +7,19 @@ import {
   IconButton,
   Container,
   Paper,
-  TextField,
-  Button,
   Snackbar,
-  Alert,
-  Link,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Chip
+  Alert
 } from '@mui/material'
 import { 
-  ArrowBack as ArrowBackIcon, 
-  Edit as EditIcon,
-  Save as SaveIcon,
-  Send as SendIcon
+  ArrowBack as ArrowBackIcon
 } from '@mui/icons-material'
 import './ReleaseDetailView.scss'
+import OverviewTab from './OverviewTab'
+import ReleaseScopeTab from './ReleaseScopeTab'
+import ImplementationPlanTab from './ImplementationPlanTab'
+import JiraIntegrationTab from './JiraIntegrationTab'
+import ApplicationPipelinesTab from './ApplicationPipelinesTab'
+import EvidenceTab from './EvidenceTab'
 
 interface ReleaseDetailViewProps {
   releaseName: string
@@ -79,6 +72,32 @@ interface ApiResponse {
   success: boolean
   message?: string
   error?: string
+}
+
+interface ReleaseScopeEntry {
+  changeRequestNumber: string
+  sealId: string
+  teamName: string
+  keyDevLead: string
+  productContact: string
+  sreKTDone: 'Yes' | 'No' | 'N/A'
+  runbookUpdateDone: 'Yes' | 'No' | 'N/A'
+  drmComments: string
+  snowflakeImpact: string
+  techLead: string
+  initiativeLink: string
+  epicLink: string
+  storyLink: string
+  personOnCallPrimary: string
+  personOnCallSecondary: string
+  changesInvolved: string
+  servicesToBeDeployed: string
+  upstreamDownstreamImpact: 'Yes' | 'No' | 'N/A'
+  istTested: 'Yes' | 'No' | 'N/A'
+  uatTested: 'Yes' | 'No' | 'N/A'
+  relatedIncidents: string
+  releaseBranchName: string
+  manualTaskComments: string
 }
 
 // Mock service functions
@@ -175,6 +194,87 @@ const ReleaseDetailView: React.FC<ReleaseDetailViewProps> = ({
   const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success')
   const [activityTimeline] = useState(getMockActivityTimeline())
   const [sendingActivityEmails, setSendingActivityEmails] = useState<Set<string>>(new Set())
+  
+  // Release Scope table state
+  const [dialogOpen, setDialogOpen] = useState(false)
+  const [entries, setEntries] = useState<ReleaseScopeEntry[]>([
+    {
+      changeRequestNumber: 'CR-001',
+      sealId: '123-seal',
+      teamName: 'Dev Team',
+      keyDevLead: 'John Smith',
+      productContact: 'Anna Taylor',
+      sreKTDone: 'Yes',
+      runbookUpdateDone: 'No',
+      drmComments: 'Check DRM compliance',
+      snowflakeImpact: 'Medium Impact',
+      techLead: 'Julie Brown',
+      initiativeLink: 'https://jira.company.com/browse/INIT-001',
+      epicLink: 'https://jira.company.com/browse/EPIC-101',
+      storyLink: 'https://jira.company.com/browse/STORY-202',
+      personOnCallPrimary: 'Alex Johnson',
+      personOnCallSecondary: 'Maria Garcia',
+      changesInvolved: 'API Updates, Database Schema Changes',
+      servicesToBeDeployed: 'UserService, AuthService, NotificationService',
+      upstreamDownstreamImpact: 'No',
+      istTested: 'Yes',
+      uatTested: 'Yes',
+      relatedIncidents: 'INC-2024-001, INC-2024-007',
+      releaseBranchName: 'release/v2.1.0',
+      manualTaskComments: 'Please review manual tasks prior to deployment. Ensure all config files are updated.'
+    },
+    {
+      changeRequestNumber: 'CR-002',
+      sealId: '456-seal',
+      teamName: 'QA Team',
+      keyDevLead: 'Mike Johnson',
+      productContact: 'Sarah Wilson',
+      sreKTDone: 'No',
+      runbookUpdateDone: 'Yes',
+      drmComments: 'DRM approved with conditions',
+      snowflakeImpact: 'Low Impact',
+      techLead: 'Robert Davis',
+      initiativeLink: 'https://jira.company.com/browse/INIT-002',
+      epicLink: 'https://jira.company.com/browse/EPIC-102',
+      storyLink: 'https://jira.company.com/browse/STORY-203',
+      personOnCallPrimary: 'David Chen',
+      personOnCallSecondary: 'Linda Rodriguez',
+      changesInvolved: 'UI Improvements, Performance Optimizations',
+      servicesToBeDeployed: 'FrontendService, CacheService',
+      upstreamDownstreamImpact: 'Yes',
+      istTested: 'N/A',
+      uatTested: 'Yes',
+      relatedIncidents: 'INC-2024-003',
+      releaseBranchName: 'release/v2.1.1',
+      manualTaskComments: 'Additional testing required for performance improvements. Monitor resource usage post-deployment.'
+    }
+  ])
+  const [editingIndex, setEditingIndex] = useState<number | null>(null)
+  const [newEntry, setNewEntry] = useState<ReleaseScopeEntry>({
+    changeRequestNumber: '',
+    sealId: '',
+    teamName: '',
+    keyDevLead: '',
+    productContact: '',
+    sreKTDone: 'N/A',
+    runbookUpdateDone: 'N/A',
+    drmComments: '',
+    snowflakeImpact: '',
+    techLead: '',
+    initiativeLink: '',
+    epicLink: '',
+    storyLink: '',
+    personOnCallPrimary: '',
+    personOnCallSecondary: '',
+    changesInvolved: '',
+    servicesToBeDeployed: '',
+    upstreamDownstreamImpact: 'N/A',
+    istTested: 'N/A',
+    uatTested: 'N/A',
+    relatedIncidents: '',
+    releaseBranchName: '',
+    manualTaskComments: ''
+  })
 
   const fixVersion = generateFixVersion(releaseDate, releaseType)
   const snowLink = generateSnowLink(fixVersion)
@@ -276,6 +376,88 @@ const ReleaseDetailView: React.FC<ReleaseDetailViewProps> = ({
     })
   }
 
+  // Release Scope handlers
+  const handleEntryChange = (field: keyof ReleaseScopeEntry, value: string) => {
+    setNewEntry(prev => ({ ...prev, [field]: value }))
+  }
+
+  const handleAddEntry = () => {
+    if (editingIndex !== null) {
+      // Update existing entry
+      setEntries(prev => prev.map((entry, index) => 
+        index === editingIndex ? newEntry : entry
+      ))
+      setEditingIndex(null)
+    } else {
+      // Add new entry
+      setEntries(prev => [...prev, newEntry])
+    }
+    
+    // Reset form
+    setNewEntry({
+      changeRequestNumber: '',
+      sealId: '',
+      teamName: '',
+      keyDevLead: '',
+      productContact: '',
+      sreKTDone: 'N/A',
+      runbookUpdateDone: 'N/A',
+      drmComments: '',
+      snowflakeImpact: '',
+      techLead: '',
+      initiativeLink: '',
+      epicLink: '',
+      storyLink: '',
+      personOnCallPrimary: '',
+      personOnCallSecondary: '',
+      changesInvolved: '',
+      servicesToBeDeployed: '',
+      upstreamDownstreamImpact: 'N/A',
+      istTested: 'N/A',
+      uatTested: 'N/A',
+      relatedIncidents: '',
+      releaseBranchName: '',
+      manualTaskComments: ''
+    })
+    setDialogOpen(false)
+  }
+
+  const handleEditEntry = (index: number) => {
+    setNewEntry(entries[index])
+    setEditingIndex(index)
+    setDialogOpen(true)
+  }
+
+  const resetDialog = () => {
+    setNewEntry({
+      changeRequestNumber: '',
+      sealId: '',
+      teamName: '',
+      keyDevLead: '',
+      productContact: '',
+      sreKTDone: 'N/A',
+      runbookUpdateDone: 'N/A',
+      drmComments: '',
+      snowflakeImpact: '',
+      techLead: '',
+      initiativeLink: '',
+      epicLink: '',
+      storyLink: '',
+      personOnCallPrimary: '',
+      personOnCallSecondary: '',
+      changesInvolved: '',
+      servicesToBeDeployed: '',
+      upstreamDownstreamImpact: 'N/A',
+      istTested: 'N/A',
+      uatTested: 'N/A',
+      relatedIncidents: '',
+      releaseBranchName: '',
+      manualTaskComments: ''
+    })
+    setEditingIndex(null)
+    setDialogOpen(false)
+  }
+
   const tabs = [
     'Overview',
     'Release Scope',
@@ -327,284 +509,66 @@ const ReleaseDetailView: React.FC<ReleaseDetailViewProps> = ({
 
             <div className="tab-panels">
               <TabPanel value={activeTab} index={0}>
-                <div className="overview-content">
-                  <Typography variant="h5" className="section-title">
-                    Release Overview
-                  </Typography>
-                  
-                  {/* Fix Version and SNOW Link Row */}
-                  <div className="overview-header">
-                    <div className="header-row">
-                      <div className="header-field">
-                        <Typography variant="body2" className="field-label">
-                          Fix Version:
-                        </Typography>
-                        <Typography variant="body1" className="field-value">
-                          {fixVersion}
-                        </Typography>
-                      </div>
-                      <div className="header-field">
-                        <Typography variant="body2" className="field-label">
-                          SNOW Link:
-                        </Typography>
-                        <Link href={snowLink} target="_blank" rel="noopener noreferrer" className="field-link">
-                          {snowLink.split('/').pop()}
-                        </Link>
-                      </div>
-                      <div className="header-field">
-                        <Button
-                          variant="contained"
-                          startIcon={<SendIcon />}
-                          onClick={handleSendReleaseNotes}
-                          disabled={isSending}
-                          className="send-notes-btn"
-                        >
-                          {isSending ? 'Sending...' : 'Send Release Notes'}
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="overview-cards">
-                    {/* Release Notes Section */}
-                    <div className="overview-card">
-                      <div className="card-header">
-                        <Typography variant="h6" className="card-title">
-                          Release Notes
-                        </Typography>
-                        <IconButton
-                          onClick={() => setIsNotesEditMode(!isNotesEditMode)}
-                          className="edit-icon"
-                          size="small"
-                        >
-                          <EditIcon fontSize="small" />
-                        </IconButton>
-                      </div>
-                      
-                      {isNotesEditMode ? (
-                        <div className="edit-container">
-                          <TextField
-                            multiline
-                            rows={6}
-                            fullWidth
-                            value={releaseNotes}
-                            onChange={(e) => setReleaseNotes(e.target.value)}
-                            placeholder="Enter release notes... Use • for bullet points or 1. for numbered lists"
-                            className="editable-textarea"
-                            variant="outlined"
-                          />
-                          <div className="edit-actions">
-                            <Button
-                              startIcon={<SaveIcon />}
-                              onClick={handleSaveNotes}
-                              variant="contained"
-                              size="small"
-                              className="save-btn"
-                            >
-                              Save Changes
-                            </Button>
-                            <Button
-                              onClick={() => setIsNotesEditMode(false)}
-                              variant="outlined"
-                              size="small"
-                              className="cancel-btn"
-                            >
-                              Cancel
-                            </Button>
-                          </div>
-                        </div>
-                      ) : (
-                        <Typography variant="body2" className="card-content" style={{ whiteSpace: 'pre-line' }}>
-                          {releaseNotes}
-                        </Typography>
-                      )}
-                    </div>
-                    
-                    {/* Key Metrics Section */}
-                    <div className="overview-card">
-                      <div className="card-header">
-                        <Typography variant="h6" className="card-title">
-                          Key Metrics
-                        </Typography>
-                        <IconButton
-                          onClick={() => setIsMetricsEditMode(!isMetricsEditMode)}
-                          className="edit-icon"
-                          size="small"
-                        >
-                          <EditIcon fontSize="small" />
-                        </IconButton>
-                      </div>
-                      
-                      {isMetricsEditMode ? (
-                        <div className="edit-container">
-                          <TextField
-                            multiline
-                            rows={6}
-                            fullWidth
-                            value={keyMetrics}
-                            onChange={(e) => setKeyMetrics(e.target.value)}
-                            placeholder="Enter key metrics... Use • for bullet points or 1. for numbered lists"
-                            className="editable-textarea"
-                            variant="outlined"
-                          />
-                          <div className="edit-actions">
-                            <Button
-                              startIcon={<SaveIcon />}
-                              onClick={handleSaveMetrics}
-                              variant="contained"
-                              size="small"
-                              className="save-btn"
-                            >
-                              Save Changes
-                            </Button>
-                            <Button
-                              onClick={() => setIsMetricsEditMode(false)}
-                              variant="outlined"
-                              size="small"
-                              className="cancel-btn"
-                            >
-                              Cancel
-                            </Button>
-                          </div>
-                        </div>
-                      ) : (
-                        <Typography variant="body2" className="card-content" style={{ whiteSpace: 'pre-line' }}>
-                          {keyMetrics}
-                        </Typography>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Activity Timeline Section */}
-                  <div className="activity-timeline-section">
-                    <Typography variant="h6" className="timeline-title">
-                      Activity Timeline
-                    </Typography>
-                    <TableContainer component={Paper} className="timeline-table">
-                      <Table>
-                        <TableHead>
-                          <TableRow>
-                            <TableCell className="table-header">Activity Name</TableCell>
-                            <TableCell className="table-header">Activity Due Date</TableCell>
-                            <TableCell className="table-header">Status</TableCell>
-                            <TableCell className="table-header">Assignee</TableCell>
-                            <TableCell className="table-header" align="center">Action</TableCell>
-                          </TableRow>
-                        </TableHead>
-                        <TableBody>
-                          {activityTimeline.map((activity) => (
-                            <TableRow key={activity.id} className="table-row">
-                              <TableCell className="activity-name">
-                                {activity.activityName}
-                              </TableCell>
-                              <TableCell className="activity-date">
-                                {formatDate(activity.activityDueDate)}
-                              </TableCell>
-                              <TableCell>
-                                <Chip
-                                  label={activity.status.charAt(0).toUpperCase() + activity.status.slice(1)}
-                                  color={getStatusColor(activity.status) as any}
-                                  size="small"
-                                  className="status-chip"
-                                />
-                              </TableCell>
-                              <TableCell className="assignee">
-                                {activity.assignee}
-                              </TableCell>
-                              <TableCell align="center">
-                                <Button
-                                  variant="outlined"
-                                  size="small"
-                                  startIcon={<SendIcon />}
-                                  onClick={() => handleSendActivityEmail(activity.id, activity.activityName)}
-                                  disabled={sendingActivityEmails.has(activity.id)}
-                                  className="send-email-btn"
-                                >
-                                  {sendingActivityEmails.has(activity.id) ? 'Sending...' : 'Send Email'}
-                                </Button>
-                              </TableCell>
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                    </TableContainer>
-                  </div>
-                </div>
+                <OverviewTab
+                  releaseName={releaseName}
+                  releaseDate={releaseDate}
+                  releaseType={releaseType}
+                  fixVersion={fixVersion}
+                  snowLink={snowLink}
+                  isNotesEditMode={isNotesEditMode}
+                  setIsNotesEditMode={setIsNotesEditMode}
+                  releaseNotes={releaseNotes}
+                  setReleaseNotes={setReleaseNotes}
+                  isMetricsEditMode={isMetricsEditMode}
+                  setIsMetricsEditMode={setIsMetricsEditMode}
+                  keyMetrics={keyMetrics}
+                  setKeyMetrics={setKeyMetrics}
+                  handleSendReleaseNotes={handleSendReleaseNotes}
+                  sendingActivityEmails={sendingActivityEmails}
+                  handleSendActivityEmail={handleSendActivityEmail}
+                  formatDate={formatDate}
+                  getStatusColor={getStatusColor}
+                  activityTimeline={activityTimeline}
+                  isSending={isSending}
+                  handleSaveNotes={handleSaveNotes}
+                  handleSaveMetrics={handleSaveMetrics}
+                />
               </TabPanel>
-
               <TabPanel value={activeTab} index={1}>
-                <div className="scope-content">
-                  <Typography variant="h5" className="section-title">
-                    Release Scope
-                  </Typography>
-                  <Typography variant="body1" className="section-description">
-                    Detailed scope and requirements for {releaseName}.
-                  </Typography>
-                  <Typography variant="body2">
-                    This section would contain detailed information about what is included 
-                    and excluded from this release, feature specifications, and acceptance criteria.
-                  </Typography>
-                </div>
+                <ReleaseScopeTab
+                  dialogOpen={dialogOpen}
+                  setDialogOpen={setDialogOpen}
+                  newEntry={newEntry}
+                  handleEntryChange={handleEntryChange}
+                  handleAddEntry={handleAddEntry}
+                  entries={entries}
+                  handleEditEntry={handleEditEntry}
+                />
               </TabPanel>
 
               <TabPanel value={activeTab} index={2}>
-                <div className="implementation-content">
-                  <Typography variant="h5" className="section-title">
-                    Implementation Plan
-                  </Typography>
-                  <Typography variant="body1" className="section-description">
-                    Step-by-step implementation plan for {releaseName}.
-                  </Typography>
-                  <Typography variant="body2">
-                    This section contains the detailed implementation timeline, 
-                    deployment steps, rollback procedures, and technical specifications.
-                  </Typography>
-                </div>
+                <ImplementationPlanTab
+                  releaseName={releaseName}
+                  releaseDate={releaseDate}
+                />
               </TabPanel>
 
               <TabPanel value={activeTab} index={3}>
-                <div className="jira-content">
-                  <Typography variant="h5" className="section-title">
-                    Jira Integration
-                  </Typography>
-                  <Typography variant="body1" className="section-description">
-                    Jira tickets and project tracking for {releaseName}.
-                  </Typography>
-                  <Typography variant="body2">
-                    This section would show linked Jira tickets, project progress, 
-                    and issue tracking information related to this release.
-                  </Typography>
-                </div>
+                <JiraIntegrationTab
+                  releaseName={releaseName}
+                />
               </TabPanel>
 
               <TabPanel value={activeTab} index={4}>
-                <div className="pipelines-content">
-                  <Typography variant="h5" className="section-title">
-                    Application Pipelines
-                  </Typography>
-                  <Typography variant="body1" className="section-description">
-                    CI/CD pipeline status and deployment information for {releaseName}.
-                  </Typography>
-                  <Typography variant="body2">
-                    This section displays the current status of build pipelines, 
-                    deployment stages, and automated testing results.
-                  </Typography>
-                </div>
+                <ApplicationPipelinesTab
+                  releaseName={releaseName}
+                />
               </TabPanel>
 
               <TabPanel value={activeTab} index={5}>
-                <div className="evidence-content">
-                  <Typography variant="h5" className="section-title">
-                    Post Implementation Evidences
-                  </Typography>
-                  <Typography variant="body1" className="section-description">
-                    Post-deployment verification and evidence for {releaseName}.
-                  </Typography>
-                  <Typography variant="body2">
-                    This section contains screenshots, logs, test results, 
-                    and other evidence confirming successful deployment and operation.
-                  </Typography>
-                </div>
+                <EvidenceTab
+                  releaseName={releaseName}
+                />
               </TabPanel>
             </div>
           </Paper>

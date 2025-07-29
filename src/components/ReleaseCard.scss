@@ -56,9 +56,22 @@
       .status-chip {
         font-weight: 600;
         font-size: 0.75rem;
+        color: white;
 
         .chip-icon {
           color: white;
+        }
+
+        &.status-chip--planned-monthly {
+          background-color: #667eea;
+        }
+
+        &.status-chip--planned-offcycle {
+          background-color: #764ba2;
+        }
+
+        &.status-chip--completed {
+          background-color: #4caf50;
         }
       }
     }
@@ -73,6 +86,21 @@
       .type-chip {
         font-weight: 500;
         margin-bottom: 8px;
+
+        &.type-chip--planned-monthly {
+          border-color: #667eea;
+          color: #667eea;
+        }
+
+        &.type-chip--planned-offcycle {
+          border-color: #764ba2;
+          color: #764ba2;
+        }
+
+        &.type-chip--completed {
+          border-color: #4caf50;
+          color: #4caf50;
+        }
       }
     }
 
@@ -119,6 +147,30 @@
       .progress-bar {
         height: 6px;
         border-radius: 3px;
+
+        &.progress-bar--planned-monthly {
+          background-color: rgba(102, 126, 234, 0.2);
+
+          .MuiLinearProgress-bar {
+            background: linear-gradient(90deg, #667eea, rgba(102, 126, 234, 0.8));
+          }
+        }
+
+        &.progress-bar--planned-offcycle {
+          background-color: rgba(118, 75, 162, 0.2);
+
+          .MuiLinearProgress-bar {
+            background: linear-gradient(90deg, #764ba2, rgba(118, 75, 162, 0.8));
+          }
+        }
+
+        &.progress-bar--completed {
+          background-color: rgba(76, 175, 80, 0.2);
+
+          .MuiLinearProgress-bar {
+            background: linear-gradient(90deg, #4caf50, rgba(76, 175, 80, 0.8));
+          }
+        }
 
         .progress-bar-fill {
           border-radius: 3px;

@@ -4,13 +4,32 @@
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
   }
 
+  .dialog-header {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 1;
+    
+    .close-button {
+      color: #606060;
+      background-color: rgba(255, 255, 255, 0.8);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      
+      &:hover {
+        background-color: rgba(255, 255, 255, 1);
+        color: #333;
+      }
+    }
+  }
+
   .dialog-title {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     border-bottom: 1px solid #e9ecef;
     padding-bottom: 16px;
     margin-bottom: 16px;
+    padding-top: 24px;
 
     .title-text {
       font-weight: 700;
@@ -19,7 +38,8 @@
   }
 
   .dialog-content {
-    padding: 0 24px;
+    padding: 24px;
+    padding-top: 0;
 
     .form-container {
       display: flex;
@@ -27,11 +47,30 @@
       gap: 20px;
     }
 
+    .section-title {
+      color: #1976d2;
+      font-weight: bold;
+      margin-bottom: 16px;
+    }
+
+    .form-section {
+      margin-bottom: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .section-divider {
+      margin: 24px 0;
+    }
+
     .form-field {
       width: 100%;
     }
 
     .radio-group-container {
+      margin-bottom: 24px;
+      
       .radio-label {
         font-weight: 600;
         color: #2c3e50;
@@ -43,12 +82,16 @@
   .dialog-actions {
     padding: 24px;
     padding-top: 0;
+    display: flex;
+    gap: 16px;
+    justify-content: flex-end;
 
     .action-button {
+      min-width: 120px;
       border-radius: 8px;
       text-transform: none;
       font-weight: 600;
-      padding: 0 24px;
+      padding: 12px 24px;
 
       &.cancel-button {
         // Material-UI outlined button styles handled by component

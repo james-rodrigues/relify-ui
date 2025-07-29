@@ -60,8 +60,7 @@ const ReleaseCard = ({ title, type, status, progress = 0, date, description, onT
             component="button"
             variant="h6"
             onClick={onTitleClick}
-            className="title-link"
-            style={{ color: onTitleClick ? undefined : '#2c3e50' }}
+            className={`title-link ${status}-${type}`}
           >
             {title}
           </Link>
@@ -70,11 +69,7 @@ const ReleaseCard = ({ title, type, status, progress = 0, date, description, onT
             icon={getStatusIcon()}
             label={status === 'planned' ? 'Planned' : 'Completed'}
             size="small"
-            className="status-chip"
-            style={{
-              backgroundColor: getStatusColor(),
-              color: 'white'
-            }}
+            className={`status-chip status-chip--${status}${status === 'planned' ? `-${type}` : ''}`}
           />
         </Box>
 
@@ -83,11 +78,7 @@ const ReleaseCard = ({ title, type, status, progress = 0, date, description, onT
             label={type === 'monthly' ? '📅 Monthly' : '⚡ Off-cycle'}
             size="small"
             variant="outlined"
-            className="type-chip"
-            style={{
-              borderColor: getStatusColor(),
-              color: getStatusColor()
-            }}
+            className={`type-chip type-chip--${status}${status === 'planned' ? `-${type}` : ''}`}
           />
         </Box>
 
@@ -123,15 +114,7 @@ const ReleaseCard = ({ title, type, status, progress = 0, date, description, onT
             <LinearProgress 
               variant="determinate" 
               value={progress} 
-              className="progress-bar"
-              style={{
-                backgroundColor: `${getStatusColor()}20`
-              }}
-              sx={{
-                '& .MuiLinearProgress-bar': {
-                  background: `linear-gradient(90deg, ${getStatusColor()}, ${getStatusColor()}80)`
-                }
-              }}
+              className={`progress-bar progress-bar--${status}${status === 'planned' ? `-${type}` : ''}`}
             />
           </Box>
         )}

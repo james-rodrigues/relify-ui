@@ -122,10 +122,6 @@ const EvidenceTab: React.FC<EvidenceTabProps> = ({
 
   return (
     <div className="evidence-content">
-      <Typography variant="h5" className="section-title" sx={{ mb: 2 }}>
-        Post Implementation Evidences for {releaseName}
-      </Typography>
-      
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
         <Button
           variant="contained"

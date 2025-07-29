@@ -12,7 +12,10 @@ import {
   FormControlLabel,
   Radio,
   IconButton,
-  Typography
+  Typography,
+  Box,
+  Grid,
+  Divider
 } from '@mui/material'
 import { Close as CloseIcon } from '@mui/icons-material'
 import './CreateReleaseDialog.scss'
@@ -99,129 +102,158 @@ const CreateReleaseDialog: React.FC<CreateReleaseDialogProps> = ({
           className: 'dialog-paper'
         }}
       >
+        <div className="dialog-header">
+          <IconButton onClick={handleClose} className="close-button">
+            <CloseIcon />
+          </IconButton>
+        </div>
+        
         <DialogTitle className="dialog-title">
           <Typography variant="h5" className="title-text">
             🚀 Create New Release
           </Typography>
-          <IconButton onClick={handleClose} size="small">
-            <CloseIcon />
-          </IconButton>
         </DialogTitle>
 
         <DialogContent className="dialog-content">
           <div className="form-container">
-          <TextField
-            fullWidth
-            label="Release Name"
-            value={formData.releaseName}
-            onChange={handleInputChange('releaseName')}
-            required
-            variant="outlined"
-          />
-          
-          <TextField
-            fullWidth
-            label="Fix Version"
-            value={formData.fixVersion}
-            onChange={handleInputChange('fixVersion')}
-            required
-            variant="outlined"
-          />
+            {/* Basic Release Information */}
+            <Typography variant="h6" className="section-title">
+              📋 Basic Release Information
+            </Typography>
+            <div className="form-section">
+              <TextField
+                fullWidth
+                label="Release Name"
+                value={formData.releaseName}
+                onChange={handleInputChange('releaseName')}
+                required
+                variant="outlined"
+                className="form-field"
+              />
+              <TextField
+                fullWidth
+                label="Fix Version"
+                value={formData.fixVersion}
+                onChange={handleInputChange('fixVersion')}
+                required
+                variant="outlined"
+                className="form-field"
+              />
+              <TextField
+                fullWidth
+                label="Release Date"
+                type="date"
+                value={formData.releaseDate}
+                onChange={handleInputChange('releaseDate')}
+                required
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                variant="outlined"
+                className="form-field"
+              />
+              <TextField
+                fullWidth
+                label="Seal IDs"
+                value={formData.sealIds}
+                onChange={handleInputChange('sealIds')}
+                placeholder="Enter comma-separated seal IDs"
+                variant="outlined"
+                className="form-field"
+              />
+              <FormControl component="fieldset" className="radio-group-container">
+                <FormLabel component="legend" className="radio-label">
+                  Client Impact
+                </FormLabel>
+                <RadioGroup
+                  value={formData.clientImpact}
+                  onChange={handleInputChange('clientImpact')}
+                  row
+                >
+                  <FormControlLabel value="yes" control={<Radio />} label="Yes" />
+                  <FormControlLabel value="no" control={<Radio />} label="No" />
+                </RadioGroup>
+              </FormControl>
+            </div>
 
-          <TextField
-            fullWidth
-            label="Release Date"
-            type="date"
-            value={formData.releaseDate}
-            onChange={handleInputChange('releaseDate')}
-            required
-            InputLabelProps={{
-              shrink: true,
-            }}
-            variant="outlined"
-          />
+            <Divider className="section-divider" />
 
-          <TextField
-            fullWidth
-            label="Seal IDs"
-            value={formData.sealIds}
-            onChange={handleInputChange('sealIds')}
-            placeholder="Enter comma-separated seal IDs"
-            variant="outlined"
-          />
+            {/* Technical Information */}
+            <Typography variant="h6" className="section-title">
+              ⚙️ Technical Information
+            </Typography>
+            <div className="form-section">
+              <TextField
+                fullWidth
+                label="Release Branch Name"
+                value={formData.releaseBranchName}
+                onChange={handleInputChange('releaseBranchName')}
+                required
+                variant="outlined"
+                className="form-field"
+              />
+              <TextField
+                fullWidth
+                label="Change Number"
+                value={formData.changeNumber}
+                onChange={handleInputChange('changeNumber')}
+                variant="outlined"
+                className="form-field"
+              />
+              <TextField
+                fullWidth
+                label="Implementation Plan Link"
+                value={formData.implementationPlanLink}
+                onChange={handleInputChange('implementationPlanLink')}
+                placeholder="https://..."
+                variant="outlined"
+                className="form-field"
+              />
+              <TextField
+                fullWidth
+                label="Release Scope Page Link"
+                value={formData.releaseScopePageLink}
+                onChange={handleInputChange('releaseScopePageLink')}
+                placeholder="https://..."
+                variant="outlined"
+                className="form-field"
+              />
+            </div>
 
-          <FormControl component="fieldset" className="radio-group-container">
-            <FormLabel component="legend" className="radio-label">
-              Client Impact
-            </FormLabel>
-            <RadioGroup
-              value={formData.clientImpact}
-              onChange={handleInputChange('clientImpact')}
-            >
-              <FormControlLabel value="yes" control={<Radio />} label="Yes" />
-              <FormControlLabel value="no" control={<Radio />} label="No" />
-            </RadioGroup>
-          </FormControl>
+            <Divider className="section-divider" />
 
-          <TextField
-            fullWidth
-            label="Release Branch Name"
-            value={formData.releaseBranchName}
-            onChange={handleInputChange('releaseBranchName')}
-            required
-            variant="outlined"
-          />
-
-          <TextField
-            fullWidth
-            label="Change Number"
-            value={formData.changeNumber}
-            onChange={handleInputChange('changeNumber')}
-            variant="outlined"
-          />
-
-          <TextField
-            fullWidth
-            label="Implementation Plan Link"
-            value={formData.implementationPlanLink}
-            onChange={handleInputChange('implementationPlanLink')}
-            placeholder="https://..."
-            variant="outlined"
-          />
-
-          <TextField
-            fullWidth
-            label="Release Scope Page Link"
-            value={formData.releaseScopePageLink}
-            onChange={handleInputChange('releaseScopePageLink')}
-            placeholder="https://..."
-            variant="outlined"
-          />
-
-          <TextField
-            fullWidth
-            label="Release Coordinator Name"
-            value={formData.releaseCoordinatorName}
-            onChange={handleInputChange('releaseCoordinatorName')}
-            required
-            variant="outlined"
-          />
-
-          <TextField
-            fullWidth
-            label="Release Supervisor Name"
-            value={formData.releaseSupervisorName}
-            onChange={handleInputChange('releaseSupervisorName')}
-            required
-            variant="outlined"
-          />
-        </div>
-      </DialogContent>
+            {/* Team Information */}
+            <Typography variant="h6" className="section-title">
+              👥 Team Information
+            </Typography>
+            <div className="form-section">
+              <TextField
+                fullWidth
+                label="Release Coordinator Name"
+                value={formData.releaseCoordinatorName}
+                onChange={handleInputChange('releaseCoordinatorName')}
+                required
+                variant="outlined"
+                className="form-field"
+              />
+              <TextField
+                fullWidth
+                label="Release Supervisor Name"
+                value={formData.releaseSupervisorName}
+                onChange={handleInputChange('releaseSupervisorName')}
+                required
+                variant="outlined"
+                className="form-field"
+              />
+            </div>
+          </div>
+        </DialogContent>
 
         <DialogActions className="dialog-actions">
           <Button
             onClick={handleClose}
             variant="outlined"
+            size="large"
             className="action-button cancel-button"
           >
             Cancel
@@ -229,9 +261,10 @@ const CreateReleaseDialog: React.FC<CreateReleaseDialogProps> = ({
           <Button
             onClick={handleSubmit}
             variant="contained"
+            size="large"
             className="action-button submit-button"
           >
-            Submit
+            Create Release
           </Button>
         </DialogActions>
       </Dialog>

@@ -15,7 +15,7 @@ import {
 } from '@mui/icons-material'
 import './ReleaseDetailView.scss'
 import OverviewTab from './OverviewTab'
-import ReleaseScopeTab from './ReleaseScopeTab'
+import ReleaseScope from './ReleaseScope'
 import ImplementationPlanTab from './ImplementationPlanTab'
 import JiraIntegrationTab from './JiraIntegrationTab'
 import ApplicationPipelinesTab from './ApplicationPipelinesTab'
@@ -540,16 +540,7 @@ const ReleaseDetailView: React.FC<ReleaseDetailViewProps> = ({
                 />
               </TabPanel>
               <TabPanel value={activeTab} index={1}>
-                <ReleaseScopeTab
-                  dialogOpen={dialogOpen}
-                  setDialogOpen={setDialogOpen}
-                  newEntry={newEntry}
-                  handleEntryChange={handleEntryChange}
-                  handleAddEntry={handleAddEntry}
-                  entries={entries}
-                  handleEditEntry={handleEditEntry}
-                  handleSyncToConfluence={handleSyncToConfluence}
-                />
+                <ReleaseScope />
               </TabPanel>
 
               <TabPanel value={activeTab} index={2}>

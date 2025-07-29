@@ -34,47 +34,25 @@ const Releases: React.FC<ReleasesProps> = ({ onReleaseClick }) => {
   }
 
   return (
-    <div>
+    <div className="releases-container">
       {/* Search and Create Section */}
-      <Box 
-        sx={{ 
-          display: 'flex', 
-          justifyContent: 'space-between', 
-          alignItems: 'center',
-          mb: 3,
-          gap: 2,
-          flexDirection: { xs: 'column', sm: 'row' }
-        }}
-      >
+      <div className="search-create-section">
         <TextField
           variant="outlined"
           placeholder="Search by Release ID, Release Name, or Fix Version"
           value={searchTerm}
           onChange={handleSearchChange}
-          sx={{ 
-            minWidth: { xs: '100%', sm: '400px' },
-            '& .MuiOutlinedInput-root': {
-              borderRadius: '12px',
-              backgroundColor: 'white',
-              '&:hover .MuiOutlinedInput-notchedOutline': {
-                borderColor: '#667eea',
-              },
-              '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                borderColor: '#667eea',
-              }
-            },
-            '& .MuiInputBase-input::placeholder': {
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis'
-            }
-          }}
+          className="search-field"
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
-                <SearchIcon sx={{ color: '#667eea' }} />
+                <SearchIcon className="search-icon" />
               </InputAdornment>
             ),
+            className: "search-input"
+          }}
+          inputProps={{
+            className: "search-placeholder"
           }}
         />
         
@@ -82,62 +60,27 @@ const Releases: React.FC<ReleasesProps> = ({ onReleaseClick }) => {
           variant="contained"
           startIcon={<AddIcon />}
           onClick={() => setCreateDialogOpen(true)}
-          sx={{
-            borderRadius: '12px',
-            textTransform: 'none',
-            fontWeight: 600,
-            px: 3,
-            py: 1.5,
-            minWidth: '160px',
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            boxShadow: '0 4px 15px rgba(102, 126, 234, 0.4)',
-            '&:hover': {
-              background: 'linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%)',
-              boxShadow: '0 6px 20px rgba(102, 126, 234, 0.6)',
-              transform: 'translateY(-2px)'
-            },
-            transition: 'all 0.3s ease'
-          }}
+          className="create-button"
         >
           Create Release
         </Button>
-      </Box>
+      </div>
 
       {/* Current Releases Accordion */}
-      <Accordion 
-        sx={{ 
-          mb: 2,
-          background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%)',
-          borderRadius: '16px',
-          boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
-          '&:before': {
-            display: 'none'
-          }
-        }}
-      >
+      <Accordion className="releases-accordion current-releases">
         <AccordionSummary 
-          expandIcon={<ExpandMoreIcon sx={{ color: '#667eea' }} />}
-          sx={{ 
-            '& .MuiAccordionSummary-content': {
-              margin: '20px 0'
-            }
-          }}
+          expandIcon={<ExpandMoreIcon className="accordion-expand-icon" />}
+          className="accordion-summary"
         >
           <Typography 
             variant="h5" 
-            sx={{ 
-              fontWeight: 700,
-              color: '#2c3e50',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 1
-            }}
+            className="accordion-title"
           >
             🚀 Current Releases Planned
           </Typography>
         </AccordionSummary>
-        <AccordionDetails sx={{ p: 3 }}>
-          <Grid container spacing={3}>
+        <AccordionDetails className="accordion-details">
+          <Grid container spacing={3} className="cards-grid">
             <Grid item xs={12} sm={6}>
               <ReleaseCard 
                 title="July Monthly" 
@@ -165,39 +108,20 @@ const Releases: React.FC<ReleasesProps> = ({ onReleaseClick }) => {
       </Accordion>
 
       {/* Past Releases Accordion */}
-      <Accordion 
-        sx={{ 
-          background: 'linear-gradient(135deg, rgba(76, 175, 80, 0.05) 0%, rgba(56, 142, 60, 0.05) 100%)',
-          borderRadius: '16px',
-          boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
-          '&:before': {
-            display: 'none'
-          }
-        }}
-      >
+      <Accordion className="releases-accordion past-releases">
         <AccordionSummary 
-          expandIcon={<ExpandMoreIcon sx={{ color: '#4caf50' }} />}
-          sx={{ 
-            '& .MuiAccordionSummary-content': {
-              margin: '20px 0'
-            }
-          }}
+          expandIcon={<ExpandMoreIcon className="accordion-expand-icon" />}
+          className="accordion-summary"
         >
           <Typography 
             variant="h5" 
-            sx={{ 
-              fontWeight: 700,
-              color: '#2c3e50',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 1
-            }}
+            className="accordion-title"
           >
             ✅ Past Releases
           </Typography>
         </AccordionSummary>
-        <AccordionDetails sx={{ p: 3 }}>
-          <Grid container spacing={3}>
+        <AccordionDetails className="accordion-details">
+          <Grid container spacing={3} className="cards-grid">
             <Grid item xs={12} sm={6}>
               <ReleaseCard 
                 title="June Monthly" 

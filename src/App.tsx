@@ -5,9 +5,11 @@ import {
   Container,
   Box
 } from '@mui/material'
+import { useState } from 'react'
 import Header from './components/Header'
 import HeroSection from './components/HeroSection'
 import Releases from './components/Releases'
+import ReleaseDetailView from './components/ReleaseDetailView'
 import './App.scss'
 
 // Create a professional theme
@@ -70,20 +72,47 @@ const theme = createTheme({
   },
 })
 
+interface SelectedRelease {
+  name: string
+  date: string
+  type: 'monthly' | 'offcycle'
+}
+
 function App() {
+  const [currentView, setCurrentView] = useState<'dashboard' | 'detail'>('dashboard')
+  const [selectedRelease, setSelectedRelease] = useState<SelectedRelease | null>(null)
+
+  const handleReleaseClick = (name: string, date: string, type: 'monthly' | 'offcycle') => {
+    setSelectedRelease({ name, date, type })
+    setCurrentView('detail')
+  }
+
+  const handleBackToDashboard = () => {
+    setCurrentView('dashboard')
+    setSelectedRelease(null)
+  }
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Box sx={{ 
-        minHeight: '100vh',
-        background: 'linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%)'
-      }}>
-        <Header />
-        <HeroSection />
-        <Container maxWidth="lg" sx={{ py: 8 }}>
-          <Releases />
-        </Container>
-      </Box>
+      {currentView === 'dashboard' ? (
+        <Box className="app-container">
+          <Header />
+          <HeroSection />
+          <Container maxWidth="lg" className="main-content">
+            <Releases onReleaseClick={handleReleaseClick} />
+          </Container>
+        </Box>
+      ) : (
+        selectedRelease && (
+          <ReleaseDetailView
+            releaseName={selectedRelease.name}
+            releaseDate={selectedRelease.date}
+            releaseType={selectedRelease.type}
+            onBack={handleBackToDashboard}
+          />
+        )
+      )}
     </ThemeProvider>
   )
 }

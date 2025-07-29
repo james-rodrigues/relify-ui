@@ -32,65 +32,36 @@ const ReleaseCard = ({ title, type, status, progress = 0, date, description, onT
   const getStatusIcon = () => {
     switch (status) {
       case 'planned':
-        return <ScheduleIcon sx={{ fontSize: '1.2rem' }} />
+        return <ScheduleIcon className="status-icon" />
       case 'completed':
-        return <CheckCircleIcon sx={{ fontSize: '1.2rem' }} />
+        return <CheckCircleIcon className="status-icon" />
       default:
-        return <PlayIcon sx={{ fontSize: '1.2rem' }} />
+        return <PlayIcon className="status-icon" />
     }
   }
 
+  const getCardClassName = () => {
+    const baseClass = 'release-card'
+    if (status === 'completed') {
+      return `${baseClass} release-card--completed`
+    } else if (status === 'planned') {
+      return type === 'monthly' 
+        ? `${baseClass} release-card--planned-monthly`
+        : `${baseClass} release-card--planned-offcycle`
+    }
+    return baseClass
+  }
+
   return (
-    <Card 
-      sx={{ 
-        height: '260px', // Reduced height for more compact design
-        minHeight: '260px',
-        background: `linear-gradient(135deg, ${getStatusColor()}15 0%, ${getStatusColor()}08 100%)`,
-        border: `2px solid ${getStatusColor()}30`,
-        borderRadius: '16px',
-        transition: 'all 0.3s ease',
-        position: 'relative',
-        overflow: 'hidden',
-        display: 'flex',
-        flexDirection: 'column',
-        '&:hover': {
-          transform: 'translateY(-8px)',
-          boxShadow: `0 20px 40px ${getStatusColor()}30`,
-          border: `2px solid ${getStatusColor()}60`,
-        },
-        '&::before': {
-          content: '""',
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          height: '4px',
-          background: `linear-gradient(90deg, ${getStatusColor()}, ${getStatusColor()}80)`,
-        }
-      }}
-    >
-      <CardContent sx={{ p: 3, height: '100%', display: 'flex', flexDirection: 'column' }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
+    <Card className={getCardClassName()}>
+      <CardContent className="card-content">
+        <Box className="header-section">
           <Link
             component="button"
             variant="h6"
             onClick={onTitleClick}
-            sx={{ 
-              fontWeight: 700,
-              color: '#2c3e50',
-              fontSize: '1.1rem',
-              textDecoration: 'none',
-              cursor: 'pointer',
-              '&:hover': {
-                color: getStatusColor(),
-                textDecoration: 'underline'
-              },
-              background: 'none',
-              border: 'none',
-              padding: 0,
-              textAlign: 'left',
-              fontFamily: 'inherit'
-            }}
+            className="title-link"
+            style={{ color: onTitleClick ? undefined : '#2c3e50' }}
           >
             {title}
           </Link>
@@ -99,36 +70,31 @@ const ReleaseCard = ({ title, type, status, progress = 0, date, description, onT
             icon={getStatusIcon()}
             label={status === 'planned' ? 'Planned' : 'Completed'}
             size="small"
-            sx={{
+            className="status-chip"
+            style={{
               backgroundColor: getStatusColor(),
-              color: 'white',
-              fontWeight: 600,
-              fontSize: '0.75rem',
-              '& .MuiChip-icon': {
-                color: 'white'
-              }
+              color: 'white'
             }}
           />
         </Box>
 
-        <Box sx={{ mb: 2 }}>
+        <Box className="type-section">
           <Chip
             label={type === 'monthly' ? '📅 Monthly' : '⚡ Off-cycle'}
             size="small"
             variant="outlined"
-            sx={{
+            className="type-chip"
+            style={{
               borderColor: getStatusColor(),
-              color: getStatusColor(),
-              fontWeight: 500,
-              mb: 1
+              color: getStatusColor()
             }}
           />
         </Box>
 
         {date && (
-          <Box sx={{ display: 'flex', alignItems: 'center', mb: 2, color: '#666' }}>
-            <CalendarIcon sx={{ fontSize: '1rem', mr: 1 }} />
-            <Typography variant="body2" sx={{ fontWeight: 500 }}>
+          <Box className="date-section">
+            <CalendarIcon className="date-icon" />
+            <Typography variant="body2" className="date-text">
               {date}
             </Typography>
           </Box>
@@ -138,36 +104,32 @@ const ReleaseCard = ({ title, type, status, progress = 0, date, description, onT
           <Typography 
             variant="body2" 
             color="text.secondary" 
-            sx={{ 
-              mb: 2,
-              flex: 1,
-              lineHeight: 1.5
-            }}
+            className="description-section"
           >
             {description}
           </Typography>
         )}
 
         {status === 'planned' && progress > 0 && (
-          <Box sx={{ mt: 'auto' }}>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-              <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 500 }}>
+          <Box className="progress-section">
+            <Box className="progress-header">
+              <Typography variant="body2" color="text.secondary" className="progress-label">
                 Progress
               </Typography>
-              <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 600 }}>
+              <Typography variant="body2" color="text.secondary" className="progress-value">
                 {progress}%
               </Typography>
             </Box>
             <LinearProgress 
               variant="determinate" 
               value={progress} 
+              className="progress-bar"
+              style={{
+                backgroundColor: `${getStatusColor()}20`
+              }}
               sx={{
-                height: 6,
-                borderRadius: 3,
-                backgroundColor: `${getStatusColor()}20`,
                 '& .MuiLinearProgress-bar': {
-                  background: `linear-gradient(90deg, ${getStatusColor()}, ${getStatusColor()}80)`,
-                  borderRadius: 3,
+                  background: `linear-gradient(90deg, ${getStatusColor()}, ${getStatusColor()}80)`
                 }
               }}
             />

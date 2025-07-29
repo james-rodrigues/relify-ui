@@ -90,38 +90,27 @@ const CreateReleaseDialog: React.FC<CreateReleaseDialogProps> = ({
   }
 
   return (
-    <Dialog
-      open={open}
-      onClose={handleClose}
-      maxWidth="md"
-      fullWidth
-      PaperProps={{
-        sx: {
-          borderRadius: '16px',
-          boxShadow: '0 20px 60px rgba(0,0,0,0.15)'
-        }
-      }}
-    >
-      <DialogTitle
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          borderBottom: '1px solid #e9ecef',
-          pb: 2,
-          mb: 2
+    <div className="create-release-dialog">
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        maxWidth="md"
+        fullWidth
+        PaperProps={{
+          className: 'dialog-paper'
         }}
       >
-        <Typography variant="h5" sx={{ fontWeight: 700, color: '#2c3e50' }}>
-          🚀 Create New Release
-        </Typography>
-        <IconButton onClick={handleClose} size="small">
-          <CloseIcon />
-        </IconButton>
-      </DialogTitle>
+        <DialogTitle className="dialog-title">
+          <Typography variant="h5" className="title-text">
+            🚀 Create New Release
+          </Typography>
+          <IconButton onClick={handleClose} size="small">
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
 
-      <DialogContent sx={{ px: 3 }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        <DialogContent className="dialog-content">
+          <div className="form-container">
           <TextField
             fullWidth
             label="Release Name"
@@ -162,8 +151,8 @@ const CreateReleaseDialog: React.FC<CreateReleaseDialogProps> = ({
             variant="outlined"
           />
 
-          <FormControl component="fieldset">
-            <FormLabel component="legend" sx={{ fontWeight: 600, color: '#2c3e50', mb: 1 }}>
+          <FormControl component="fieldset" className="radio-group-container">
+            <FormLabel component="legend" className="radio-label">
               Client Impact
             </FormLabel>
             <RadioGroup
@@ -230,37 +219,24 @@ const CreateReleaseDialog: React.FC<CreateReleaseDialogProps> = ({
         </div>
       </DialogContent>
 
-      <DialogActions sx={{ p: 3, pt: 0 }}>
-        <Button
-          onClick={handleClose}
-          variant="outlined"
-          sx={{
-            borderRadius: '8px',
-            textTransform: 'none',
-            fontWeight: 600,
-            px: 3
-          }}
-        >
-          Cancel
-        </Button>
-        <Button
-          onClick={handleSubmit}
-          variant="contained"
-          sx={{
-            borderRadius: '8px',
-            textTransform: 'none',
-            fontWeight: 600,
-            px: 3,
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            '&:hover': {
-              background: 'linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%)',
-            }
-          }}
-        >
-          Submit
-        </Button>
-      </DialogActions>
-    </Dialog>
+        <DialogActions className="dialog-actions">
+          <Button
+            onClick={handleClose}
+            variant="outlined"
+            className="action-button cancel-button"
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={handleSubmit}
+            variant="contained"
+            className="action-button submit-button"
+          >
+            Submit
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
   )
 }
 

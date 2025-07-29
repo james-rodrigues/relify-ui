@@ -16,7 +16,11 @@ import ReleaseCard from './ReleaseCard'
 import CreateReleaseDialog, { type ReleaseFormData } from './CreateReleaseDialog'
 import './Releases.scss'
 
-const Releases = () => {
+interface ReleasesProps {
+  onReleaseClick: (name: string, date: string, type: 'monthly' | 'offcycle') => void
+}
+
+const Releases: React.FC<ReleasesProps> = ({ onReleaseClick }) => {
   const [searchTerm, setSearchTerm] = useState('')
   const [createDialogOpen, setCreateDialogOpen] = useState(false)
 
@@ -142,7 +146,7 @@ const Releases = () => {
                 progress={65} 
                 date="July 30, 2025" 
                 description="Monthly release with new features, bug fixes, and performance improvements." 
-                onTitleClick={() => console.log('Navigate to July Monthly details')}
+                onTitleClick={() => onReleaseClick('July Monthly', 'July 30, 2025', 'monthly')}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -153,7 +157,7 @@ const Releases = () => {
                 progress={30} 
                 date="July 15, 2025" 
                 description="Critical hotfix release for security vulnerabilities and urgent issues." 
-                onTitleClick={() => console.log('Navigate to July Offcycle details')}
+                onTitleClick={() => onReleaseClick('July Offcycle', 'July 15, 2025', 'offcycle')}
               />
             </Grid>
           </Grid>
@@ -201,7 +205,7 @@ const Releases = () => {
                 status="completed" 
                 date="June 30, 2025" 
                 description="Major feature release with enhanced UI, new integrations, and performance optimizations." 
-                onTitleClick={() => console.log('Navigate to June Monthly details')}
+                onTitleClick={() => onReleaseClick('June Monthly', 'June 30, 2025', 'monthly')}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -211,7 +215,7 @@ const Releases = () => {
                 status="completed" 
                 date="June 20, 2025" 
                 description="Emergency security patch and critical bug fixes deployed successfully." 
-                onTitleClick={() => console.log('Navigate to June Offcycle details')}
+                onTitleClick={() => onReleaseClick('June Offcycle', 'June 20, 2025', 'offcycle')}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -221,7 +225,7 @@ const Releases = () => {
                 status="completed" 
                 date="May 31, 2025" 
                 description="Comprehensive release with new dashboard, analytics features, and mobile support." 
-                onTitleClick={() => console.log('Navigate to May Monthly details')}
+                onTitleClick={() => onReleaseClick('May Monthly', 'May 31, 2025', 'monthly')}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -231,7 +235,7 @@ const Releases = () => {
                 status="completed" 
                 date="May 15, 2025" 
                 description="Quick deployment for API improvements and database optimizations." 
-                onTitleClick={() => console.log('Navigate to May Offcycle details')}
+                onTitleClick={() => onReleaseClick('May Offcycle', 'May 15, 2025', 'offcycle')}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -241,7 +245,7 @@ const Releases = () => {
                 status="completed" 
                 date="April 30, 2025" 
                 description="Spring release featuring redesigned interface and enhanced automation capabilities." 
-                onTitleClick={() => console.log('Navigate to April Monthly details')}
+                onTitleClick={() => onReleaseClick('April Monthly', 'April 30, 2025', 'monthly')}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -251,7 +255,7 @@ const Releases = () => {
                 status="completed" 
                 date="April 10, 2025" 
                 description="Hotfix release addressing user-reported issues and performance bottlenecks." 
-                onTitleClick={() => console.log('Navigate to April Offcycle details')}
+                onTitleClick={() => onReleaseClick('April Offcycle', 'April 10, 2025', 'offcycle')}
               />
             </Grid>
           </Grid>

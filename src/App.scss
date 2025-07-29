@@ -1,3 +1,12 @@
+.app-container {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);
+
+  .main-content {
+    padding: 64px 0;
+  }
+}
+
 // Enhanced styles for the Relify UI
 
 * {

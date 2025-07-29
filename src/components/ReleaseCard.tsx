@@ -41,13 +41,16 @@ const ReleaseCard = ({ title, type, status, progress = 0, date, description }: R
   return (
     <Card 
       sx={{ 
-        height: '100%',
+        height: '320px', // Fixed height for consistent sizing
+        minHeight: '320px',
         background: `linear-gradient(135deg, ${getStatusColor()}15 0%, ${getStatusColor()}08 100%)`,
         border: `2px solid ${getStatusColor()}30`,
         borderRadius: '16px',
         transition: 'all 0.3s ease',
         position: 'relative',
         overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
         '&:hover': {
           transform: 'translateY(-8px)',
           boxShadow: `0 20px 40px ${getStatusColor()}30`,

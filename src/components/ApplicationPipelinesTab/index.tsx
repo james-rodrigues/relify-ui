@@ -373,15 +373,6 @@ const Pipelines: React.FC<ApplicationPipelinesTabProps> = ({
                 textTransform: 'uppercase',
                 letterSpacing: '0.5px',
               }}>
-                Sr. No
-              </TableCell>
-              <TableCell sx={{ 
-                fontWeight: 'bold', 
-                background: 'linear-gradient(135deg, #6495ED 0%, #9370DB 100%)', 
-                color: 'white',
-                textTransform: 'uppercase',
-                letterSpacing: '0.5px',
-              }}>
                 Repo Name
               </TableCell>
               <TableCell sx={{ 
@@ -468,9 +459,6 @@ const Pipelines: React.FC<ApplicationPipelinesTabProps> = ({
                     style={{ cursor: 'pointer', color: '#6495ED' }} 
                     onClick={() => handleEditClick(index)}
                   />
-                </TableCell>
-                <TableCell>
-                  {index + 1}
                 </TableCell>
                 <TableCell sx={{ fontWeight: 500 }}>{entry.repoName}</TableCell>
                 <TableCell sx={{ fontWeight: 500 }}>{entry.repoType}</TableCell>

@@ -1,0 +1,141 @@
+// Universal animation disabler for problematic areas
+// Using SCSS syntax with variables and nesting
+
+// Variables for common values
+$no-transform: none !important;
+$bg-transition: background-color 0.15s ease !important;
+
+// HIGHEST PRIORITY: Completely disable ALL animations and transitions in header
+body .MuiAppBar-root {
+  &,
+  *,
+  *:before,
+  *:after {
+    animation: $no-transform;
+    transition: $no-transform;
+    transform: $no-transform;
+    will-change: auto !important;
+    -webkit-transform: $no-transform;
+    -moz-transform: $no-transform;
+    -ms-transform: $no-transform;
+    -o-transform: $no-transform;
+  }
+
+  * {
+    &:hover,
+    &:focus,
+    &:active {
+      animation: $no-transform;
+      transition: $no-transform;
+      transform: $no-transform;
+      -webkit-transform: $no-transform;
+      -moz-transform: $no-transform;
+      -ms-transform: $no-transform;
+      -o-transform: $no-transform;
+    }
+  }
+
+  // Allow only specific safe transitions for buttons in header
+  .MuiButton-root {
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease !important;
+    transform: $no-transform;
+
+    &:hover {
+      transform: $no-transform;
+      -webkit-transform: $no-transform;
+      -moz-transform: $no-transform;
+      -ms-transform: $no-transform;
+      -o-transform: $no-transform;
+    }
+  }
+}
+
+// Completely disable ALL animations and transitions in tables using SCSS nesting
+.MuiTable-root {
+  &,
+  *,
+  *:before,
+  *:after {
+    animation: $no-transform;
+    transition: $bg-transition;
+    transform: $no-transform;
+    will-change: auto !important;
+    -webkit-transform: $no-transform;
+    -moz-transform: $no-transform;
+    -ms-transform: $no-transform;
+    -o-transform: $no-transform;
+  }
+
+  * {
+    &:hover,
+    &:focus,
+    &:active {
+      animation: $no-transform;
+      transform: $no-transform;
+      box-shadow: none !important;
+      -webkit-transform: $no-transform;
+      -moz-transform: $no-transform;
+      -ms-transform: $no-transform;
+      -o-transform: $no-transform;
+    }
+  }
+}
+
+// Target specific tab components with table animations
+.jira-content,
+.pipelines-content,
+.evidence-content {
+  .MuiTableRow-root {
+    transition: $bg-transition;
+    transform: $no-transform;
+    
+    &:hover {
+      transform: $no-transform;
+      -webkit-transform: $no-transform;
+      -moz-transform: $no-transform;
+      -ms-transform: $no-transform;
+      -o-transform: $no-transform;
+      box-shadow: none !important;
+      // Allow only background color change
+      background-color: rgba(102, 126, 234, 0.05) !important;
+    }
+  }
+
+  // Disable button animations in tables
+  .MuiButton-root {
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease !important;
+    transform: $no-transform;
+    
+    &:hover {
+      transform: $no-transform;
+      -webkit-transform: $no-transform;
+      -moz-transform: $no-transform;
+      -ms-transform: $no-transform;
+      -o-transform: $no-transform;
+    }
+  }
+}
+
+/* Disable ripple effects completely */
+.MuiTouchRipple-root,
+.MuiButtonBase-root .MuiTouchRipple-root {
+  display: none !important;
+}
+
+/* Disable any webkit transforms that might cause movement */
+.MuiAppBar-root *,
+.MuiTable-root * {
+  -webkit-transform: none !important;
+  -moz-transform: none !important;
+  -ms-transform: none !important;
+  -o-transform: none !important;
+}
+
+/* Ensure no transitions on pseudo-elements */
+.MuiAppBar-root *:before,
+.MuiAppBar-root *:after,
+.MuiTable-root *:before,
+.MuiTable-root *:after {
+  transition: none !important;
+  transform: none !important;
+}

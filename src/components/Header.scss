@@ -40,18 +40,18 @@
         display: none; // Hide on mobile - could add mobile menu later
       }
 
-      .nav-link {
-        color: #2c3e50;
-        text-decoration: none;
-        font-weight: 500;
-        padding: 8px 16px;
-        border-radius: 8px;
-        transition: all 0.3s ease;
+        .nav-link {
+          color: #2c3e50;
+          text-decoration: none;
+          font-weight: 500;
+          padding: 8px 16px;
+          border-radius: 8px;
+          transition: background-color 0.2s ease, color 0.2s ease;
 
-        &:hover {
-          background-color: rgba(102, 126, 234, 0.1);
-          color: #667eea;
-        }
+          &:hover {
+            background-color: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+          }
 
         &.active {
           background-color: rgba(102, 126, 234, 0.15);

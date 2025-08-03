@@ -341,7 +341,7 @@
                 }
 
                 .table-row {
-                  transition: all 0.2s ease;
+                  transition: background-color 0.15s ease;
 
                   &:hover {
                     background-color: rgba(102, 126, 234, 0.05);
@@ -514,12 +514,10 @@
               }
 
               .MuiTableRow-root {
-                transition: all 0.2s ease;
+                transition: background-color 0.15s ease;
 
                 &:hover {
                   background-color: rgba(102, 126, 234, 0.08);
-                  transform: translateY(-1px);
-                  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.15);
                 }
 
                 &:nth-of-type(even) {

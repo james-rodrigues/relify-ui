@@ -11,6 +11,7 @@ import HeroSection from './components/HeroSection'
 import Releases from './components/Releases'
 import ReleaseDetailView from './components/ReleaseDetailView'
 import './App.scss'
+import './components/NoAnimations.scss'
 
 // Create a professional theme
 const theme = createTheme({
@@ -57,6 +58,11 @@ const theme = createTheme({
           backgroundColor: '#ffffff',
           boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
           borderBottom: '1px solid #e9ecef',
+          transition: 'none !important',
+          transform: 'none !important',
+          '&:hover': {
+            transform: 'none !important',
+          },
         },
       },
     },
@@ -66,6 +72,59 @@ const theme = createTheme({
           textTransform: 'none',
           fontWeight: 600,
           borderRadius: '8px',
+          transition: 'background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease !important',
+          transform: 'none !important',
+          '&:hover': {
+            transform: 'none !important',
+          },
+          // Disable ripple effect
+          '& .MuiTouchRipple-root': {
+            display: 'none',
+          },
+        },
+      },
+    },
+    MuiToolbar: {
+      styleOverrides: {
+        root: {
+          transition: 'none !important',
+          transform: 'none !important',
+          '&:hover': {
+            transform: 'none !important',
+          },
+        },
+      },
+    },
+    MuiBox: {
+      styleOverrides: {
+        root: {
+          transition: 'none !important',
+          transform: 'none !important',
+          '&:hover': {
+            transform: 'none !important',
+          },
+        },
+      },
+    },
+    MuiTypography: {
+      styleOverrides: {
+        root: {
+          transition: 'none !important',
+          transform: 'none !important',
+          '&:hover': {
+            transform: 'none !important',
+          },
+        },
+      },
+    },
+    MuiSvgIcon: {
+      styleOverrides: {
+        root: {
+          transition: 'none !important',
+          transform: 'none !important',
+          '&:hover': {
+            transform: 'none !important',
+          },
         },
       },
     },

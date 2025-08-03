@@ -189,7 +189,9 @@ $animation-duration: 20s;
   
   // Prevent any hover effects that might cause movement
   *, 
-  .MuiTypography-root {
+  .MuiTypography-root,
+  .MuiToolbar-root,
+  .MuiBox-root {
     transform: none !important;
     
     &:hover {
@@ -200,15 +202,25 @@ $animation-duration: 20s;
   // Special handling for buttons in header
   .MuiButton-root {
     transform: none !important;
-    transition: background-color 0.2s ease, color 0.2s ease !important;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease !important;
     
     &:hover {
       transform: none !important;
     }
   }
   
+  // Ensure AppBar itself doesn't move
   &:hover {
     transform: none !important;
+  }
+  
+  // Target Material-UI components that might have transforms
+  .MuiSvgIcon-root {
+    transform: none !important;
+    
+    &:hover {
+      transform: none !important;
+    }
   }
 }
 
@@ -320,12 +332,13 @@ footer {
   }
 }
 
-// Feature icons animation
+// Feature icons animation (disabled for header stability)
 .MuiSvgIcon-root {
-  transition: transform 0.3s ease;
+  transition: none !important;
+  transform: none !important;
   
   &:hover {
-    transform: scale(1.1);
+    transform: none !important;
   }
 }
 
@@ -362,6 +375,47 @@ footer {
     
     &:hover {
       box-shadow: 0 8px 20px rgba(25, 118, 210, 0.4);
+    }
+  }
+}
+
+// Table specific no-animation rules
+.MuiTableHead-root,
+.MuiTableRow-head,
+.MuiTableCell-head {
+  transform: none !important;
+  
+  &:hover {
+    transform: none !important;
+  }
+  
+  // Ensure only subtle background changes on hover
+  transition: background-color 0.15s ease !important;
+}
+
+// Prevent any table row movement animations
+.MuiTableRow-root {
+  transition: background-color 0.15s ease !important;
+  
+  &:hover {
+    transform: none !important;
+    // Remove any box-shadow animations that might cause visual jumping
+    box-shadow: none !important;
+  }
+}
+
+// Specifically disable ripple effects globally
+.MuiTouchRipple-root {
+  display: none !important;
+}
+
+// Ensure header stays completely still
+.MuiAppBar-root {
+  * {
+    transform: none !important;
+    
+    &:hover {
+      transform: none !important;
     }
   }
 }

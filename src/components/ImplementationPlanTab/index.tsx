@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import implementationPlanData from '../../mockData/implementationPlanData.json';
 import {
   Typography,
   Button,
@@ -53,28 +54,7 @@ const ImplementationPlanTab: React.FC<ImplementationPlanTabProps> = ({
     pocNames: ''
   });
   const [editEntry, setEditEntry] = useState<ImplementationEntry | null>(null);
-  const [entries, setEntries] = useState<ImplementationEntry[]>([
-    {
-      repoName: 'user-service',
-      backoutBranchName: 'user-service-backout',
-      pocNames: 'John Doe, Jane Smith',
-      preImplementationSteps: 'Review requirements and design specification. Verify dependencies and environment readiness.',
-      implementationSteps: 'Deploy new authentication features on user-service. Update database schemas and configurations.',
-      postValidationSteps: 'Confirm successful login and logout operations. Run regression tests on authentication flows.',
-      backoutSteps: 'Revert authentication changes on user-service. Restore previous database schemas.',
-      backoutValidationSteps: 'Ensure previous authentication is restored. Verify all user flows work as before.'
-    },
-    {
-      repoName: 'api-gateway',
-      backoutBranchName: 'api-gateway-backout',
-      pocNames: 'Mike Wilson, Sarah Connor',
-      preImplementationSteps: 'Check rate limiting configurations. Verify load balancer settings.',
-      implementationSteps: 'Deploy enhanced security features. Update rate limiting rules and monitoring.',
-      postValidationSteps: 'Test API endpoints under load. Verify security headers and rate limiting.',
-      backoutSteps: 'Revert to previous gateway configuration. Restore original rate limiting rules.',
-      backoutValidationSteps: 'Confirm all API endpoints respond correctly. Verify rate limiting works as expected.'
-    }
-  ]);
+  const [entries, setEntries] = useState<ImplementationEntry[]>(implementationPlanData as ImplementationEntry[]);
 
   const handleEntryChange = (field: keyof typeof newEntry, value: string) => {
     setNewEntry(prev => ({ ...prev, [field]: value }));

@@ -13,6 +13,8 @@ import {
 import { 
   ArrowBack as ArrowBackIcon
 } from '@mui/icons-material'
+import overviewData from '../../mockData/overviewData.json'
+import releaseScopeData from '../../mockData/releaseScopeData.json'
 import './styles.scss'
 import OverviewTab from '../OverviewTab'
 import ReleaseScope from '../ReleaseScope'
@@ -115,36 +117,7 @@ const generateSnowLink = (fixVersion: string): string => {
 }
 
 const getMockActivityTimeline = (): ActivityTimelineItem[] => {
-  return [
-    {
-      id: '1',
-      activityName: 'Code Review and Testing',
-      activityDueDate: '2024-01-15',
-      status: 'completed',
-      assignee: 'John Doe'
-    },
-    {
-      id: '2', 
-      activityName: 'Security Assessment',
-      activityDueDate: '2024-01-20',
-      status: 'pending',
-      assignee: 'Jane Smith'
-    },
-    {
-      id: '3',
-      activityName: 'Production Deployment',
-      activityDueDate: '2024-01-18',
-      status: 'overdue',
-      assignee: 'Bob Johnson'
-    },
-    {
-      id: '4',
-      activityName: 'Post Deployment Validation',
-      activityDueDate: '2024-01-25',
-      status: 'pending',
-      assignee: 'Alice Brown'
-    }
-  ]
+  return overviewData.activityTimeline as ActivityTimelineItem[]
 }
 
 const saveReleaseNotes = async (_releaseName: string, _notes: string): Promise<ApiResponse> => {
@@ -186,8 +159,8 @@ const ReleaseDetailView: React.FC<ReleaseDetailViewProps> = ({
   const [activeTab, setActiveTab] = useState(0)
   const [isNotesEditMode, setIsNotesEditMode] = useState(false)
   const [isMetricsEditMode, setIsMetricsEditMode] = useState(false)
-  const [releaseNotes, setReleaseNotes] = useState('• Implement new features for enhanced user experience\n• Fix critical bugs and performance issues\n• Update security protocols and dependencies')
-  const [keyMetrics, setKeyMetrics] = useState('• Features: 12 new features\n• Bug Fixes: 8 critical issues resolved\n• Performance: 15% improvement expected')
+  const [releaseNotes, setReleaseNotes] = useState(overviewData.releaseNotes)
+  const [keyMetrics, setKeyMetrics] = useState(overviewData.keyMetrics)
   const [isSending, setIsSending] = useState(false)
   const [snackbarOpen, setSnackbarOpen] = useState(false)
   const [snackbarMessage, setSnackbarMessage] = useState('')
@@ -197,58 +170,7 @@ const ReleaseDetailView: React.FC<ReleaseDetailViewProps> = ({
   
   // Release Scope table state
   const [dialogOpen, setDialogOpen] = useState(false)
-  const [entries, setEntries] = useState<ReleaseScopeEntry[]>([
-    {
-      changeRequestNumber: 'CR-001',
-      sealId: '123-seal',
-      teamName: 'Dev Team',
-      keyDevLead: 'John Smith',
-      productContact: 'Anna Taylor',
-      sreKTDone: 'Yes',
-      runbookUpdateDone: 'No',
-      drmComments: 'Check DRM compliance',
-      snowflakeImpact: 'Medium Impact',
-      techLead: 'Julie Brown',
-      initiativeLink: 'https://jira.company.com/browse/INIT-001',
-      epicLink: 'https://jira.company.com/browse/EPIC-101',
-      storyLink: 'https://jira.company.com/browse/STORY-202',
-      personOnCallPrimary: 'Alex Johnson',
-      personOnCallSecondary: 'Maria Garcia',
-      changesInvolved: 'API Updates, Database Schema Changes',
-      servicesToBeDeployed: 'UserService, AuthService, NotificationService',
-      upstreamDownstreamImpact: 'No',
-      istTested: 'Yes',
-      uatTested: 'Yes',
-      relatedIncidents: 'INC-2024-001, INC-2024-007',
-      releaseBranchName: 'release/v2.1.0',
-      manualTaskComments: 'Please review manual tasks prior to deployment. Ensure all config files are updated.'
-    },
-    {
-      changeRequestNumber: 'CR-002',
-      sealId: '456-seal',
-      teamName: 'QA Team',
-      keyDevLead: 'Mike Johnson',
-      productContact: 'Sarah Wilson',
-      sreKTDone: 'No',
-      runbookUpdateDone: 'Yes',
-      drmComments: 'DRM approved with conditions',
-      snowflakeImpact: 'Low Impact',
-      techLead: 'Robert Davis',
-      initiativeLink: 'https://jira.company.com/browse/INIT-002',
-      epicLink: 'https://jira.company.com/browse/EPIC-102',
-      storyLink: 'https://jira.company.com/browse/STORY-203',
-      personOnCallPrimary: 'David Chen',
-      personOnCallSecondary: 'Linda Rodriguez',
-      changesInvolved: 'UI Improvements, Performance Optimizations',
-      servicesToBeDeployed: 'FrontendService, CacheService',
-      upstreamDownstreamImpact: 'Yes',
-      istTested: 'N/A',
-      uatTested: 'Yes',
-      relatedIncidents: 'INC-2024-003',
-      releaseBranchName: 'release/v2.1.1',
-      manualTaskComments: 'Additional testing required for performance improvements. Monitor resource usage post-deployment.'
-    }
-  ])
+  const [entries, setEntries] = useState<ReleaseScopeEntry[]>(releaseScopeData as ReleaseScopeEntry[])
   const [editingIndex, setEditingIndex] = useState<number | null>(null)
   const [newEntry, setNewEntry] = useState<ReleaseScopeEntry>({
     changeRequestNumber: '',

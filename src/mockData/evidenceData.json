@@ -1,0 +1,34 @@
+[
+  {
+    "task": "user-service deployment",
+    "taskInstruction": "Deploy the latest version of user-service to production environment. Ensure all health checks pass and monitor for any issues during the deployment process.",
+    "evidenceLink": "https://evidence.company.com/files/user-service-deploy-logs.pdf",
+    "evidenceFileName": "user-service-deploy-logs.pdf",
+    "assignedGroup": "Ops Team",
+    "pointOfContact": "john.doe@company.com"
+  },
+  {
+    "task": "Frontend application testing",
+    "taskInstruction": "Perform comprehensive end-to-end testing of the frontend application including all new features, regression testing, and user acceptance criteria validation.",
+    "evidenceLink": "https://evidence.company.com/files/frontend-test-results.zip",
+    "evidenceFileName": "frontend-test-results.zip",
+    "assignedGroup": "L2 Team",
+    "pointOfContact": "jane.smith@company.com"
+  },
+  {
+    "task": "Database migration validation",
+    "taskInstruction": "Validate that all database migrations have been applied correctly and verify data integrity. Run performance tests on critical queries.",
+    "evidenceLink": "https://evidence.company.com/files/db-migration-report.json",
+    "evidenceFileName": "db-migration-report.json",
+    "assignedGroup": "AD Team",
+    "pointOfContact": "mike.wilson@company.com"
+  },
+  {
+    "task": "Product feature verification",
+    "taskInstruction": "Verify that all new product features are working as expected and meet the acceptance criteria defined in the product requirements.",
+    "evidenceLink": "https://evidence.company.com/files/feature-verification.docx",
+    "evidenceFileName": "feature-verification.docx",
+    "assignedGroup": "Product Team",
+    "pointOfContact": "sarah.johnson@company.com"
+  }
+]

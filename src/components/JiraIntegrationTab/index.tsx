@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import jiraIntegrationData from '../../mockData/jiraIntegrationData.json';
 import {
   Typography,
   Button,
@@ -45,44 +46,7 @@ const JiraIntegrationTab: React.FC<JiraIntegrationTabProps> = ({
     jiraId: '',
     comments: ''
   });
-  const [entries, setEntries] = useState<JiraEntry[]>([
-    {
-      jiraId: 'PROJ-1234',
-      fixVersion: 'v2.1.0',
-      changeNumber: 'CHG0012345',
-      testCaseJiraId: 'TEST-5678',
-      repositoriesInvolved: 'user-service, api-gateway',
-      status: 'Draft',
-      jetLink: 'https://jet.company.com/job/PROJ-1234',
-      spinnakerLink: 'https://spinnaker.company.com/applications/app/executions',
-      changeType: 'Feature Enhancement',
-      comments: 'New authentication flow implementation'
-    },
-    {
-      jiraId: 'PROJ-5678',
-      fixVersion: 'v2.1.0',
-      changeNumber: 'CHG0012346',
-      testCaseJiraId: 'TEST-9012',
-      repositoriesInvolved: 'frontend-app',
-      status: 'Ready',
-      jetLink: 'https://jet.company.com/job/PROJ-5678',
-      spinnakerLink: 'https://spinnaker.company.com/applications/frontend/executions',
-      changeType: 'Defect',
-      comments: 'Fix dashboard loading issue'
-    },
-    {
-      jiraId: 'PROJ-9012',
-      fixVersion: 'v2.1.0',
-      changeNumber: 'CHG0012347',
-      testCaseJiraId: 'TEST-3456',
-      repositoriesInvolved: 'infrastructure',
-      status: 'Activated',
-      jetLink: 'https://jet.company.com/job/PROJ-9012',
-      spinnakerLink: 'https://spinnaker.company.com/applications/infra/executions',
-      changeType: 'Infra/Config Updates',
-      comments: 'Kubernetes cluster configuration updates'
-    }
-  ]);
+  const [entries, setEntries] = useState<JiraEntry[]>(jiraIntegrationData as JiraEntry[]);
 
   const handleEntryChange = (field: keyof typeof newEntry, value: string) => {
     setNewEntry(prev => ({ ...prev, [field]: value }));

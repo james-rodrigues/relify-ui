@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import applicationPipelinesData from '../../mockData/applicationPipelinesData.json';
 import {
   Typography,
   Button,
@@ -47,48 +48,7 @@ const Pipelines: React.FC<ApplicationPipelinesTabProps> = ({
     comments: ''
   });
   const [editEntry, setEditEntry] = useState<ApplicationPipelinesEntry | null>(null);
-  const [entries, setEntries] = useState<ApplicationPipelinesEntry[]>([
-    {
-      repoName: 'user-service',
-      comments: 'Authentication and user management updates',
-      repoType: 'Backend',
-      releaseBranchLink: 'https://github.com/company/user-service/compare/release/v2.1.0',
-      draftPRLink: 'https://github.com/company/user-service/pull/142',
-      environment: 'Production',
-      jetLink: 'https://jet.company.com/user-service/deploy',
-      deploymentLink: 'https://deploy.company.com/user-service/latest'
-    },
-    {
-      repoName: 'frontend-app',
-      comments: 'New dashboard features and UI improvements',
-      repoType: 'UI',
-      releaseBranchLink: 'https://github.com/company/frontend-app/compare/release/v1.8.0',
-      draftPRLink: 'https://github.com/company/frontend-app/pull/89',
-      environment: 'Staging',
-      jetLink: 'https://jet.company.com/frontend-app/deploy',
-      deploymentLink: 'https://deploy.company.com/frontend-app/latest'
-    },
-    {
-      repoName: 'api-gateway',
-      comments: 'Rate limiting and security enhancements',
-      repoType: 'Backend',
-      releaseBranchLink: 'https://github.com/company/api-gateway/compare/release/v3.2.1',
-      draftPRLink: 'https://github.com/company/api-gateway/pull/67',
-      environment: 'Production',
-      jetLink: 'https://jet.company.com/api-gateway/deploy',
-      deploymentLink: 'https://deploy.company.com/api-gateway/latest'
-    },
-    {
-      repoName: 'infrastructure',
-      comments: 'Kubernetes deployment configs and monitoring',
-      repoType: 'Infra',
-      releaseBranchLink: 'https://github.com/company/infrastructure/compare/release/v1.5.0',
-      draftPRLink: 'https://github.com/company/infrastructure/pull/23',
-      environment: 'Development',
-      jetLink: 'https://jet.company.com/infrastructure/deploy',
-      deploymentLink: 'https://deploy.company.com/infrastructure/latest'
-    }
-  ]);
+  const [entries, setEntries] = useState<ApplicationPipelinesEntry[]>(applicationPipelinesData as ApplicationPipelinesEntry[]);
 
   const handleEntryChange = (field: keyof typeof newEntry, value: string) => {
     setNewEntry(prev => ({ ...prev, [field]: value }));

@@ -1,0 +1,48 @@
+{
+  "activityTimeline": [
+    {
+      "id": "1",
+      "activityName": "Release Planning",
+      "activityDueDate": "2024-01-15",
+      "status": "completed",
+      "assignee": "John Doe"
+    },
+    {
+      "id": "2",
+      "activityName": "Code Review",
+      "activityDueDate": "2024-01-20",
+      "status": "completed",
+      "assignee": "Jane Smith"
+    },
+    {
+      "id": "3",
+      "activityName": "Testing Phase",
+      "activityDueDate": "2024-01-25",
+      "status": "pending",
+      "assignee": "Mike Wilson"
+    },
+    {
+      "id": "4",
+      "activityName": "User Acceptance Testing",
+      "activityDueDate": "2024-01-30",
+      "status": "pending",
+      "assignee": "Sarah Johnson"
+    },
+    {
+      "id": "5",
+      "activityName": "Production Deployment",
+      "activityDueDate": "2024-02-05",
+      "status": "pending",
+      "assignee": "DevOps Team"
+    },
+    {
+      "id": "6",
+      "activityName": "Post-Release Monitoring",
+      "activityDueDate": "2024-02-10",
+      "status": "overdue",
+      "assignee": "Operations Team"
+    }
+  ],
+  "releaseNotes": "• Updated user authentication system with enhanced security features\n• Improved dashboard performance by 40%\n• Fixed critical bugs in payment processing\n• Added new reporting capabilities\n• Enhanced mobile responsiveness\n\n1. Authentication improvements include MFA support\n2. Performance optimizations reduce page load times\n3. Payment system now supports additional currencies\n4. New analytics dashboard for better insights",
+  "keyMetrics": "• 99.9% uptime maintained during deployment\n• 40% improvement in page load times\n• 25% reduction in user support tickets\n• 15% increase in user engagement\n• Zero critical security vulnerabilities\n\n1. Performance metrics exceeded expectations\n2. User satisfaction scores increased by 20%\n3. Cost savings of $50K annually from optimizations\n4. Successfully migrated 100K+ user accounts"
+}

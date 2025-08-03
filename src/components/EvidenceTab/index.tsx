@@ -16,15 +16,21 @@ import {
   Paper,
   Box,
   Link,
-  Alert
+  Alert,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel
 } from '@mui/material';
 import { Add as AddIcon, CloudUpload as UploadIcon, InsertDriveFile as FileIcon } from '@mui/icons-material';
 
 interface EvidenceEntry {
-  repoName: string;
+  task: string;
+  taskInstruction: string;
   evidenceLink: string;
-  fileName: string;
-  uploadDate: string;
+  evidenceFileName: string;
+  assignedGroup: 'L2 Team' | 'AD Team' | 'Ops Team' | 'Product Team';
+  pointOfContact: string;
 }
 
 interface EvidenceTabProps {
@@ -36,28 +42,45 @@ const EvidenceTab: React.FC<EvidenceTabProps> = ({
 }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [newEntry, setNewEntry] = useState({
-    repoName: '',
+    task: '',
+    taskInstruction: '',
+    assignedGroup: 'L2 Team' as 'L2 Team' | 'AD Team' | 'Ops Team' | 'Product Team',
+    pointOfContact: '',
     uploadedFile: null as File | null
   });
   const [dragOver, setDragOver] = useState(false);
   const [entries, setEntries] = useState<EvidenceEntry[]>([
     {
-      repoName: 'user-service',
+      task: 'user-service deployment',
+      taskInstruction: 'Deploy the latest version of user-service to production environment. Ensure all health checks pass and monitor for any issues during the deployment process.',
       evidenceLink: 'https://evidence.company.com/files/user-service-deploy-logs.pdf',
-      fileName: 'user-service-deploy-logs.pdf',
-      uploadDate: '2024-01-15'
+      evidenceFileName: 'user-service-deploy-logs.pdf',
+      assignedGroup: 'Ops Team',
+      pointOfContact: 'john.doe@company.com'
     },
     {
-      repoName: 'frontend-app',
+      task: 'Frontend application testing',
+      taskInstruction: 'Perform comprehensive end-to-end testing of the frontend application including all new features, regression testing, and user acceptance criteria validation.',
       evidenceLink: 'https://evidence.company.com/files/frontend-test-results.zip',
-      fileName: 'frontend-test-results.zip',
-      uploadDate: '2024-01-14'
+      evidenceFileName: 'frontend-test-results.zip',
+      assignedGroup: 'L2 Team',
+      pointOfContact: 'jane.smith@company.com'
     },
     {
-      repoName: 'api-gateway',
-      evidenceLink: 'https://evidence.company.com/files/gateway-performance-metrics.json',
-      fileName: 'gateway-performance-metrics.json',
-      uploadDate: '2024-01-13'
+      task: 'Database migration validation',
+      taskInstruction: 'Validate that all database migrations have been applied correctly and verify data integrity. Run performance tests on critical queries.',
+      evidenceLink: 'https://evidence.company.com/files/db-migration-report.json',
+      evidenceFileName: 'db-migration-report.json',
+      assignedGroup: 'AD Team',
+      pointOfContact: 'mike.wilson@company.com'
+    },
+    {
+      task: 'Product feature verification',
+      taskInstruction: 'Verify that all new product features are working as expected and meet the acceptance criteria defined in the product requirements.',
+      evidenceLink: 'https://evidence.company.com/files/feature-verification.docx',
+      evidenceFileName: 'feature-verification.docx',
+      assignedGroup: 'Product Team',
+      pointOfContact: 'sarah.johnson@company.com'
     }
   ]);
 
@@ -96,7 +119,7 @@ const EvidenceTab: React.FC<EvidenceTabProps> = ({
   };
 
   const handleAddEntry = () => {
-    if (!newEntry.repoName.trim() || !newEntry.uploadedFile) {
+    if (!newEntry.task.trim() || !newEntry.taskInstruction.trim() || !newEntry.uploadedFile || !newEntry.pointOfContact.trim()) {
       return;
     }
 
@@ -104,20 +127,34 @@ const EvidenceTab: React.FC<EvidenceTabProps> = ({
     const mockFileUrl = `https://evidence.company.com/files/${newEntry.uploadedFile.name}`;
     
     const newEvidenceEntry: EvidenceEntry = {
-      repoName: newEntry.repoName,
+      task: newEntry.task,
+      taskInstruction: newEntry.taskInstruction,
       evidenceLink: mockFileUrl,
-      fileName: newEntry.uploadedFile.name,
-      uploadDate: new Date().toISOString().split('T')[0]
+      evidenceFileName: newEntry.uploadedFile.name,
+      assignedGroup: newEntry.assignedGroup,
+      pointOfContact: newEntry.pointOfContact
     };
     
     setEntries(prev => [...prev, newEvidenceEntry]);
     setDialogOpen(false);
-    setNewEntry({ repoName: '', uploadedFile: null }); // Reset form
+    setNewEntry({ 
+      task: '', 
+      taskInstruction: '', 
+      assignedGroup: 'L2 Team',
+      pointOfContact: '',
+      uploadedFile: null 
+    });
   };
 
   const handleDialogClose = () => {
     setDialogOpen(false);
-    setNewEntry({ repoName: '', uploadedFile: null });
+    setNewEntry({ 
+      task: '', 
+      taskInstruction: '', 
+      assignedGroup: 'L2 Team',
+      pointOfContact: '',
+      uploadedFile: null 
+    });
   };
 
   return (
@@ -146,16 +183,50 @@ const EvidenceTab: React.FC<EvidenceTabProps> = ({
         </Button>
       </Box>
 
-      <Dialog open={dialogOpen} onClose={handleDialogClose} fullWidth maxWidth="sm">
+      <Dialog open={dialogOpen} onClose={handleDialogClose} fullWidth maxWidth="md">
         <DialogTitle>Add Evidence Entry</DialogTitle>
         <DialogContent>
           <TextField 
             fullWidth 
             margin="normal" 
-            label="Repository Name" 
-            value={newEntry.repoName} 
-            onChange={e => handleEntryChange('repoName', e.target.value)}
-            placeholder="e.g., user-service"
+            label="Task (Repo name or Manual)" 
+            value={newEntry.task} 
+            onChange={e => handleEntryChange('task', e.target.value)}
+            placeholder="e.g., user-service deployment or Manual database cleanup"
+          />
+          
+          <TextField 
+            fullWidth 
+            margin="normal" 
+            label="Task Instruction"
+            multiline
+            rows={4}
+            value={newEntry.taskInstruction} 
+            onChange={e => handleEntryChange('taskInstruction', e.target.value)}
+            placeholder="Enter detailed instructions for the task..."
+          />
+
+          <FormControl fullWidth margin="normal">
+            <InputLabel>Assigned Group</InputLabel>
+            <Select
+              value={newEntry.assignedGroup}
+              label="Assigned Group"
+              onChange={(e) => handleEntryChange('assignedGroup', e.target.value)}
+            >
+              <MenuItem value="L2 Team">L2 Team</MenuItem>
+              <MenuItem value="AD Team">AD Team</MenuItem>
+              <MenuItem value="Ops Team">Ops Team</MenuItem>
+              <MenuItem value="Product Team">Product Team</MenuItem>
+            </Select>
+          </FormControl>
+          
+          <TextField 
+            fullWidth 
+            margin="normal" 
+            label="Point of Contact" 
+            value={newEntry.pointOfContact} 
+            onChange={e => handleEntryChange('pointOfContact', e.target.value)}
+            placeholder="e.g., john.doe@company.com"
           />
           
           <Box sx={{ mt: 2 }}>
@@ -216,9 +287,9 @@ const EvidenceTab: React.FC<EvidenceTabProps> = ({
             </Box>
           </Box>
           
-          {newEntry.repoName && newEntry.uploadedFile && (
+          {newEntry.task && newEntry.taskInstruction && newEntry.uploadedFile && newEntry.pointOfContact && (
             <Alert severity="info" sx={{ mt: 2 }}>
-              Ready to upload evidence for <strong>{newEntry.repoName}</strong>
+              Ready to add evidence for <strong>{newEntry.task}</strong> assigned to <strong>{newEntry.assignedGroup}</strong> with contact <strong>{newEntry.pointOfContact}</strong>
             </Alert>
           )}
         </DialogContent>
@@ -240,7 +311,7 @@ const EvidenceTab: React.FC<EvidenceTabProps> = ({
           <Button 
             variant="contained" 
             onClick={handleAddEntry}
-            disabled={!newEntry.repoName.trim() || !newEntry.uploadedFile}
+            disabled={!newEntry.task.trim() || !newEntry.taskInstruction.trim() || !newEntry.uploadedFile || !newEntry.pointOfContact.trim()}
             sx={{
               background: 'linear-gradient(135deg, #6495ED 0%, #9370DB 100%)',
               color: 'white',
@@ -267,7 +338,14 @@ const EvidenceTab: React.FC<EvidenceTabProps> = ({
         </DialogActions>
       </Dialog>
 
-      <TableContainer component={Paper}>
+      <TableContainer 
+        component={Paper}
+        sx={{
+          borderRadius: '12px',
+          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+          overflow: 'hidden',
+        }}
+      >
         <Table sx={{ minWidth: 650 }}>
           <TableHead>
             <TableRow>
@@ -278,7 +356,7 @@ const EvidenceTab: React.FC<EvidenceTabProps> = ({
                 textTransform: 'uppercase',
                 letterSpacing: '0.5px',
               }}>
-                Repository Name
+                Task
               </TableCell>
               <TableCell sx={{ 
                 fontWeight: 'bold', 
@@ -287,7 +365,7 @@ const EvidenceTab: React.FC<EvidenceTabProps> = ({
                 textTransform: 'uppercase',
                 letterSpacing: '0.5px',
               }}>
-                Evidence Link
+                Task Instruction
               </TableCell>
               <TableCell sx={{ 
                 fontWeight: 'bold', 
@@ -296,7 +374,7 @@ const EvidenceTab: React.FC<EvidenceTabProps> = ({
                 textTransform: 'uppercase',
                 letterSpacing: '0.5px',
               }}>
-                File Name
+                Evidence
               </TableCell>
               <TableCell sx={{ 
                 fontWeight: 'bold', 
@@ -305,7 +383,16 @@ const EvidenceTab: React.FC<EvidenceTabProps> = ({
                 textTransform: 'uppercase',
                 letterSpacing: '0.5px',
               }}>
-                Upload Date
+                Assigned Group
+              </TableCell>
+              <TableCell sx={{ 
+                fontWeight: 'bold', 
+                background: 'linear-gradient(135deg, #6495ED 0%, #9370DB 100%)', 
+                color: 'white',
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px',
+              }}>
+                Point of Contact
               </TableCell>
             </TableRow>
           </TableHead>
@@ -323,32 +410,63 @@ const EvidenceTab: React.FC<EvidenceTabProps> = ({
                   transition: 'all 0.2s ease',
                 }}
               >
-                <TableCell sx={{ fontWeight: 500 }}>{entry.repoName}</TableCell>
-                <TableCell>
-                  <Link 
-                    href={entry.evidenceLink} 
-                    target="_blank" 
-                    rel="noopener"
-                    sx={{
-                      color: '#6495ED',
-                      textDecoration: 'none',
-                      fontWeight: 500,
-                      '&:hover': {
-                        textDecoration: 'underline',
-                        color: '#4169E1',
-                      },
-                    }}
-                  >
-                    View Evidence
-                  </Link>
+                <TableCell sx={{ fontWeight: 500 }}>{entry.task}</TableCell>
+                <TableCell sx={{ 
+                  fontWeight: 400,
+                  maxWidth: '300px',
+                  wordWrap: 'break-word',
+                  whiteSpace: 'pre-wrap'
+                }}>
+                  {entry.taskInstruction}
                 </TableCell>
                 <TableCell>
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                     <FileIcon fontSize="small" color="action" />
-                    <span style={{ fontWeight: 500 }}>{entry.fileName}</span>
+                    <Link 
+                      href={entry.evidenceLink} 
+                      target="_blank" 
+                      rel="noopener"
+                      sx={{
+                        color: '#6495ED',
+                        textDecoration: 'none',
+                        fontWeight: 500,
+                        '&:hover': {
+                          textDecoration: 'underline',
+                          color: '#4169E1',
+                        },
+                      }}
+                    >
+                      {entry.evidenceFileName}
+                    </Link>
                   </Box>
                 </TableCell>
-                <TableCell sx={{ fontWeight: 500 }}>{entry.uploadDate}</TableCell>
+                <TableCell>
+                  <Box
+                    sx={{
+                      display: 'inline-block',
+                      px: 2,
+                      py: 0.5,
+                      borderRadius: '16px',
+                      fontSize: '0.875rem',
+                      fontWeight: 500,
+                      backgroundColor: 
+                        entry.assignedGroup === 'L2 Team' ? '#e3f2fd' :
+                        entry.assignedGroup === 'AD Team' ? '#f3e5f5' :
+                        entry.assignedGroup === 'Ops Team' ? '#e8f5e8' :
+                        '#fff3e0',
+                      color:
+                        entry.assignedGroup === 'L2 Team' ? '#1976d2' :
+                        entry.assignedGroup === 'AD Team' ? '#7b1fa2' :
+                        entry.assignedGroup === 'Ops Team' ? '#388e3c' :
+                        '#f57c00',
+                    }}
+                  >
+                    {entry.assignedGroup}
+                  </Box>
+                </TableCell>
+                <TableCell sx={{ fontWeight: 500, color: '#1976d2' }}>
+                  {entry.pointOfContact}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -359,3 +477,4 @@ const EvidenceTab: React.FC<EvidenceTabProps> = ({
 };
 
 export default EvidenceTab;
+

@@ -18,7 +18,7 @@ import {
   Divider
 } from '@mui/material'
 import { Close as CloseIcon } from '@mui/icons-material'
-import './CreateReleaseDialog.scss'
+import './styles.scss'
 
 interface CreateReleaseDialogProps {
   open: boolean

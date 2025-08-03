@@ -13,13 +13,13 @@ import {
 import { 
   ArrowBack as ArrowBackIcon
 } from '@mui/icons-material'
-import './ReleaseDetailView.scss'
-import OverviewTab from './OverviewTab'
-import ReleaseScope from './ReleaseScope'
-import ImplementationPlanTab from './ImplementationPlanTab'
-import JiraIntegrationTab from './JiraIntegrationTab'
-import ApplicationPipelinesTab from './ApplicationPipelinesTab'
-import EvidenceTab from './EvidenceTab'
+import './styles.scss'
+import OverviewTab from '../OverviewTab'
+import ReleaseScope from '../ReleaseScope'
+import ImplementationPlanTab from '../ImplementationPlanTab'
+import JiraIntegrationTab from '../JiraIntegrationTab'
+import ApplicationPipelinesTab from '../ApplicationPipelinesTab'
+import EvidenceTab from '../EvidenceTab'
 
 interface ReleaseDetailViewProps {
   releaseName: string

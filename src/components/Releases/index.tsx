@@ -12,9 +12,9 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { Search as SearchIcon, Add as AddIcon } from '@mui/icons-material'
 import { useState } from 'react'
-import ReleaseCard from './ReleaseCard'
-import CreateReleaseDialog, { type ReleaseFormData } from './CreateReleaseDialog'
-import './Releases.scss'
+import ReleaseCard from '../ReleaseCard'
+import CreateReleaseDialog, { type ReleaseFormData } from '../CreateReleaseDialog'
+import './styles.scss'
 
 interface ReleasesProps {
   onReleaseClick: (name: string, date: string, type: 'monthly' | 'offcycle') => void

@@ -5,7 +5,7 @@ import {
   PlayArrow as PlayIcon,
   CalendarToday as CalendarIcon
 } from '@mui/icons-material'
-import './ReleaseCard.scss'
+import './styles.scss'
 
 interface ReleaseCardProps {
   title: string

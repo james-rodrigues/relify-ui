@@ -1,5 +1,5 @@
 import { Box, Container, Typography } from '@mui/material'
-import './HeroSection.scss'
+import './styles.scss';
 
 const HeroSection = () => {
   return (

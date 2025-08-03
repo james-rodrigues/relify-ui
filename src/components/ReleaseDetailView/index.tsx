@@ -395,32 +395,32 @@ const ReleaseDetailView: React.FC<ReleaseDetailViewProps> = ({
   ]
 
   return (
-    <div className="release-detail-view">
-      <div className="detail-header">
-        <Container maxWidth="lg">
-          <div className="header-content">
-            <div className="back-section">
+    <Box className="release-detail-view">
+      <Box className="detail-header">
+        <Container maxWidth={false} sx={{ maxWidth: '1400px' }}>
+          <Box className="header-content">
+            <Box className="back-section">
               <IconButton onClick={onBack} className="back-button">
                 <ArrowBackIcon />
               </IconButton>
-            </div>
+            </Box>
             
-            <div className="title-section">
+            <Box className="title-section">
               <Typography variant="h3" className="release-title">
                 {releaseName}
               </Typography>
               <Typography variant="h6" className="release-subtitle">
                 {releaseDate} • {releaseType === 'monthly' ? '📅 Monthly Release' : '⚡ Off-cycle Release'}
               </Typography>
-            </div>
-          </div>
+            </Box>
+          </Box>
         </Container>
-      </div>
+      </Box>
 
-      <div className="detail-content">
-        <Container maxWidth="lg">
-          <Paper className="content-paper">
-            <div className="tabs-container">
+      <Box className="detail-content">
+        <Container maxWidth={false} sx={{ maxWidth: '1400px', height: '100%' }}>
+          <Paper className="content-paper" sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+            <Box className="tabs-container">
               <Tabs
                 value={activeTab}
                 onChange={handleTabChange}
@@ -432,9 +432,9 @@ const ReleaseDetailView: React.FC<ReleaseDetailViewProps> = ({
                   <Tab key={index} label={tab} className="detail-tab" />
                 ))}
               </Tabs>
-            </div>
+            </Box>
 
-            <div className="tab-panels">
+            <Box className="tab-panels" sx={{ flex: 1, overflow: 'hidden' }}>
               <TabPanel value={activeTab} index={0}>
                 <OverviewTab
                   releaseName={releaseName}
@@ -489,10 +489,10 @@ const ReleaseDetailView: React.FC<ReleaseDetailViewProps> = ({
                   releaseName={releaseName}
                 />
               </TabPanel>
-            </div>
+            </Box>
           </Paper>
         </Container>
-      </div>
+      </Box>
       
       {/* Snackbar for user feedback */}
       <Snackbar
@@ -509,7 +509,7 @@ const ReleaseDetailView: React.FC<ReleaseDetailViewProps> = ({
           {snackbarMessage}
         </Alert>
       </Snackbar>
-    </div>
+    </Box>
   )
 }
 

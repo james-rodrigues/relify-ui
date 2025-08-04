@@ -140,22 +140,24 @@ const Pipelines: React.FC<ApplicationPipelinesTabProps> = ({
           startIcon={<AddIcon />}
           onClick={() => setDialogOpen(true)}
           sx={{
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            background: 'linear-gradient(135deg, #6495ED 0%, #9370DB 100%)',
             color: 'white',
-            padding: '10px 20px',
+            fontWeight: 'bold',
             borderRadius: '8px',
-            fontWeight: 600,
+            boxShadow: '0 4px 8px rgba(100, 149, 237, 0.3)',
             textTransform: 'none',
-            boxShadow: '0 4px 12px rgba(102, 126, 234, 0.3)',
-            transition: 'all 0.3s ease',
             '&:hover': {
+              background: 'linear-gradient(135deg, #4169E1 0%, #8A2BE2 100%)',
+              boxShadow: '0 6px 12px rgba(100, 149, 237, 0.4)',
               transform: 'translateY(-2px)',
-              boxShadow: '0 8px 20px rgba(102, 126, 234, 0.4)',
             },
             '&:disabled': {
-              opacity: 0.7,
+              background: '#ccc',
+              color: '#999',
+              boxShadow: 'none',
               transform: 'none',
-            }
+            },
+            transition: 'all 0.3s ease',
           }}
         >
           Add Entry
@@ -218,14 +220,18 @@ const Pipelines: React.FC<ApplicationPipelinesTabProps> = ({
             variant="contained" 
             onClick={handleAddEntry}
             sx={{
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              background: 'linear-gradient(135deg, #6495ED 0%, #9370DB 100%)',
               color: 'white',
+              fontWeight: 'bold',
+              borderRadius: '8px',
+              boxShadow: '0 4px 8px rgba(100, 149, 237, 0.3)',
               textTransform: 'none',
-              borderRadius: '6px',
-              fontWeight: 600,
               '&:hover': {
-                background: 'linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%)',
-              }
+                background: 'linear-gradient(135deg, #4169E1 0%, #8A2BE2 100%)',
+                boxShadow: '0 6px 12px rgba(100, 149, 237, 0.4)',
+                transform: 'translateY(-2px)',
+              },
+              transition: 'all 0.3s ease',
             }}
           >
             Add
@@ -330,14 +336,18 @@ const Pipelines: React.FC<ApplicationPipelinesTabProps> = ({
             variant="contained" 
             onClick={handleEditSave}
             sx={{
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              background: 'linear-gradient(135deg, #6495ED 0%, #9370DB 100%)',
               color: 'white',
+              fontWeight: 'bold',
+              borderRadius: '8px',
+              boxShadow: '0 4px 8px rgba(100, 149, 237, 0.3)',
               textTransform: 'none',
-              borderRadius: '6px',
-              fontWeight: 600,
               '&:hover': {
-                background: 'linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%)',
-              }
+                background: 'linear-gradient(135deg, #4169E1 0%, #8A2BE2 100%)',
+                boxShadow: '0 6px 12px rgba(100, 149, 237, 0.4)',
+                transform: 'translateY(-2px)',
+              },
+              transition: 'all 0.3s ease',
             }}
           >
             Save Changes

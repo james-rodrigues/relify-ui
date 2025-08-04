@@ -12,7 +12,9 @@ import {
   AccordionSummary,
   AccordionDetails,
   Typography,
-  IconButton
+  IconButton,
+  Grid,
+  Link
 } from '@mui/material';
 import { Add as AddIcon, ExpandMore as ExpandMoreIcon, Edit as EditIcon } from '@mui/icons-material';
 
@@ -30,6 +32,7 @@ interface ReleaseScopeEntry {
   initiativeLink: string;
   epicLink: string;
   storyLink: string;
+  jiraIds: string;
   personOnCallPrimary: string;
   personOnCallSecondary: string;
   changesInvolved: string;
@@ -57,9 +60,10 @@ const ReleaseScope: React.FC = () => {
       drmComments: 'DRM review completed with minor recommendations',
       snowflakeImpact: 'Medium Impact - UI Changes',
       techLead: 'Julie Brown',
-      initiativeLink: 'https://jira.company.com/browse/INIT-001',
-      epicLink: 'https://jira.company.com/browse/EPIC-101',
-      storyLink: 'https://jira.company.com/browse/STORY-202',
+      initiativeLink: 'INIT-001, INIT-005',
+      epicLink: 'EPIC-101, EPIC-104',
+      storyLink: 'STORY-202, STORY-205, STORY-210',
+      jiraIds: 'REL-1001, REL-1002, REL-1005',
       personOnCallPrimary: 'Alex Johnson',
       personOnCallSecondary: 'Maria Garcia',
       changesInvolved: 'API Updates, Database Schema Changes, UI Improvements',
@@ -82,9 +86,10 @@ const ReleaseScope: React.FC = () => {
       drmComments: 'DRM approved with conditions - monitoring required',
       snowflakeImpact: 'Low Impact - Performance Optimization',
       techLead: 'Robert Davis',
-      initiativeLink: 'https://jira.company.com/browse/INIT-002',
-      epicLink: 'https://jira.company.com/browse/EPIC-102',
-      storyLink: 'https://jira.company.com/browse/STORY-203',
+      initiativeLink: 'INIT-002',
+      epicLink: 'EPIC-102, EPIC-106',
+      storyLink: 'STORY-203, STORY-208',
+      jiraIds: 'REL-1010, REL-1012',
       personOnCallPrimary: 'David Chen',
       personOnCallSecondary: 'Linda Rodriguez',
       changesInvolved: 'Performance Optimizations, Caching Layer Updates',
@@ -111,6 +116,7 @@ const ReleaseScope: React.FC = () => {
     initiativeLink: '',
     epicLink: '',
     storyLink: '',
+    jiraIds: '',
     personOnCallPrimary: '',
     personOnCallSecondary: '',
     changesInvolved: '',
@@ -154,6 +160,7 @@ const ReleaseScope: React.FC = () => {
       initiativeLink: '',
       epicLink: '',
       storyLink: '',
+      jiraIds: '',
       personOnCallPrimary: '',
       personOnCallSecondary: '',
       changesInvolved: '',
@@ -191,6 +198,7 @@ const ReleaseScope: React.FC = () => {
       initiativeLink: '',
       epicLink: '',
       storyLink: '',
+      jiraIds: '',
       personOnCallPrimary: '',
       personOnCallSecondary: '',
       changesInvolved: '',
@@ -216,22 +224,18 @@ const ReleaseScope: React.FC = () => {
           startIcon={<AddIcon />}
           onClick={() => setDialogOpen(true)}
           sx={{
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            background: 'linear-gradient(135deg, #6495ED 0%, #9370DB 100%)',
             color: 'white',
-            padding: '10px 20px',
+            fontWeight: 'bold',
             borderRadius: '8px',
-            fontWeight: 600,
+            boxShadow: '0 4px 8px rgba(100, 149, 237, 0.3)',
             textTransform: 'none',
-            boxShadow: '0 4px 12px rgba(102, 126, 234, 0.3)',
-            transition: 'all 0.3s ease',
             '&:hover': {
+              background: 'linear-gradient(135deg, #4169E1 0%, #8A2BE2 100%)',
+              boxShadow: '0 6px 12px rgba(100, 149, 237, 0.4)',
               transform: 'translateY(-2px)',
-              boxShadow: '0 8px 20px rgba(102, 126, 234, 0.4)',
             },
-            '&:disabled': {
-              opacity: 0.7,
-              transform: 'none',
-            }
+            transition: 'all 0.3s ease',
           }}
         >
           Add Entry
@@ -277,14 +281,18 @@ const ReleaseScope: React.FC = () => {
             onClick={handleAddOrUpdateEntry} 
             variant="contained"
             sx={{
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              background: 'linear-gradient(135deg, #6495ED 0%, #9370DB 100%)',
               color: 'white',
+              fontWeight: 'bold',
+              borderRadius: '8px',
+              boxShadow: '0 4px 8px rgba(100, 149, 237, 0.3)',
               textTransform: 'none',
-              borderRadius: '6px',
-              fontWeight: 600,
               '&:hover': {
-                background: 'linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%)',
-              }
+                background: 'linear-gradient(135deg, #4169E1 0%, #8A2BE2 100%)',
+                boxShadow: '0 6px 12px rgba(100, 149, 237, 0.4)',
+                transform: 'translateY(-2px)',
+              },
+              transition: 'all 0.3s ease',
             }}
           >
             {editingIndex !== null ? 'Update' : 'Add'}
@@ -294,13 +302,13 @@ const ReleaseScope: React.FC = () => {
 
       {/* Accordions for displaying entries */}
       {entries.map((entry, index) => (
-        <Accordion key={index} sx={{ mb: 2 }}>
+        <Accordion key={index} sx={{ mb: 2, borderRadius: '8px', overflow: 'hidden', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
           <AccordionSummary 
             expandIcon={<ExpandMoreIcon />}
-            sx={{ bgcolor: '#f5f5f5' }}
+            sx={{ bgcolor: 'linear-gradient(to right, #f0f0f0, #e0e0e0)'}}
           >
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-              <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+              <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#2c3e50' }}>
                 Release Scope Item {index + 1}
               </Typography>
               <IconButton
@@ -309,20 +317,86 @@ const ReleaseScope: React.FC = () => {
                   e.stopPropagation();
                   handleEditEntry(index);
                 }}
-                sx={{ ml: 1 }}
+                sx={{ ml: 1, color: '#6495ED' }}
               >
                 <EditIcon />
               </IconButton>
             </Box>
           </AccordionSummary>
-          <AccordionDetails>
-            <Stack spacing={1}>
-              {Object.entries(entry).map(([key, value]) => (
-                <Typography key={key} variant="body2">
-                  <strong>{key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}:</strong> {value || '-'}
-                </Typography>
-              ))}
-            </Stack>
+          <AccordionDetails sx={{ bgcolor: '#f9f9f9', p: 4 }}>
+            <Grid container spacing={4}>
+              <Grid item xs={12} md={6}>
+                {Object.entries(entry).map(([key, value]) => {
+                  const isLink = key.includes('Link') || key.includes('link');
+                  const isJiraField = key.toLowerCase().includes('jira') || key.toLowerCase().includes('epic') || key.toLowerCase().includes('initiative') || key.toLowerCase().includes('story');
+                  const isIncidentField = key.toLowerCase().includes('incident') || key.toLowerCase().includes('related');
+                  const isBooleanField = typeof value === 'string' && ['yes', 'no', 'n/a'].includes(value.toLowerCase());
+                  const isRightColumn = isLink || isJiraField || isIncidentField || isBooleanField;
+                  const linkValues = typeof value === 'string' ? value.split(', ') : [];
+
+                  return isRightColumn ? null : (
+                    <Box sx={{ display: 'flex', flexDirection: 'column', mb: 3 }} key={key}>
+                      <Typography variant="subtitle2" sx={{ fontWeight: 'bold', color: '#2c3e50', mb: 1 }}>
+                        {key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
+                      </Typography>
+                      <Typography variant="body2" sx={{ color: '#555', wordBreak: 'break-word' }}>
+                        {value || '-'}
+                      </Typography>
+                    </Box>
+                  );
+                })}
+              </Grid>
+              <Grid item xs={12} md={6}>
+                {Object.entries(entry).map(([key, value]) => {
+                  const isLink = key.includes('Link') || key.includes('link');
+                  const isJiraField = key.toLowerCase().includes('jira') || key.toLowerCase().includes('epic') || key.toLowerCase().includes('initiative') || key.toLowerCase().includes('story');
+                  const isIncidentField = key.toLowerCase().includes('incident') || key.toLowerCase().includes('related');
+                  const isBooleanField = typeof value === 'string' && ['yes', 'no', 'n/a'].includes(value.toLowerCase());
+                  const isRightColumn = isLink || isJiraField || isIncidentField || isBooleanField;
+                  const linkValues = typeof value === 'string' ? value.split(', ') : [];
+
+                  let displayValue = value;
+                  if (isBooleanField) {
+                    displayValue = value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+                  }
+
+                  return isRightColumn ? (
+                    <Box sx={{ display: 'flex', flexDirection: 'column', mb: 3 }} key={key}>
+                      <Typography variant="subtitle2" sx={{ fontWeight: 'bold', color: '#2c3e50', mb: 1 }}>
+                        {key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
+                      </Typography>
+                      {isLink || isJiraField ? (
+                        linkValues.map((link, idx) => (
+                          <Link 
+                            key={idx}
+                            href={isLink ? link : `https://jira.company.com/browse/${link}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            sx={{
+                              color: '#6495ED',
+                              textDecoration: 'none',
+                              fontWeight: 500,
+                              '&:hover': {
+                                textDecoration: 'underline',
+                                color: '#4169E1',
+                              },
+                              display: 'block',
+                              mb: 0.5
+                            }}
+                          >
+                            {link}
+                          </Link>
+                        ))
+                      ) : (
+                        <Typography variant="body2" sx={{ color: isBooleanField ? '#0070f3' : '#555', fontWeight: isBooleanField ? 'bold' : 'normal' }}>
+                          {displayValue || '-'}
+                        </Typography>
+                      )}
+                    </Box>
+                  ) : null;
+                })}
+              </Grid>
+            </Grid>
           </AccordionDetails>
         </Accordion>
       ))}

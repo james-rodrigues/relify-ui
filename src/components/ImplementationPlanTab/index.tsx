@@ -112,22 +112,18 @@ const ImplementationPlanTab: React.FC<ImplementationPlanTabProps> = ({
           startIcon={<AddIcon />}
           onClick={() => setDialogOpen(true)}
           sx={{
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            background: 'linear-gradient(135deg, #6495ED 0%, #9370DB 100%)',
             color: 'white',
-            padding: '10px 20px',
+            fontWeight: 'bold',
             borderRadius: '8px',
-            fontWeight: 600,
+            boxShadow: '0 4px 8px rgba(100, 149, 237, 0.3)',
             textTransform: 'none',
-            boxShadow: '0 4px 12px rgba(102, 126, 234, 0.3)',
-            transition: 'all 0.3s ease',
             '&:hover': {
+              background: 'linear-gradient(135deg, #4169E1 0%, #8A2BE2 100%)',
+              boxShadow: '0 6px 12px rgba(100, 149, 237, 0.4)',
               transform: 'translateY(-2px)',
-              boxShadow: '0 8px 20px rgba(102, 126, 234, 0.4)',
             },
-            '&:disabled': {
-              opacity: 0.7,
-              transform: 'none',
-            }
+            transition: 'all 0.3s ease',
           }}
         >
           Add Entry
@@ -184,18 +180,24 @@ const ImplementationPlanTab: React.FC<ImplementationPlanTabProps> = ({
             onClick={handleAddEntry}
             disabled={!newEntry.repoName.trim() || !newEntry.pocNames.trim()}
             sx={{
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              background: 'linear-gradient(135deg, #6495ED 0%, #9370DB 100%)',
               color: 'white',
+              fontWeight: 'bold',
+              borderRadius: '8px',
+              boxShadow: '0 4px 8px rgba(100, 149, 237, 0.3)',
               textTransform: 'none',
-              borderRadius: '6px',
-              fontWeight: 600,
               '&:hover': {
-                background: 'linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%)',
+                background: 'linear-gradient(135deg, #4169E1 0%, #8A2BE2 100%)',
+                boxShadow: '0 6px 12px rgba(100, 149, 237, 0.4)',
+                transform: 'translateY(-2px)',
               },
               '&:disabled': {
-                opacity: 0.7,
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-              }
+                background: '#ccc',
+                color: '#999',
+                boxShadow: 'none',
+                transform: 'none',
+              },
+              transition: 'all 0.3s ease',
             }}
           >
             Add
@@ -289,14 +291,18 @@ const ImplementationPlanTab: React.FC<ImplementationPlanTabProps> = ({
             variant="contained" 
             onClick={handleUpdateEntry}
             sx={{
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              background: 'linear-gradient(135deg, #6495ED 0%, #9370DB 100%)',
               color: 'white',
+              fontWeight: 'bold',
+              borderRadius: '8px',
+              boxShadow: '0 4px 8px rgba(100, 149, 237, 0.3)',
               textTransform: 'none',
-              borderRadius: '6px',
-              fontWeight: 600,
               '&:hover': {
-                background: 'linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%)',
-              }
+                background: 'linear-gradient(135deg, #4169E1 0%, #8A2BE2 100%)',
+                boxShadow: '0 6px 12px rgba(100, 149, 237, 0.4)',
+                transform: 'translateY(-2px)',
+              },
+              transition: 'all 0.3s ease',
             }}
           >
             Update
@@ -305,21 +311,21 @@ const ImplementationPlanTab: React.FC<ImplementationPlanTabProps> = ({
       </Dialog>
 
       {entries.map((entry, index) => (
-        <Accordion key={index} sx={{ mb: 2 }}>
+        <Accordion key={index} sx={{ mb: 2, borderRadius: '8px', overflow: 'hidden', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
-            sx={{ bgcolor: '#f5f5f5' }}
-          >
+            sx={{ bgcolor: 'linear-gradient(to right, #f0f0f0, #e0e0e0)'}}>
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                 <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
                   {entry.repoName}
                 </Typography>
                 <Chip 
                   label={entry.pocNames} 
                   color="primary" 
-                  variant="outlined" 
+                  variant="filled" 
                   size="small"
+                  sx={{ bgcolor: '#6495ED', color: 'white' }}
                 />
               </Box>
               <Button
@@ -329,62 +335,166 @@ const ImplementationPlanTab: React.FC<ImplementationPlanTabProps> = ({
                   e.stopPropagation();
                   handleEditEntry(index);
                 }}
-                sx={{ ml: 'auto' }}
+                sx={{ ml: 'auto', textTransform: 'none', color: '#6495ED' }}
               >
                 Edit
               </Button>
             </Box>
           </AccordionSummary>
-          <AccordionDetails>
-            <List>
-              <ListItem>
-                <ListItemIcon>
-                  <CheckCircleIcon color="primary" />
+          <AccordionDetails sx={{ bgcolor: '#f9f9f9', p: 4 }}>
+            <List sx={{ width: '100%', p: 0 }}>
+              <ListItem 
+                sx={{ 
+                  display: 'flex', 
+                  alignItems: 'flex-start', 
+                  mb: 3, 
+                  p: 2,
+                  bgcolor: 'rgba(100, 149, 237, 0.05)',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(100, 149, 237, 0.1)'
+                }}
+              >
+                <ListItemIcon sx={{ minWidth: '36px', mt: 0.5 }}>
+                  <CheckCircleIcon sx={{ color: '#6495ED', fontSize: '20px' }} />
                 </ListItemIcon>
                 <ListItemText 
                   primary="Pre Implementation Steps" 
                   secondary={entry.preImplementationSteps}
-                  primaryTypographyProps={{ fontWeight: 'bold' }}
+                  primaryTypographyProps={{ 
+                    fontWeight: 'bold',
+                    color: '#333',
+                    fontSize: '0.95rem',
+                    mb: 1
+                  }}
+                  secondaryTypographyProps={{
+                    color: '#666',
+                    fontSize: '0.875rem',
+                    lineHeight: 1.5,
+                    whiteSpace: 'pre-wrap'
+                  }}
                 />
               </ListItem>
-              <ListItem>
-                <ListItemIcon>
-                  <CheckCircleIcon color="primary" />
+              <ListItem 
+                sx={{ 
+                  display: 'flex', 
+                  alignItems: 'flex-start', 
+                  mb: 3, 
+                  p: 2,
+                  bgcolor: 'rgba(100, 149, 237, 0.08)',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(100, 149, 237, 0.15)'
+                }}
+              >
+                <ListItemIcon sx={{ minWidth: '36px', mt: 0.5 }}>
+                  <CheckCircleIcon sx={{ color: '#4169E1', fontSize: '20px' }} />
                 </ListItemIcon>
                 <ListItemText 
                   primary="Implementation Steps" 
                   secondary={entry.implementationSteps}
-                  primaryTypographyProps={{ fontWeight: 'bold' }}
+                  primaryTypographyProps={{ 
+                    fontWeight: 'bold',
+                    color: '#333',
+                    fontSize: '0.95rem',
+                    mb: 1
+                  }}
+                  secondaryTypographyProps={{
+                    color: '#666',
+                    fontSize: '0.875rem',
+                    lineHeight: 1.5,
+                    whiteSpace: 'pre-wrap'
+                  }}
                 />
               </ListItem>
-              <ListItem>
-                <ListItemIcon>
-                  <CheckCircleIcon color="primary" />
+              <ListItem 
+                sx={{ 
+                  display: 'flex', 
+                  alignItems: 'flex-start', 
+                  mb: 3, 
+                  p: 2,
+                  bgcolor: 'rgba(100, 149, 237, 0.05)',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(100, 149, 237, 0.1)'
+                }}
+              >
+                <ListItemIcon sx={{ minWidth: '36px', mt: 0.5 }}>
+                  <CheckCircleIcon sx={{ color: '#6495ED', fontSize: '20px' }} />
                 </ListItemIcon>
                 <ListItemText 
                   primary="Post Validation Steps" 
                   secondary={entry.postValidationSteps}
-                  primaryTypographyProps={{ fontWeight: 'bold' }}
+                  primaryTypographyProps={{ 
+                    fontWeight: 'bold',
+                    color: '#333',
+                    fontSize: '0.95rem',
+                    mb: 1
+                  }}
+                  secondaryTypographyProps={{
+                    color: '#666',
+                    fontSize: '0.875rem',
+                    lineHeight: 1.5,
+                    whiteSpace: 'pre-wrap'
+                  }}
                 />
               </ListItem>
-              <ListItem>
-                <ListItemIcon>
-                  <CheckCircleIcon color="warning" />
+              <ListItem 
+                sx={{ 
+                  display: 'flex', 
+                  alignItems: 'flex-start', 
+                  mb: 3, 
+                  p: 2,
+                  bgcolor: 'rgba(147, 112, 219, 0.05)',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(147, 112, 219, 0.1)'
+                }}
+              >
+                <ListItemIcon sx={{ minWidth: '36px', mt: 0.5 }}>
+                  <CheckCircleIcon sx={{ color: '#9370DB', fontSize: '20px' }} />
                 </ListItemIcon>
                 <ListItemText 
                   primary="Backout Steps" 
                   secondary={entry.backoutSteps}
-                  primaryTypographyProps={{ fontWeight: 'bold' }}
+                  primaryTypographyProps={{ 
+                    fontWeight: 'bold',
+                    color: '#333',
+                    fontSize: '0.95rem',
+                    mb: 1
+                  }}
+                  secondaryTypographyProps={{
+                    color: '#666',
+                    fontSize: '0.875rem',
+                    lineHeight: 1.5,
+                    whiteSpace: 'pre-wrap'
+                  }}
                 />
               </ListItem>
-              <ListItem>
-                <ListItemIcon>
-                  <CheckCircleIcon color="warning" />
+              <ListItem 
+                sx={{ 
+                  display: 'flex', 
+                  alignItems: 'flex-start', 
+                  p: 2,
+                  bgcolor: 'rgba(138, 43, 226, 0.08)',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(138, 43, 226, 0.15)'
+                }}
+              >
+                <ListItemIcon sx={{ minWidth: '36px', mt: 0.5 }}>
+                  <CheckCircleIcon sx={{ color: '#8A2BE2', fontSize: '20px' }} />
                 </ListItemIcon>
                 <ListItemText 
                   primary="Backout Validation Steps" 
                   secondary={entry.backoutValidationSteps}
-                  primaryTypographyProps={{ fontWeight: 'bold' }}
+                  primaryTypographyProps={{ 
+                    fontWeight: 'bold',
+                    color: '#333',
+                    fontSize: '0.95rem',
+                    mb: 1
+                  }}
+                  secondaryTypographyProps={{
+                    color: '#666',
+                    fontSize: '0.875rem',
+                    lineHeight: 1.5,
+                    whiteSpace: 'pre-wrap'
+                  }}
                 />
               </ListItem>
             </List>

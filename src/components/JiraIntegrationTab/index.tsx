@@ -134,32 +134,34 @@ const JiraIntegrationTab: React.FC<JiraIntegrationTabProps> = ({
     <div className="jira-content">
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mb: 2 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <Button
-            variant="contained"
-            startIcon={<ValidateIcon />}
-            onClick={handleValidateAll}
-            disabled={isValidating}
-            sx={{
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-              color: 'white',
-              padding: '10px 20px',
-              borderRadius: '8px',
-              fontWeight: 600,
-              textTransform: 'none',
-              boxShadow: '0 4px 12px rgba(102, 126, 234, 0.3)',
-              transition: 'all 0.3s ease',
-              '&:hover': {
-                transform: 'translateY(-2px)',
-                boxShadow: '0 8px 20px rgba(102, 126, 234, 0.4)',
-              },
-              '&:disabled': {
-                opacity: 0.7,
-                transform: 'none',
-              }
-            }}
-          >
-            Validate
-          </Button>
+        <Button
+          variant="contained"
+          startIcon={<ValidateIcon />}
+          onClick={handleValidateAll}
+          disabled={isValidating}
+          sx={{
+            background: 'linear-gradient(135deg, #6495ED 0%, #9370DB 100%)',
+            color: 'white',
+            fontWeight: 'bold',
+            borderRadius: '8px',
+            boxShadow: '0 4px 8px rgba(100, 149, 237, 0.3)',
+            textTransform: 'none',
+            '&:hover': {
+              background: 'linear-gradient(135deg, #4169E1 0%, #8A2BE2 100%)',
+              boxShadow: '0 6px 12px rgba(100, 149, 237, 0.4)',
+              transform: 'translateY(-2px)',
+            },
+            '&:disabled': {
+              background: '#ccc',
+              color: '#999',
+              boxShadow: 'none',
+              transform: 'none',
+            },
+            transition: 'all 0.3s ease',
+          }}
+        >
+          Validate
+        </Button>
           {isValidating && (
             <CircularProgress 
               size={24} 

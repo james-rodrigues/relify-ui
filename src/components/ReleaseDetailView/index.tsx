@@ -109,12 +109,26 @@ const generateFixVersion = (releaseDate: string, releaseType: 'monthly' | 'offcy
   const year = date.getFullYear()
   const month = String(date.getMonth() + 1).padStart(2, '0')
   const day = String(date.getDate()).padStart(2, '0')
-  const prefix = releaseType === 'monthly' ? 'M' : 'O'
-  return `${prefix}${year}${month}${day}`
+  const prefix = releaseType === 'monthly' ? 'MS' : 'OS'
+  return `${prefix}${year}-${month}-${day}`
+}
+
+const generateChangeNumber = (fixVersion: string): string => {
+  // Generate a consistent change number based on the fix version hash
+  // This ensures the same fixVersion always generates the same change number
+  let hash = 0
+  for (let i = 0; i < fixVersion.length; i++) {
+    const char = fixVersion.charCodeAt(i)
+    hash = ((hash << 5) - hash) + char
+    hash = hash & hash // Convert to 32bit integer
+  }
+  const changeNum = Math.abs(hash) % 90000000 + 10000000
+  return `CHG${changeNum}`
 }
 
 const generateSnowLink = (fixVersion: string): string => {
-  return `https://servicenow.company.com/change_request.do?sysparm_query=number=${fixVersion}`
+  const changeNumber = generateChangeNumber(fixVersion)
+  return `https://servicenow.company.com/change_request.do?sysparm_query=number=${changeNumber}`
 }
 
 const getMockActivityTimeline = (releaseDate: string, releaseType: 'monthly' | 'offcycle'): ActivityTimelineItem[] => {

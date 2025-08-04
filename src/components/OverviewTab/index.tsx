@@ -73,6 +73,11 @@ const OverviewTab: React.FC<OverviewTabProps> = ({
   handleSaveNotes,
   handleSaveMetrics,
 }) => {
+  // Extract change number from SNOW link
+  const extractChangeNumber = (url: string): string => {
+    const match = url.match(/number=([^&]*)/)
+    return match ? match[1] : 'CHG92389123'
+  }
   return (
     <div className="overview-content">
       <Typography variant="h5" className="section-title">
@@ -95,7 +100,7 @@ const OverviewTab: React.FC<OverviewTabProps> = ({
               SNOW Link:
             </Typography>
             <Link href={snowLink} target="_blank" rel="noopener noreferrer" className="field-link">
-              {snowLink.split('/').pop()}
+              {extractChangeNumber(snowLink)}
             </Link>
           </div>
           <div className="header-field">

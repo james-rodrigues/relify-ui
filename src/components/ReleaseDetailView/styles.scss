@@ -349,12 +349,14 @@
 
               .MuiTable-root {
                 .table-header {
-                  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                  background: linear-gradient(135deg, #6495ED 0%, #9370DB 100%);
                   color: white;
-                  font-weight: 700;
+                  font-weight: bold;
                   font-size: 0.95rem;
                   padding: 16px;
                   border: none;
+                  text-transform: uppercase;
+                  letter-spacing: 0.5px;
                 }
 
                 .table-row {

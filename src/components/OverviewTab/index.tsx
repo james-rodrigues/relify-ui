@@ -227,32 +227,101 @@ const OverviewTab: React.FC<OverviewTabProps> = ({
         <Typography variant="h6" className="timeline-title">
           Activity Timeline
         </Typography>
-        <TableContainer component={Paper} className="timeline-table">
-          <Table>
+        <TableContainer 
+          component={Paper} 
+          className="timeline-table"
+          sx={{
+            overflowX: 'auto',
+            borderRadius: '12px',
+            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+            overflow: 'hidden',
+          }}
+        >
+          <Table sx={{ minWidth: 800 }}>
             <TableHead>
               <TableRow>
-                <TableCell className="table-header">Activity Name</TableCell>
-                <TableCell className="table-header">Activity Due Date</TableCell>
-                <TableCell className="table-header">Assignee</TableCell>
-                <TableCell className="table-header">Status</TableCell>
-                <TableCell className="table-header" align="center">
+                <TableCell sx={{
+                  fontWeight: 'bold',
+                  background: 'linear-gradient(135deg, #6495ED 0%, #9370DB 100%)',
+                  color: 'white',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.5px',
+                }}>Activity Name</TableCell>
+                <TableCell sx={{
+                  fontWeight: 'bold',
+                  background: 'linear-gradient(135deg, #6495ED 0%, #9370DB 100%)',
+                  color: 'white',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.5px',
+                }}>Activity Due Date</TableCell>
+                <TableCell sx={{
+                  fontWeight: 'bold',
+                  background: 'linear-gradient(135deg, #6495ED 0%, #9370DB 100%)',
+                  color: 'white',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.5px',
+                }}>Assignee</TableCell>
+                <TableCell sx={{
+                  fontWeight: 'bold',
+                  background: 'linear-gradient(135deg, #6495ED 0%, #9370DB 100%)',
+                  color: 'white',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.5px',
+                }}>Status</TableCell>
+                <TableCell sx={{
+                  fontWeight: 'bold',
+                  background: 'linear-gradient(135deg, #6495ED 0%, #9370DB 100%)',
+                  color: 'white',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.5px',
+                }} align="center">
                   Action
                 </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {activityTimeline.map((activity) => (
-                <TableRow key={activity.id} className="table-row">
-                  <TableCell className="activity-name">
+              {activityTimeline.map((activity, index) => (
+                <TableRow 
+                  key={activity.id} 
+                  sx={{
+                    backgroundColor: index % 2 === 0 ? '#f8f9fa' : 'white',
+                    '&:hover': {
+                      backgroundColor: '#e3f2fd',
+                      transform: 'scale(1.01)',
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                    },
+                    transition: 'all 0.2s ease',
+                  }}
+                >
+                  <TableCell sx={{
+                    padding: '16px',
+                    borderBottom: '1px solid rgba(0, 0, 0, 0.08)',
+                    fontWeight: 600,
+                    color: '#2c3e50',
+                    fontSize: '0.95rem',
+                  }}>
                     {activity.activityName}
                   </TableCell>
-                  <TableCell className="activity-date">
+                  <TableCell sx={{
+                    padding: '16px',
+                    borderBottom: '1px solid rgba(0, 0, 0, 0.08)',
+                    color: '#666',
+                    fontWeight: 500,
+                  }}>
                     {formatDate(activity.activityDueDate)}
                   </TableCell>
-                  <TableCell className="assignee">
+                  <TableCell sx={{
+                    padding: '16px',
+                    borderBottom: '1px solid rgba(0, 0, 0, 0.08)',
+                    color: '#666',
+                    fontWeight: 500,
+                  }}>
                     {activity.assignee}
                   </TableCell>
-                  <TableCell>
+                  <TableCell sx={{
+                    padding: '16px',
+                    borderBottom: '1px solid rgba(0, 0, 0, 0.08)',
+                  }}>
                     <Chip
                       label={
                         activity.status.charAt(0).toUpperCase() +
@@ -263,14 +332,38 @@ const OverviewTab: React.FC<OverviewTabProps> = ({
                       className="status-chip"
                     />
                   </TableCell>
-                  <TableCell align="center">
+                  <TableCell align="center" sx={{
+                    padding: '16px',
+                    borderBottom: '1px solid rgba(0, 0, 0, 0.08)',
+                  }}>
                     <Button
                       variant="outlined"
                       size="small"
                       startIcon={<SendIcon />}
                       onClick={() => handleSendActivityEmail(activity.id, activity.activityName)}
                       disabled={sendingActivityEmails.has(activity.id)}
-                      className="send-email-btn"
+                      sx={{
+                        borderColor: '#667eea',
+                        color: '#667eea',
+                        fontWeight: 600,
+                        textTransform: 'none',
+                        padding: '6px 16px',
+                        borderRadius: '6px',
+                        transition: 'all 0.3s ease',
+                        '&:hover': {
+                          backgroundColor: '#667eea',
+                          color: 'white',
+                          transform: 'translateY(-1px)',
+                          boxShadow: '0 4px 8px rgba(102, 126, 234, 0.3)',
+                        },
+                        '&:disabled': {
+                          opacity: 0.6,
+                          transform: 'none',
+                        },
+                        '& .MuiSvgIcon-root': {
+                          fontSize: '1rem',
+                        },
+                      }}
                     >
                       {sendingActivityEmails.has(activity.id)
                         ? 'Sending...'

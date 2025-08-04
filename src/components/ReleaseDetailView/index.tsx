@@ -15,6 +15,7 @@ import {
 } from '@mui/icons-material'
 import overviewData from '../../mockData/overviewData.json'
 import releaseScopeData from '../../mockData/releaseScopeData.json'
+import { getActivityTimelineForRelease } from '../../utils/activityTimelineUtils'
 import './styles.scss'
 import OverviewTab from '../OverviewTab'
 import ReleaseScope from '../ReleaseScope'
@@ -116,8 +117,8 @@ const generateSnowLink = (fixVersion: string): string => {
   return `https://servicenow.company.com/change_request.do?sysparm_query=number=${fixVersion}`
 }
 
-const getMockActivityTimeline = (): ActivityTimelineItem[] => {
-  return overviewData.activityTimeline as ActivityTimelineItem[]
+const getMockActivityTimeline = (releaseDate: string, releaseType: 'monthly' | 'offcycle'): ActivityTimelineItem[] => {
+  return getActivityTimelineForRelease('Release', releaseDate, releaseType)
 }
 
 const saveReleaseNotes = async (_releaseName: string, _notes: string): Promise<ApiResponse> => {
@@ -165,7 +166,7 @@ const ReleaseDetailView: React.FC<ReleaseDetailViewProps> = ({
   const [snackbarOpen, setSnackbarOpen] = useState(false)
   const [snackbarMessage, setSnackbarMessage] = useState('')
   const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success')
-  const [activityTimeline] = useState(getMockActivityTimeline())
+  const [activityTimeline] = useState(getMockActivityTimeline(releaseDate, releaseType))
   const [sendingActivityEmails, setSendingActivityEmails] = useState<Set<string>>(new Set())
   
   // Release Scope table state

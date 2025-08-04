@@ -2,45 +2,80 @@
   "activityTimeline": [
     {
       "id": "1",
-      "activityName": "Release Planning",
-      "activityDueDate": "2024-01-15",
+      "activityName": "Scope Update Request",
+      "activityDueDate": "2025-06-04",
       "status": "completed",
-      "assignee": "John Doe"
+      "assignee": "Product Team"
     },
     {
       "id": "2",
-      "activityName": "Code Review",
-      "activityDueDate": "2024-01-20",
+      "activityName": "Scope Updates Locked",
+      "activityDueDate": "2025-06-18",
       "status": "completed",
-      "assignee": "Jane Smith"
+      "assignee": "Release Manager"
     },
     {
       "id": "3",
-      "activityName": "Testing Phase",
-      "activityDueDate": "2024-01-25",
-      "status": "pending",
-      "assignee": "Mike Wilson"
+      "activityName": "Scope Review Call",
+      "activityDueDate": "2025-06-19",
+      "status": "completed",
+      "assignee": "Stakeholders"
     },
     {
       "id": "4",
-      "activityName": "User Acceptance Testing",
-      "activityDueDate": "2024-01-30",
-      "status": "pending",
-      "assignee": "Sarah Johnson"
+      "activityName": "UAT Deploy - Branches Cut",
+      "activityDueDate": "2025-06-20",
+      "status": "completed",
+      "assignee": "DevOps Team"
     },
     {
       "id": "5",
-      "activityName": "Production Deployment",
-      "activityDueDate": "2024-02-05",
+      "activityName": "UAT Healthcheck",
+      "activityDueDate": "2025-06-26",
+      "status": "completed",
+      "assignee": "QA Team"
+    },
+    {
+      "id": "6",
+      "activityName": "Perf Ops Healthcheck",
+      "activityDueDate": "2025-06-27",
+      "status": "completed",
+      "assignee": "Performance Team"
+    },
+    {
+      "id": "7",
+      "activityName": "Impl Plan Review",
+      "activityDueDate": "2025-07-04",
+      "status": "pending",
+      "assignee": "Tech Leads"
+    },
+    {
+      "id": "8",
+      "activityName": "Go/No-Go Decision",
+      "activityDueDate": "2025-07-05",
+      "status": "pending",
+      "assignee": "Release Committee"
+    },
+    {
+      "id": "9",
+      "activityName": "CR Evidence & Submit",
+      "activityDueDate": "2025-07-06",
+      "status": "pending",
+      "assignee": "Compliance Team"
+    },
+    {
+      "id": "10",
+      "activityName": "Deployment Week",
+      "activityDueDate": "2025-07-09",
       "status": "pending",
       "assignee": "DevOps Team"
     },
     {
-      "id": "6",
-      "activityName": "Post-Release Monitoring",
-      "activityDueDate": "2024-02-10",
-      "status": "overdue",
-      "assignee": "Operations Team"
+      "id": "11",
+      "activityName": "Release Retro",
+      "activityDueDate": "2025-07-21",
+      "status": "pending",
+      "assignee": "All Teams"
     }
   ],
   "releaseNotes": "• Updated user authentication system with enhanced security features\n• Improved dashboard performance by 40%\n• Fixed critical bugs in payment processing\n• Added new reporting capabilities\n• Enhanced mobile responsiveness\n\n1. Authentication improvements include MFA support\n2. Performance optimizations reduce page load times\n3. Payment system now supports additional currencies\n4. New analytics dashboard for better insights",

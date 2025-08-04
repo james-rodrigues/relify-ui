@@ -390,7 +390,7 @@ const ReleaseDetailView: React.FC<ReleaseDetailViewProps> = ({
     'Release Scope',
     'Implementation Plan',
     'Jira',
-    'Application Pipelines',
+    'Pipelines',
     'Post Implementation Evidences'
   ]
 

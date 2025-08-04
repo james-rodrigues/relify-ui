@@ -434,7 +434,7 @@ const ReleaseDetailView: React.FC<ReleaseDetailViewProps> = ({
               </Tabs>
             </Box>
 
-            <Box className="tab-panels" sx={{ flex: 1, overflow: 'hidden' }}>
+            <Box className="tab-panels" sx={{ flex: 1, overflow: 'auto' }}>
               <TabPanel value={activeTab} index={0}>
                 <OverviewTab
                   releaseName={releaseName}

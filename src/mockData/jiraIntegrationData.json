@@ -4,35 +4,44 @@
     "fixVersion": "v2.1.0",
     "changeNumber": "CHG0012345",
     "testCaseJiraId": "TEST-5678",
+    "epicLink": "EPIC-123",
+    "initiativeLink": "INIT-456",
     "repositoriesInvolved": "user-service, api-gateway",
-    "status": "Draft",
+    "status": "In Progress",
+    "readinessState": "In Progress",
     "jetLink": "https://jet.company.com/job/PROJ-1234",
     "spinnakerLink": "https://spinnaker.company.com/applications/app/executions",
     "changeType": "Feature Enhancement",
-    "comments": "New authentication flow implementation"
+    "comments": "Implement new OAuth 2.0 authentication flow with multi-factor authentication support for improved security"
   },
   {
     "jiraId": "PROJ-5678",
     "fixVersion": "v2.1.0",
     "changeNumber": "CHG0012346",
     "testCaseJiraId": "TEST-9012",
+    "epicLink": "EPIC-456",
+    "initiativeLink": "INIT-789",
     "repositoriesInvolved": "frontend-app",
-    "status": "Ready",
+    "status": "Ready for Review",
+    "readinessState": "Ready",
     "jetLink": "https://jet.company.com/job/PROJ-5678",
     "spinnakerLink": "https://spinnaker.company.com/applications/frontend/executions",
     "changeType": "Defect",
-    "comments": "Fix dashboard loading issue"
+    "comments": "Fix dashboard loading performance issue causing 5+ second delays on initial page load"
   },
   {
     "jiraId": "PROJ-9012",
     "fixVersion": "v2.1.0",
     "changeNumber": "CHG0012347",
     "testCaseJiraId": "TEST-3456",
+    "epicLink": "EPIC-789",
+    "initiativeLink": "INIT-123",
     "repositoriesInvolved": "infrastructure",
-    "status": "Activated",
+    "status": "Completed",
+    "readinessState": "Ready",
     "jetLink": "https://jet.company.com/job/PROJ-9012",
     "spinnakerLink": "https://spinnaker.company.com/applications/infra/executions",
     "changeType": "Infra/Config Updates",
-    "comments": "Kubernetes cluster configuration updates"
+    "comments": "Update Kubernetes cluster configuration to support auto-scaling and improved resource allocation"
   }
 ]

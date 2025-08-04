@@ -233,6 +233,7 @@ const OverviewTab: React.FC<OverviewTabProps> = ({
               <TableRow>
                 <TableCell className="table-header">Activity Name</TableCell>
                 <TableCell className="table-header">Activity Due Date</TableCell>
+                <TableCell className="table-header">Assignee</TableCell>
                 <TableCell className="table-header">Status</TableCell>
                 <TableCell className="table-header" align="center">
                   Action
@@ -247,6 +248,9 @@ const OverviewTab: React.FC<OverviewTabProps> = ({
                   </TableCell>
                   <TableCell className="activity-date">
                     {formatDate(activity.activityDueDate)}
+                  </TableCell>
+                  <TableCell className="assignee">
+                    {activity.assignee}
                   </TableCell>
                   <TableCell>
                     <Chip

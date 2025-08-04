@@ -107,6 +107,8 @@
       }
 
       .tab-panels {
+        overflow-y: auto;
+        
         .tab-panel {
           .tab-content {
             padding: 32px;

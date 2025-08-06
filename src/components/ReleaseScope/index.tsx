@@ -17,92 +17,24 @@ import {
   Link
 } from '@mui/material';
 import { Add as AddIcon, ExpandMore as ExpandMoreIcon, Edit as EditIcon } from '@mui/icons-material';
+import { getReleaseScopeData, type ReleaseScopeEntry } from '../../utils/mockDataLoader';
 
-interface ReleaseScopeEntry {
-  changeRequestNumber: string;
-  sealId: string;
-  teamName: string;
-  keyDevLead: string;
-  productContact: string;
-  sreKTDone: 'Yes' | 'No' | 'N/A';
-  runbookUpdateDone: 'Yes' | 'No' | 'N/A';
-  drmComments: string;
-  snowflakeImpact: string;
-  techLead: string;
-  initiativeLink: string;
-  epicLink: string;
-  storyLink: string;
+// Interface extends from mock data loader to include jiraIds field
+interface ReleaseScopeEntryWithJira extends ReleaseScopeEntry {
   jiraIds: string;
-  personOnCallPrimary: string;
-  personOnCallSecondary: string;
-  changesInvolved: string;
-  servicesToBeDeployed: string;
-  upstreamDownstreamImpact: 'Yes' | 'No' | 'N/A';
-  istTested: 'Yes' | 'No' | 'N/A';
-  uatTested: 'Yes' | 'No' | 'N/A';
-  relatedIncidents: string;
-  releaseBranchName: string;
-  manualTaskComments: string;
 }
 
 const ReleaseScope: React.FC = () => {
   const [dialogOpen, setDialogOpen] = React.useState(false);
   const [editingIndex, setEditingIndex] = React.useState<number | null>(null);
-  const [entries, setEntries] = React.useState<ReleaseScopeEntry[]>([
-    {
-      changeRequestNumber: 'CR-001',
-      sealId: 'SEAL-12345',
-      teamName: 'Frontend Development Team',
-      keyDevLead: 'John Smith',
-      productContact: 'Anna Taylor',
-      sreKTDone: 'Yes',
-      runbookUpdateDone: 'No',
-      drmComments: 'DRM review completed with minor recommendations',
-      snowflakeImpact: 'Medium Impact - UI Changes',
-      techLead: 'Julie Brown',
-      initiativeLink: 'INIT-001, INIT-005',
-      epicLink: 'EPIC-101, EPIC-104',
-      storyLink: 'STORY-202, STORY-205, STORY-210',
-      jiraIds: 'REL-1001, REL-1002, REL-1005',
-      personOnCallPrimary: 'Alex Johnson',
-      personOnCallSecondary: 'Maria Garcia',
-      changesInvolved: 'API Updates, Database Schema Changes, UI Improvements',
-      servicesToBeDeployed: 'UserService, AuthService, NotificationService',
-      upstreamDownstreamImpact: 'No',
-      istTested: 'Yes',
-      uatTested: 'Yes',
-      relatedIncidents: 'INC-2024-001, INC-2024-007',
-      releaseBranchName: 'release/v2.1.0',
-      manualTaskComments: 'Please review manual tasks prior to deployment. Ensure all config files are updated.'
-    },
-    {
-      changeRequestNumber: 'CR-002',
-      sealId: 'SEAL-67890',
-      teamName: 'Backend Services Team',
-      keyDevLead: 'Mike Johnson',
-      productContact: 'Sarah Wilson',
-      sreKTDone: 'No',
-      runbookUpdateDone: 'Yes',
-      drmComments: 'DRM approved with conditions - monitoring required',
-      snowflakeImpact: 'Low Impact - Performance Optimization',
-      techLead: 'Robert Davis',
-      initiativeLink: 'INIT-002',
-      epicLink: 'EPIC-102, EPIC-106',
-      storyLink: 'STORY-203, STORY-208',
-      jiraIds: 'REL-1010, REL-1012',
-      personOnCallPrimary: 'David Chen',
-      personOnCallSecondary: 'Linda Rodriguez',
-      changesInvolved: 'Performance Optimizations, Caching Layer Updates',
-      servicesToBeDeployed: 'CacheService, DataProcessingService',
-      upstreamDownstreamImpact: 'Yes',
-      istTested: 'N/A',
-      uatTested: 'Yes',
-      relatedIncidents: 'INC-2024-003',
-      releaseBranchName: 'release/v2.1.1',
-      manualTaskComments: 'Additional testing required for performance improvements. Monitor resource usage post-deployment.'
-    }
-  ]);
-  const [newEntry, setNewEntry] = React.useState<ReleaseScopeEntry>({
+  // Load initial data and add jiraIds field for compatibility
+  const initialEntries: ReleaseScopeEntryWithJira[] = getReleaseScopeData().map(entry => ({
+    ...entry,
+    jiraIds: 'REL-1001, REL-1002' // Default jira IDs for demo
+  }));
+  const [entries, setEntries] = React.useState<ReleaseScopeEntryWithJira[]>(initialEntries);
+  // Helper function to create default entry
+  const createDefaultEntry = (): ReleaseScopeEntryWithJira => ({
     changeRequestNumber: '',
     sealId: '',
     teamName: '',
@@ -129,7 +61,9 @@ const ReleaseScope: React.FC = () => {
     manualTaskComments: '',
   });
 
-  const handleInputChange = (field: keyof ReleaseScopeEntry, value: string) => {
+  const [newEntry, setNewEntry] = React.useState<ReleaseScopeEntryWithJira>(createDefaultEntry());
+
+  const handleInputChange = (field: keyof ReleaseScopeEntryWithJira, value: string) => {
     setNewEntry(prev => ({ ...prev, [field]: value }));
   };
 
@@ -146,32 +80,7 @@ const ReleaseScope: React.FC = () => {
     }
     
     // Reset form
-    setNewEntry({
-      changeRequestNumber: '',
-      sealId: '',
-      teamName: '',
-      keyDevLead: '',
-      productContact: '',
-      sreKTDone: 'N/A',
-      runbookUpdateDone: 'N/A',
-      drmComments: '',
-      snowflakeImpact: '',
-      techLead: '',
-      initiativeLink: '',
-      epicLink: '',
-      storyLink: '',
-      jiraIds: '',
-      personOnCallPrimary: '',
-      personOnCallSecondary: '',
-      changesInvolved: '',
-      servicesToBeDeployed: '',
-      upstreamDownstreamImpact: 'N/A',
-      istTested: 'N/A',
-      uatTested: 'N/A',
-      relatedIncidents: '',
-      releaseBranchName: '',
-      manualTaskComments: '',
-    });
+    setNewEntry(createDefaultEntry());
     setDialogOpen(false);
   };
 
@@ -184,32 +93,7 @@ const ReleaseScope: React.FC = () => {
   const handleCloseDialog = () => {
     setDialogOpen(false);
     setEditingIndex(null);
-    setNewEntry({
-      changeRequestNumber: '',
-      sealId: '',
-      teamName: '',
-      keyDevLead: '',
-      productContact: '',
-      sreKTDone: 'N/A',
-      runbookUpdateDone: 'N/A',
-      drmComments: '',
-      snowflakeImpact: '',
-      techLead: '',
-      initiativeLink: '',
-      epicLink: '',
-      storyLink: '',
-      jiraIds: '',
-      personOnCallPrimary: '',
-      personOnCallSecondary: '',
-      changesInvolved: '',
-      servicesToBeDeployed: '',
-      upstreamDownstreamImpact: 'N/A',
-      istTested: 'N/A',
-      uatTested: 'N/A',
-      relatedIncidents: '',
-      releaseBranchName: '',
-      manualTaskComments: '',
-    });
+    setNewEntry(createDefaultEntry());
   };
 
   return (
@@ -252,8 +136,8 @@ const ReleaseScope: React.FC = () => {
                 key={field}
                 fullWidth
                 label={field.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
-                value={newEntry[field as keyof ReleaseScopeEntry]}
-                onChange={e => handleInputChange(field as keyof ReleaseScopeEntry, e.target.value)}
+                value={newEntry[field as keyof ReleaseScopeEntryWithJira]}
+                onChange={e => handleInputChange(field as keyof ReleaseScopeEntryWithJira, e.target.value)}
                 multiline={field === 'drmComments' || field === 'manualTaskComments'}
                 rows={field === 'drmComments' || field === 'manualTaskComments' ? 3 : 1}
               />
@@ -332,7 +216,6 @@ const ReleaseScope: React.FC = () => {
                   const isIncidentField = key.toLowerCase().includes('incident') || key.toLowerCase().includes('related');
                   const isBooleanField = typeof value === 'string' && ['yes', 'no', 'n/a'].includes(value.toLowerCase());
                   const isRightColumn = isLink || isJiraField || isIncidentField || isBooleanField;
-                  const linkValues = typeof value === 'string' ? value.split(', ') : [];
 
                   return isRightColumn ? null : (
                     <Box sx={{ display: 'flex', flexDirection: 'column', mb: 3 }} key={key}>

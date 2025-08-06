@@ -1,0 +1,80 @@
+{
+  "currentReleases": [
+    {
+      "id": "july-monthly-2025",
+      "title": "July Monthly",
+      "type": "monthly",
+      "status": "planned",
+      "progress": 65,
+      "date": "July 30, 2025",
+      "description": "Monthly release with new features, bug fixes, and performance improvements.",
+      "fixVersion": "MS2025-07-30"
+    },
+    {
+      "id": "july-offcycle-2025",
+      "title": "July Offcycle",
+      "type": "offcycle",
+      "status": "planned",
+      "progress": 30,
+      "date": "July 15, 2025",
+      "description": "Critical hotfix release for security vulnerabilities and urgent issues.",
+      "fixVersion": "OS2025-07-15"
+    }
+  ],
+  "pastReleases": [
+    {
+      "id": "june-monthly-2025",
+      "title": "June Monthly",
+      "type": "monthly",
+      "status": "completed",
+      "date": "June 30, 2025",
+      "description": "Major feature release with enhanced UI, new integrations, and performance optimizations.",
+      "fixVersion": "MS2025-06-30"
+    },
+    {
+      "id": "june-offcycle-2025",
+      "title": "June Offcycle",
+      "type": "offcycle",
+      "status": "completed",
+      "date": "June 20, 2025",
+      "description": "Emergency security patch and critical bug fixes deployed successfully.",
+      "fixVersion": "OS2025-06-20"
+    },
+    {
+      "id": "may-monthly-2025",
+      "title": "May Monthly",
+      "type": "monthly",
+      "status": "completed",
+      "date": "May 31, 2025",
+      "description": "Comprehensive release with new dashboard, analytics features, and mobile support.",
+      "fixVersion": "MS2025-05-31"
+    },
+    {
+      "id": "may-offcycle-2025",
+      "title": "May Offcycle",
+      "type": "offcycle",
+      "status": "completed",
+      "date": "May 15, 2025",
+      "description": "Quick deployment for API improvements and database optimizations.",
+      "fixVersion": "OS2025-05-15"
+    },
+    {
+      "id": "april-monthly-2025",
+      "title": "April Monthly",
+      "type": "monthly",
+      "status": "completed",
+      "date": "April 30, 2025",
+      "description": "Spring release featuring redesigned interface and enhanced automation capabilities.",
+      "fixVersion": "MS2025-04-30"
+    },
+    {
+      "id": "april-offcycle-2025",
+      "title": "April Offcycle",
+      "type": "offcycle",
+      "status": "completed",
+      "date": "April 10, 2025",
+      "description": "Hotfix release addressing user-reported issues and performance bottlenecks.",
+      "fixVersion": "OS2025-04-10"
+    }
+  ]
+}

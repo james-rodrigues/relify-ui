@@ -95,17 +95,6 @@ const theme = createTheme({
         },
       },
     },
-    MuiBox: {
-      styleOverrides: {
-        root: {
-          transition: 'none !important',
-          transform: 'none !important',
-          '&:hover': {
-            transform: 'none !important',
-          },
-        },
-      },
-    },
     MuiTypography: {
       styleOverrides: {
         root: {

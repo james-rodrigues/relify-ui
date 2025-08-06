@@ -4,7 +4,6 @@ import {
   AccordionDetails, 
   Grid, 
   Typography,
-  Box,
   TextField,
   Button,
   InputAdornment
@@ -14,6 +13,7 @@ import { Search as SearchIcon, Add as AddIcon } from '@mui/icons-material'
 import { useState } from 'react'
 import ReleaseCard from '../ReleaseCard'
 import CreateReleaseDialog, { type ReleaseFormData } from '../CreateReleaseDialog'
+import { getReleasesData } from '../../utils/mockDataLoader'
 import './styles.scss'
 
 interface ReleasesProps {
@@ -23,6 +23,7 @@ interface ReleasesProps {
 const Releases: React.FC<ReleasesProps> = ({ onReleaseClick }) => {
   const [searchTerm, setSearchTerm] = useState('')
   const [createDialogOpen, setCreateDialogOpen] = useState(false)
+  const { currentReleases, pastReleases } = getReleasesData()
 
   const handleCreateRelease = (releaseData: ReleaseFormData) => {
     console.log('Creating release:', releaseData)
@@ -81,28 +82,19 @@ const Releases: React.FC<ReleasesProps> = ({ onReleaseClick }) => {
         </AccordionSummary>
         <AccordionDetails className="accordion-details">
           <Grid container spacing={3} className="cards-grid">
-            <Grid item xs={12} sm={6}>
-              <ReleaseCard 
-                title="July Monthly" 
-                type="monthly" 
-                status="planned" 
-                progress={65} 
-                date="July 30, 2025" 
-                description="Monthly release with new features, bug fixes, and performance improvements." 
-                onTitleClick={() => onReleaseClick('July Monthly', 'July 30, 2025', 'monthly')}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <ReleaseCard 
-                title="July Offcycle" 
-                type="offcycle" 
-                status="planned" 
-                progress={30} 
-                date="July 15, 2025" 
-                description="Critical hotfix release for security vulnerabilities and urgent issues." 
-                onTitleClick={() => onReleaseClick('July Offcycle', 'July 15, 2025', 'offcycle')}
-              />
-            </Grid>
+            {currentReleases.map((release) => (
+              <Grid key={release.id} item xs={12} sm={6}>
+                <ReleaseCard 
+                  title={release.title}
+                  type={release.type}
+                  status={release.status}
+                  progress={release.progress}
+                  date={release.date}
+                  description={release.description}
+                  onTitleClick={() => onReleaseClick(release.title, release.date, release.type)}
+                />
+              </Grid>
+            ))}
           </Grid>
         </AccordionDetails>
       </Accordion>
@@ -122,66 +114,18 @@ const Releases: React.FC<ReleasesProps> = ({ onReleaseClick }) => {
         </AccordionSummary>
         <AccordionDetails className="accordion-details">
           <Grid container spacing={3} className="cards-grid">
-            <Grid item xs={12} sm={6}>
-              <ReleaseCard 
-                title="June Monthly" 
-                type="monthly" 
-                status="completed" 
-                date="June 30, 2025" 
-                description="Major feature release with enhanced UI, new integrations, and performance optimizations." 
-                onTitleClick={() => onReleaseClick('June Monthly', 'June 30, 2025', 'monthly')}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <ReleaseCard 
-                title="June Offcycle" 
-                type="offcycle" 
-                status="completed" 
-                date="June 20, 2025" 
-                description="Emergency security patch and critical bug fixes deployed successfully." 
-                onTitleClick={() => onReleaseClick('June Offcycle', 'June 20, 2025', 'offcycle')}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <ReleaseCard 
-                title="May Monthly" 
-                type="monthly" 
-                status="completed" 
-                date="May 31, 2025" 
-                description="Comprehensive release with new dashboard, analytics features, and mobile support." 
-                onTitleClick={() => onReleaseClick('May Monthly', 'May 31, 2025', 'monthly')}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <ReleaseCard 
-                title="May Offcycle" 
-                type="offcycle" 
-                status="completed" 
-                date="May 15, 2025" 
-                description="Quick deployment for API improvements and database optimizations." 
-                onTitleClick={() => onReleaseClick('May Offcycle', 'May 15, 2025', 'offcycle')}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <ReleaseCard 
-                title="April Monthly" 
-                type="monthly" 
-                status="completed" 
-                date="April 30, 2025" 
-                description="Spring release featuring redesigned interface and enhanced automation capabilities." 
-                onTitleClick={() => onReleaseClick('April Monthly', 'April 30, 2025', 'monthly')}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <ReleaseCard 
-                title="April Offcycle" 
-                type="offcycle" 
-                status="completed" 
-                date="April 10, 2025" 
-                description="Hotfix release addressing user-reported issues and performance bottlenecks." 
-                onTitleClick={() => onReleaseClick('April Offcycle', 'April 10, 2025', 'offcycle')}
-              />
-            </Grid>
+            {pastReleases.map((release) => (
+              <Grid key={release.id} item xs={12} sm={6}>
+                <ReleaseCard 
+                  title={release.title}
+                  type={release.type}
+                  status={release.status}
+                  date={release.date}
+                  description={release.description}
+                  onTitleClick={() => onReleaseClick(release.title, release.date, release.type)}
+                />
+              </Grid>
+            ))}
           </Grid>
         </AccordionDetails>
       </Accordion>

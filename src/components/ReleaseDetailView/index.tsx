@@ -13,9 +13,11 @@ import {
 import { 
   ArrowBack as ArrowBackIcon
 } from '@mui/icons-material'
-import overviewData from '../../mockData/overviewData.json'
-import releaseScopeData from '../../mockData/releaseScopeData.json'
-import { getActivityTimelineForRelease } from '../../utils/activityTimelineUtils'
+import { 
+  getOverviewData,
+  getFixVersionForRelease,
+  generateSnowLink
+} from '../../utils/mockDataLoader'
 import './styles.scss'
 import OverviewTab from '../OverviewTab'
 import ReleaseScope from '../ReleaseScope'
@@ -53,7 +55,7 @@ const TabPanel = ({ children, value, index }: TabPanelProps) => {
   )
 }
 
-// Local interfaces for mock data
+// Local interfaces
 interface ReleaseNotesData {
   releaseName: string
   fixVersion: string
@@ -63,77 +65,13 @@ interface ReleaseNotesData {
   recipientEmails: string[]
 }
 
-interface ActivityTimelineItem {
-  id: string
-  activityName: string
-  activityDueDate: string
-  status: 'completed' | 'pending' | 'overdue'
-  assignee: string
-}
-
 interface ApiResponse {
   success: boolean
   message?: string
   error?: string
 }
 
-interface ReleaseScopeEntry {
-  changeRequestNumber: string
-  sealId: string
-  teamName: string
-  keyDevLead: string
-  productContact: string
-  sreKTDone: 'Yes' | 'No' | 'N/A'
-  runbookUpdateDone: 'Yes' | 'No' | 'N/A'
-  drmComments: string
-  snowflakeImpact: string
-  techLead: string
-  initiativeLink: string
-  epicLink: string
-  storyLink: string
-  personOnCallPrimary: string
-  personOnCallSecondary: string
-  changesInvolved: string
-  servicesToBeDeployed: string
-  upstreamDownstreamImpact: 'Yes' | 'No' | 'N/A'
-  istTested: 'Yes' | 'No' | 'N/A'
-  uatTested: 'Yes' | 'No' | 'N/A'
-  relatedIncidents: string
-  releaseBranchName: string
-  manualTaskComments: string
-}
-
 // Mock service functions
-const generateFixVersion = (releaseDate: string, releaseType: 'monthly' | 'offcycle'): string => {
-  const date = new Date(releaseDate)
-  const year = date.getFullYear()
-  const month = String(date.getMonth() + 1).padStart(2, '0')
-  const day = String(date.getDate()).padStart(2, '0')
-  const prefix = releaseType === 'monthly' ? 'MS' : 'OS'
-  return `${prefix}${year}-${month}-${day}`
-}
-
-const generateChangeNumber = (fixVersion: string): string => {
-  // Generate a consistent change number based on the fix version hash
-  // This ensures the same fixVersion always generates the same change number
-  let hash = 0
-  for (let i = 0; i < fixVersion.length; i++) {
-    const char = fixVersion.charCodeAt(i)
-    hash = ((hash << 5) - hash) + char
-    hash = hash & hash // Convert to 32bit integer
-  }
-  const changeNum = Math.abs(hash) % 90000000 + 10000000
-  return `CHG${changeNum}`
-}
-
-const generateSnowLink = (fixVersion: string): string => {
-  const changeNumber = generateChangeNumber(fixVersion)
-  return `https://servicenow.company.com/change_request.do?sysparm_query=number=${changeNumber}`
-}
-
-const getMockActivityTimeline = (releaseDate: string, releaseType: 'monthly' | 'offcycle'): ActivityTimelineItem[] => {
-  return getActivityTimelineForRelease('Release', releaseDate, releaseType)
-}
 
 const saveReleaseNotes = async (_releaseName: string, _notes: string): Promise<ApiResponse> => {
   // Mock API call with delay
@@ -171,6 +109,10 @@ const ReleaseDetailView: React.FC<ReleaseDetailViewProps> = ({
   releaseType,
   onBack
 }) => {
+  // Load mock data
+  const overviewData = getOverviewData()
+  
+  // State management
   const [activeTab, setActiveTab] = useState(0)
   const [isNotesEditMode, setIsNotesEditMode] = useState(false)
   const [isMetricsEditMode, setIsMetricsEditMode] = useState(false)
@@ -180,40 +122,10 @@ const ReleaseDetailView: React.FC<ReleaseDetailViewProps> = ({
   const [snackbarOpen, setSnackbarOpen] = useState(false)
   const [snackbarMessage, setSnackbarMessage] = useState('')
   const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success')
-  const [activityTimeline] = useState(getMockActivityTimeline(releaseDate, releaseType))
   const [sendingActivityEmails, setSendingActivityEmails] = useState<Set<string>>(new Set())
   
-  // Release Scope table state
-  const [dialogOpen, setDialogOpen] = useState(false)
-  const [entries, setEntries] = useState<ReleaseScopeEntry[]>(releaseScopeData as ReleaseScopeEntry[])
-  const [editingIndex, setEditingIndex] = useState<number | null>(null)
-  const [newEntry, setNewEntry] = useState<ReleaseScopeEntry>({
-    changeRequestNumber: '',
-    sealId: '',
-    teamName: '',
-    keyDevLead: '',
-    productContact: '',
-    sreKTDone: 'N/A',
-    runbookUpdateDone: 'N/A',
-    drmComments: '',
-    snowflakeImpact: '',
-    techLead: '',
-    initiativeLink: '',
-    epicLink: '',
-    storyLink: '',
-    personOnCallPrimary: '',
-    personOnCallSecondary: '',
-    changesInvolved: '',
-    servicesToBeDeployed: '',
-    upstreamDownstreamImpact: 'N/A',
-    istTested: 'N/A',
-    uatTested: 'N/A',
-    relatedIncidents: '',
-    releaseBranchName: '',
-    manualTaskComments: ''
-  })
-
-  const fixVersion = generateFixVersion(releaseDate, releaseType)
+  // Get fix version and generate SNOW link
+  const fixVersion = getFixVersionForRelease(releaseName, releaseDate)
   const snowLink = generateSnowLink(fixVersion)
 
   const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
@@ -313,92 +225,6 @@ const ReleaseDetailView: React.FC<ReleaseDetailViewProps> = ({
     })
   }
 
-  // Release Scope handlers
-  const handleEntryChange = (field: keyof ReleaseScopeEntry, value: string) => {
-    setNewEntry(prev => ({ ...prev, [field]: value }))
-  }
-
-  const handleAddEntry = () => {
-    if (editingIndex !== null) {
-      // Update existing entry
-      setEntries(prev => prev.map((entry, index) => 
-        index === editingIndex ? newEntry : entry
-      ))
-      setEditingIndex(null)
-    } else {
-      // Add new entry
-      setEntries(prev => [...prev, newEntry])
-    }
-    
-    // Reset form
-    setNewEntry({
-      changeRequestNumber: '',
-      sealId: '',
-      teamName: '',
-      keyDevLead: '',
-      productContact: '',
-      sreKTDone: 'N/A',
-      runbookUpdateDone: 'N/A',
-      drmComments: '',
-      snowflakeImpact: '',
-      techLead: '',
-      initiativeLink: '',
-      epicLink: '',
-      storyLink: '',
-      personOnCallPrimary: '',
-      personOnCallSecondary: '',
-      changesInvolved: '',
-      servicesToBeDeployed: '',
-      upstreamDownstreamImpact: 'N/A',
-      istTested: 'N/A',
-      uatTested: 'N/A',
-      relatedIncidents: '',
-      releaseBranchName: '',
-      manualTaskComments: ''
-    })
-    setDialogOpen(false)
-  }
-
-  const handleEditEntry = (index: number) => {
-    setNewEntry(entries[index])
-    setEditingIndex(index)
-    setDialogOpen(true)
-  }
-
-  const resetDialog = () => {
-    setNewEntry({
-      changeRequestNumber: '',
-      sealId: '',
-      teamName: '',
-      keyDevLead: '',
-      productContact: '',
-      sreKTDone: 'N/A',
-      runbookUpdateDone: 'N/A',
-      drmComments: '',
-      snowflakeImpact: '',
-      techLead: '',
-      initiativeLink: '',
-      epicLink: '',
-      storyLink: '',
-      personOnCallPrimary: '',
-      personOnCallSecondary: '',
-      changesInvolved: '',
-      servicesToBeDeployed: '',
-      upstreamDownstreamImpact: 'N/A',
-      istTested: 'N/A',
-      uatTested: 'N/A',
-      relatedIncidents: '',
-      releaseBranchName: '',
-      manualTaskComments: ''
-    })
-    setEditingIndex(null)
-    setDialogOpen(false)
-  }
-
-  const handleSyncToConfluence = async () => {
-    // Mock function for syncing to Confluence
-    showSnackbar('Successfully synced Release Scope to Confluence!', 'success')
-  }
 
   const tabs = [
     'Overview',
@@ -470,7 +296,7 @@ const ReleaseDetailView: React.FC<ReleaseDetailViewProps> = ({
                   handleSendActivityEmail={handleSendActivityEmail}
                   formatDate={formatDate}
                   getStatusColor={getStatusColor}
-                  activityTimeline={activityTimeline}
+                  activityTimeline={overviewData.activityTimeline}
                   isSending={isSending}
                   handleSaveNotes={handleSaveNotes}
                   handleSaveMetrics={handleSaveMetrics}

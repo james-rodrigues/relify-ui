@@ -52,7 +52,6 @@ interface OverviewTabProps {
 }
 
 const OverviewTab: React.FC<OverviewTabProps> = ({
-  releaseName,
   fixVersion,
   snowLink,
   isNotesEditMode,

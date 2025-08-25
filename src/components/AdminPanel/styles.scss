@@ -1,0 +1,239 @@
+.admin-panel {
+  position: relative;
+  background-color: #f8f9fa;
+  min-height: calc(100vh - 80px); // Account for sticky header
+  
+  .admin-panel-container {
+    display: flex;
+    min-height: calc(100vh - 80px);
+  }
+
+  .admin-content-wrapper {
+    flex: 1;
+    overflow-y: auto;
+    background-color: #f8f9fa;
+  }
+}
+
+.admin-sidebar {
+  width: 260px;
+  background-color: #ffffff;
+  border-right: 3px solid #e9ecef;
+  box-shadow: 
+    2px 0 8px rgba(0, 0, 0, 0.08),
+    inset -1px 0 0 rgba(102, 126, 234, 0.1);
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 80px);
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -3px;
+    width: 3px;
+    height: 100%;
+    background: linear-gradient(180deg, 
+      rgba(102, 126, 234, 0.3) 0%, 
+      rgba(118, 75, 162, 0.2) 50%,
+      rgba(102, 126, 234, 0.1) 100%);
+    z-index: 1;
+  }
+
+  .admin-sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    border-bottom: 2px solid #e9ecef;
+    background: linear-gradient(135deg, 
+      rgba(102, 126, 234, 0.03) 0%, 
+      rgba(118, 75, 162, 0.02) 100%);
+    position: relative;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, 
+        rgba(102, 126, 234, 0.3) 0%, 
+        rgba(118, 75, 162, 0.2) 100%);
+    }
+  }
+
+  .MuiList-root {
+    flex: 1;
+    padding: 0;
+
+    .MuiListItem-root {
+      border-bottom: 1px solid #f0f2f5;
+      position: relative;
+
+      &:last-child {
+        border-bottom: none;
+      }
+      
+      &:hover {
+        background: linear-gradient(90deg, 
+          rgba(102, 126, 234, 0.02) 0%, 
+          rgba(118, 75, 162, 0.01) 100%);
+      }
+
+      .MuiListItemButton-root {
+        border-radius: 0;
+        
+        &.Mui-selected {
+          position: relative;
+          background: linear-gradient(90deg, 
+            rgba(102, 126, 234, 0.12) 0%, 
+            rgba(118, 75, 162, 0.08) 100%) !important;
+          
+          &::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(180deg, 
+              #6495ED 0%, 
+              #9370DB 100%);
+          }
+          
+          &::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, 
+              rgba(102, 126, 234, 0.6) 0%, 
+              rgba(118, 75, 162, 0.4) 100%);
+          }
+        }
+      }
+    }
+  }
+}
+
+.admin-content {
+  padding: 24px;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+
+  .admin-content-header {
+    margin-bottom: 20px;
+  }
+
+  // Table styling
+  .MuiTableContainer-root {
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    border: 1px solid rgba(100, 149, 237, 0.2);
+
+    .MuiTable-root {
+      .MuiTableHead-root {
+        .MuiTableRow-root {
+          .MuiTableCell-root {
+            background: linear-gradient(135deg, #6495ED 0%, #9370DB 100%);
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: none;
+            box-shadow: inset 0 -2px 0 rgba(255, 255, 255, 0.2);
+          }
+        }
+      }
+
+      .MuiTableBody-root {
+        .MuiTableRow-root {
+          &:nth-child(even) {
+            background-color: #fafbfc;
+          }
+
+          &:hover {
+            background-color: rgba(102, 126, 234, 0.05) !important;
+            transform: scale(1.001);
+            transition: all 0.2s ease;
+          }
+
+          .MuiTableCell-root {
+            font-size: 0.875rem;
+            color: #2c3e50;
+            
+            &:first-child {
+              font-weight: 600;
+              color: #667eea;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .MuiTablePagination-root {
+    background: linear-gradient(45deg, #f8f9fa 0%, #ffffff 100%);
+    border-top: 1px solid #e9ecef;
+    color: #5a6c7d;
+    
+    .MuiTablePagination-selectLabel,
+    .MuiTablePagination-displayedRows {
+      font-weight: 500;
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 1024px) {
+  .admin-sidebar {
+    width: 240px;
+  }
+  
+  .admin-content {
+    padding: 20px 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-sidebar {
+    width: 220px;
+  }
+  
+  .admin-content {
+    padding: 16px 12px;
+    
+    .admin-content-header {
+      margin-bottom: 16px;
+      
+      h4 {
+        font-size: 1.5rem;
+      }
+    }
+  }
+}
+
+// Custom scrollbar for admin content
+.admin-content-wrapper::-webkit-scrollbar {
+  width: 8px;
+}
+
+.admin-content-wrapper::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.admin-content-wrapper::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  border-radius: 4px;
+}
+
+.admin-content-wrapper::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(45deg, #5a67d8, #6b46c1);
+}

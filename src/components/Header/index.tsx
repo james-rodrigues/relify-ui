@@ -1,8 +1,12 @@
-import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material'
-import { Code as CodeIcon } from '@mui/icons-material'
+import { AppBar, Toolbar, Typography, Button, Box, IconButton } from '@mui/material'
+import { Code as CodeIcon, Settings as SettingsIcon } from '@mui/icons-material'
 import './styles.scss'
 
-const Header = () => {
+interface HeaderProps {
+  onSettingsClick?: () => void
+}
+
+const Header = ({ onSettingsClick }: HeaderProps) => {
   return (
     <AppBar 
       position="static" 
@@ -32,23 +36,38 @@ const Header = () => {
             Relify
           </Typography>
         </Box>
-        <Button 
-          variant="outlined" 
-          sx={{ 
-            mr: 2,
-            color: 'white',
-            borderColor: 'rgba(255, 255, 255, 0.3)',
-            transition: 'none !important',
-            transform: 'none !important',
-            '&:hover': {
-              borderColor: 'white',
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <IconButton
+            onClick={onSettingsClick}
+            sx={{
+              color: 'white',
               backgroundColor: 'rgba(255, 255, 255, 0.1)',
-              transform: 'none !important'
-            }
-          }}
-        >
-          Login
-        </Button>
+              '&:hover': {
+                backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                transform: 'scale(1.05)'
+              },
+              transition: 'all 0.2s ease'
+            }}
+          >
+            <SettingsIcon />
+          </IconButton>
+          <Button 
+            variant="outlined" 
+            sx={{ 
+              mr: 2,
+              color: 'white',
+              borderColor: 'rgba(255, 255, 255, 0.3)',
+              transition: 'none !important',
+              transform: 'none !important',
+              '&:hover': {
+                borderColor: 'white',
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                transform: 'none !important'
+              }
+            }}
+          >
+            Login
+          </Button>
         <Button 
           variant="contained"
           sx={{
@@ -65,6 +84,7 @@ const Header = () => {
         >
           Sign Up
         </Button>
+        </Box>
       </Toolbar>
     </AppBar>
   )

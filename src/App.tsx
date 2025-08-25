@@ -10,6 +10,7 @@ import Header from './components/Header'
 import HeroSection from './components/HeroSection'
 import Releases from './components/Releases'
 import ReleaseDetailView from './components/ReleaseDetailView'
+import AdminPanel from './components/AdminPanel'
 import './App.scss'
 import './components/NoAnimations.scss'
 
@@ -127,7 +128,7 @@ interface SelectedRelease {
 }
 
 function App() {
-  const [currentView, setCurrentView] = useState<'dashboard' | 'detail'>('dashboard')
+  const [currentView, setCurrentView] = useState<'dashboard' | 'detail' | 'admin'>('dashboard')
   const [selectedRelease, setSelectedRelease] = useState<SelectedRelease | null>(null)
 
   const handleReleaseClick = (name: string, date: string, type: 'monthly' | 'offcycle') => {
@@ -140,12 +141,34 @@ function App() {
     setSelectedRelease(null)
   }
 
+  const handleSettingsClick = () => {
+    setCurrentView('admin')
+  }
+
+  const handleCloseAdmin = () => {
+    setCurrentView('dashboard')
+  }
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      {currentView === 'dashboard' ? (
+      {currentView === 'admin' ? (
+        <Box sx={{ position: 'relative' }}>
+          <Box 
+            sx={{ 
+              position: 'sticky', 
+              top: 0, 
+              zIndex: 1300,
+              boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
+            }}
+          >
+            <Header onSettingsClick={handleCloseAdmin} />
+          </Box>
+          <AdminPanel onClose={handleCloseAdmin} />
+        </Box>
+      ) : currentView === 'dashboard' ? (
         <Box className="app-container">
-          <Header />
+          <Header onSettingsClick={handleSettingsClick} />
           <HeroSection />
           <Container maxWidth="lg" className="main-content">
             <Releases onReleaseClick={handleReleaseClick} />

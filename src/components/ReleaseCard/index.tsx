@@ -13,11 +13,13 @@ interface ReleaseCardProps {
   status: 'planned' | 'completed'
   progress?: number
   date?: string
+  releaseId?: string
+  fixVersion?: string
   description?: string
   onTitleClick?: () => void
 }
 
-const ReleaseCard = ({ title, type, status, progress = 0, date, description, onTitleClick }: ReleaseCardProps) => {
+const ReleaseCard = ({ title, type, status, progress = 0, date, releaseId, fixVersion, description, onTitleClick }: ReleaseCardProps) => {
   const getStatusColor = () => {
     switch (status) {
       case 'planned':
@@ -100,6 +102,19 @@ const ReleaseCard = ({ title, type, status, progress = 0, date, description, onT
             {description}
           </Typography>
         )}
+
+        <Box className="info-section">
+          {releaseId && (
+            <Typography variant="caption" color="text.secondary" className="info-item">
+              <strong>Release ID:</strong> {releaseId.replace(/\D/g, '') || releaseId}
+            </Typography>
+          )}
+          {fixVersion && (
+            <Typography variant="caption" color="text.secondary" className="info-item">
+              <strong>Fix Version:</strong> {fixVersion}
+            </Typography>
+          )}
+        </Box>
 
         {status === 'planned' && progress > 0 && (
           <Box className="progress-section">

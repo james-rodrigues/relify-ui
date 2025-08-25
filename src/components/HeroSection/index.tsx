@@ -16,10 +16,13 @@ const HeroSection = () => {
           radial-gradient(circle at 40% 80%, rgba(138, 43, 226, 0.3) 0%, transparent 50%)
         `,
         color: 'white',
-        py: { xs: 8, md: 12 },
+        py: { xs: 4, md: 6 },
         textAlign: 'center',
         position: 'relative',
         overflow: 'hidden',
+        minHeight: { xs: '280px', md: '320px' },
+        display: 'flex',
+        alignItems: 'center',
         '&::before': {
           content: '""',
           position: 'absolute',
@@ -41,40 +44,45 @@ const HeroSection = () => {
           gutterBottom 
           sx={{ 
             fontWeight: 900,
-            fontSize: { xs: '3rem', md: '4.5rem' },
+            fontSize: { xs: '2.5rem', md: '3.5rem' },
             background: 'linear-gradient(45deg, #ffffff, #f0f0f0)',
             backgroundClip: 'text',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             textShadow: '0 4px 8px rgba(0,0,0,0.3)',
-            mb: 2
+            mb: 1
           }}
         >
           Relify
         </Typography>
         
         <Typography 
-          variant="h4" 
+          variant="h6" 
           sx={{ 
-            mb: 4, 
+            mb: 3, 
             opacity: 0.95,
             fontWeight: 300,
-            fontSize: { xs: '1.5rem', md: '2rem' },
-            textShadow: '0 2px 4px rgba(0,0,0,0.2)'
+            fontSize: { xs: '1.1rem', md: '1.3rem' },
+            textShadow: '0 2px 4px rgba(0,0,0,0.2)',
+            maxWidth: '600px',
+            mx: 'auto',
+            lineHeight: 1.4
           }}
         >
           Streamline your software releases with intelligent automation
         </Typography>
         
         <Typography 
-          variant="h6" 
+          variant="body1" 
           sx={{ 
             maxWidth: '700px', 
             mx: 'auto', 
             opacity: 0.9,
-            mb: 6,
+            mb: 2,
             lineHeight: 1.6,
-            fontWeight: 400
+            fontWeight: 400,
+            fontSize: { xs: '0.95rem', md: '1rem' },
+            textShadow: '0 1px 3px rgba(0,0,0,0.2)'
           }}
         >
           Eliminate the complexity of release management. Relify automates your entire release pipeline, 

@@ -99,28 +99,54 @@ const CreateReleaseDialog: React.FC<CreateReleaseDialogProps> = ({
         maxWidth="md"
         fullWidth
         PaperProps={{
-          className: 'dialog-paper'
+          className: 'dialog-paper',
+          sx: {
+            borderRadius: '12px',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12)'
+          }
         }}
       >
-        <div className="dialog-header">
-          <IconButton onClick={handleClose} className="close-button">
+        <DialogTitle 
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            background: 'linear-gradient(135deg, #6495ED 0%, #9370DB 100%)',
+            color: 'white',
+            fontWeight: 700,
+            borderRadius: '12px 12px 0 0'
+          }}
+        >
+          <Typography variant="h4" sx={{ 
+            fontWeight: 700,
+            color: '#ffffff'
+          }}>
+            Create New Release
+          </Typography>
+          <IconButton 
+            onClick={handleClose} 
+            sx={{ 
+              color: 'white',
+              '&:hover': {
+                backgroundColor: 'rgba(255, 255, 255, 0.1)'
+              }
+            }}
+          >
             <CloseIcon />
           </IconButton>
-        </div>
-        
-        <DialogTitle className="dialog-title">
-          <Typography variant="h5" className="title-text">
-            🚀 Create New Release
-          </Typography>
         </DialogTitle>
 
-        <DialogContent className="dialog-content">
+        <DialogContent sx={{ pt: 4 }}>
           <div className="form-container">
             {/* Basic Release Information */}
-            <Typography variant="h6" className="section-title">
-              📋 Basic Release Information
+            <Typography variant="h6" sx={{ 
+              fontWeight: 700,
+              color: '#2c3e50',
+              mb: 3,
+              mt: 2
+            }}>
+              Basic Release Information
             </Typography>
-            <div className="form-section">
               <TextField
                 fullWidth
                 label="Release Name"
@@ -128,8 +154,12 @@ const CreateReleaseDialog: React.FC<CreateReleaseDialogProps> = ({
                 onChange={handleInputChange('releaseName')}
                 required
                 variant="outlined"
-                className="form-field"
-                sx={{ mb: 3 }}
+                sx={{ 
+                  mb: 2,
+                  '& .MuiOutlinedInput-root': {
+                    borderRadius: '8px'
+                  }
+                }}
               />
               <TextField
                 fullWidth
@@ -138,8 +168,12 @@ const CreateReleaseDialog: React.FC<CreateReleaseDialogProps> = ({
                 onChange={handleInputChange('fixVersion')}
                 required
                 variant="outlined"
-                className="form-field"
-                sx={{ mb: 3 }}
+                sx={{ 
+                  mb: 2,
+                  '& .MuiOutlinedInput-root': {
+                    borderRadius: '8px'
+                  }
+                }}
               />
               <TextField
                 fullWidth
@@ -152,8 +186,12 @@ const CreateReleaseDialog: React.FC<CreateReleaseDialogProps> = ({
                   shrink: true,
                 }}
                 variant="outlined"
-                className="form-field"
-                sx={{ mb: 3 }}
+                sx={{ 
+                  mb: 2,
+                  '& .MuiOutlinedInput-root': {
+                    borderRadius: '8px'
+                  }
+                }}
               />
               <TextField
                 fullWidth
@@ -162,11 +200,19 @@ const CreateReleaseDialog: React.FC<CreateReleaseDialogProps> = ({
                 onChange={handleInputChange('sealIds')}
                 placeholder="Enter comma-separated seal IDs"
                 variant="outlined"
-                className="form-field"
-                sx={{ mb: 3 }}
+                sx={{ 
+                  mb: 2,
+                  '& .MuiOutlinedInput-root': {
+                    borderRadius: '8px'
+                  }
+                }}
               />
-              <FormControl component="fieldset" className="radio-group-container" sx={{ mb: 3 }}>
-                <FormLabel component="legend" className="radio-label">
+              <FormControl component="fieldset" sx={{ mb: 3 }}>
+                <FormLabel component="legend" sx={{ 
+                  color: '#2c3e50',
+                  fontWeight: 600,
+                  fontSize: '0.875rem'
+                }}>
                   Client Impact
                 </FormLabel>
                 <RadioGroup
@@ -179,15 +225,15 @@ const CreateReleaseDialog: React.FC<CreateReleaseDialogProps> = ({
                   <FormControlLabel value="no" control={<Radio />} label="No" />
                 </RadioGroup>
               </FormControl>
-            </div>
 
-            <Divider className="section-divider" />
-
-            {/* Technical Information */}
-            <Typography variant="h6" className="section-title">
-              ⚙️ Technical Information
+            <Typography variant="h6" sx={{ 
+              fontWeight: 700,
+              color: '#2c3e50',
+              mb: 3,
+              mt: 4
+            }}>
+              Technical Information
             </Typography>
-            <div className="form-section">
               <TextField
                 fullWidth
                 label="Release Branch Name"
@@ -195,8 +241,12 @@ const CreateReleaseDialog: React.FC<CreateReleaseDialogProps> = ({
                 onChange={handleInputChange('releaseBranchName')}
                 required
                 variant="outlined"
-                className="form-field"
-                sx={{ mb: 3 }}
+                sx={{ 
+                  mb: 2,
+                  '& .MuiOutlinedInput-root': {
+                    borderRadius: '8px'
+                  }
+                }}
               />
               <TextField
                 fullWidth
@@ -204,8 +254,12 @@ const CreateReleaseDialog: React.FC<CreateReleaseDialogProps> = ({
                 value={formData.changeNumber}
                 onChange={handleInputChange('changeNumber')}
                 variant="outlined"
-                className="form-field"
-                sx={{ mb: 3 }}
+                sx={{ 
+                  mb: 2,
+                  '& .MuiOutlinedInput-root': {
+                    borderRadius: '8px'
+                  }
+                }}
               />
               <TextField
                 fullWidth
@@ -214,8 +268,12 @@ const CreateReleaseDialog: React.FC<CreateReleaseDialogProps> = ({
                 onChange={handleInputChange('implementationPlanLink')}
                 placeholder="https://..."
                 variant="outlined"
-                className="form-field"
-                sx={{ mb: 3 }}
+                sx={{ 
+                  mb: 2,
+                  '& .MuiOutlinedInput-root': {
+                    borderRadius: '8px'
+                  }
+                }}
               />
               <TextField
                 fullWidth
@@ -224,18 +282,22 @@ const CreateReleaseDialog: React.FC<CreateReleaseDialogProps> = ({
                 onChange={handleInputChange('releaseScopePageLink')}
                 placeholder="https://..."
                 variant="outlined"
-                className="form-field"
-                sx={{ mb: 3 }}
+                sx={{ 
+                  mb: 3,
+                  '& .MuiOutlinedInput-root': {
+                    borderRadius: '8px'
+                  }
+                }}
               />
-            </div>
 
-            <Divider className="section-divider" />
-
-            {/* Team Information */}
-            <Typography variant="h6" className="section-title">
-              👥 Team Information
+            <Typography variant="h6" sx={{ 
+              fontWeight: 700,
+              color: '#2c3e50',
+              mb: 3,
+              mt: 4
+            }}>
+              Team Information
             </Typography>
-            <div className="form-section">
               <TextField
                 fullWidth
                 label="Release Coordinator Name"
@@ -243,8 +305,12 @@ const CreateReleaseDialog: React.FC<CreateReleaseDialogProps> = ({
                 onChange={handleInputChange('releaseCoordinatorName')}
                 required
                 variant="outlined"
-                className="form-field"
-                sx={{ mb: 3 }}
+                sx={{ 
+                  mb: 2,
+                  '& .MuiOutlinedInput-root': {
+                    borderRadius: '8px'
+                  }
+                }}
               />
               <TextField
                 fullWidth
@@ -253,51 +319,48 @@ const CreateReleaseDialog: React.FC<CreateReleaseDialogProps> = ({
                 onChange={handleInputChange('releaseSupervisorName')}
                 required
                 variant="outlined"
-                className="form-field"
-                sx={{ mb: 3 }}
+                sx={{ 
+                  mb: 3,
+                  '& .MuiOutlinedInput-root': {
+                    borderRadius: '8px'
+                  }
+                }}
               />
-            </div>
           </div>
         </DialogContent>
 
-        <DialogActions className="dialog-actions">
+        <DialogActions sx={{ p: 3, gap: 2 }}>
           <Button
             onClick={handleClose}
-            variant="outlined"
-            size="large"
-            className="action-button cancel-button"
             sx={{
+              borderColor: '#ccc',
               color: '#666',
-              fontWeight: 'bold',
               textTransform: 'none',
-              borderColor: '#ddd',
+              borderRadius: '8px',
+              fontWeight: 600,
+              padding: '8px 24px',
               '&:hover': {
-                backgroundColor: '#f5f5f5',
-                color: '#333',
-                borderColor: '#bbb',
-              },
+                borderColor: '#999',
+                backgroundColor: 'rgba(0, 0, 0, 0.04)',
+              }
             }}
+            variant="outlined"
           >
             Cancel
           </Button>
           <Button
             onClick={handleSubmit}
             variant="contained"
-            size="large"
-            className="action-button submit-button"
             sx={{
-              background: 'linear-gradient(135deg, #6495ED 0%, #9370DB 100%)',
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
               color: 'white',
-              fontWeight: 'bold',
-              borderRadius: '8px',
-              boxShadow: '0 4px 8px rgba(100, 149, 237, 0.3)',
               textTransform: 'none',
+              borderRadius: '8px',
+              fontWeight: 600,
+              padding: '8px 24px',
               '&:hover': {
-                background: 'linear-gradient(135deg, #4169E1 0%, #8A2BE2 100%)',
-                boxShadow: '0 6px 12px rgba(100, 149, 237, 0.4)',
-                transform: 'translateY(-2px)',
-              },
-              transition: 'all 0.3s ease',
+                background: 'linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%)',
+              }
             }}
           >
             Create Release

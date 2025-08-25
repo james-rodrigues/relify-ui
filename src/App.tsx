@@ -168,11 +168,25 @@ function App() {
         </Box>
       ) : currentView === 'dashboard' ? (
         <Box className="app-container">
-          <Header onSettingsClick={handleSettingsClick} />
+          <Box 
+            sx={{ 
+              position: 'sticky', 
+              top: 0, 
+              zIndex: 1300,
+              boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+            }}
+          >
+            <Header onSettingsClick={handleSettingsClick} />
+          </Box>
           <HeroSection />
-          <Container maxWidth="lg" className="main-content">
+          <Box sx={{ 
+            width: '100%',
+            px: 0,
+            position: 'relative',
+            zIndex: 1
+          }}>
             <Releases onReleaseClick={handleReleaseClick} />
-          </Container>
+          </Box>
         </Box>
       ) : (
         selectedRelease && (

@@ -6,14 +6,16 @@ import {
   Typography,
   TextField,
   Button,
-  InputAdornment
+  InputAdornment,
+  Box,
+  Container
 } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { Search as SearchIcon, Add as AddIcon } from '@mui/icons-material'
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import ReleaseCard from '../ReleaseCard'
 import CreateReleaseDialog, { type ReleaseFormData } from '../CreateReleaseDialog'
-import { getReleasesData } from '../../utils/mockDataLoader'
+import { getReleasesData, type Release } from '../../utils/mockDataLoader'
 import './styles.scss'
 
 interface ReleasesProps {
@@ -34,101 +36,286 @@ const Releases: React.FC<ReleasesProps> = ({ onReleaseClick }) => {
     setSearchTerm(event.target.value)
   }
 
+  // Filter releases based on search term
+  const searchResults = useMemo(() => {
+    if (!searchTerm.trim()) return []
+    
+    const allReleases = [...currentReleases, ...pastReleases]
+    const term = searchTerm.toLowerCase()
+    
+    return allReleases.filter(release => 
+      release.id.toLowerCase().includes(term) ||
+      release.title.toLowerCase().includes(term) ||
+      release.fixVersion.toLowerCase().includes(term)
+    )
+  }, [searchTerm, currentReleases, pastReleases])
+
+  // Filter current and past releases when searching
+  const filteredCurrentReleases = useMemo(() => {
+    if (searchTerm.trim()) return []
+    return currentReleases
+  }, [searchTerm, currentReleases])
+
+  const filteredPastReleases = useMemo(() => {
+    if (searchTerm.trim()) return []
+    return pastReleases
+  }, [searchTerm, pastReleases])
+
   return (
-    <div className="releases-container">
+    <Box sx={{ width: '100%', px: 0 }}>
       {/* Search and Create Section */}
-      <div className="search-create-section">
-        <TextField
-          variant="outlined"
-          placeholder="Search by Release ID, Release Name, or Fix Version"
-          value={searchTerm}
-          onChange={handleSearchChange}
-          className="search-field"
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon className="search-icon" />
-              </InputAdornment>
-            ),
-            className: "search-input"
-          }}
-          inputProps={{
-            className: "search-placeholder"
-          }}
-        />
-        
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          onClick={() => setCreateDialogOpen(true)}
-          className="create-button"
-        >
-          Create Release
-        </Button>
-      </div>
+      <Container maxWidth={false} sx={{ px: { xs: 3, md: 6 }, mb: 3 }}>
+        <Box sx={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+          gap: 2
+        }}>
+          <TextField
+            variant="outlined"
+            placeholder="Search releases..."
+            value={searchTerm}
+            onChange={handleSearchChange}
+            size="small"
+            sx={{
+              width: { xs: '200px', md: '280px' },
+              '& .MuiOutlinedInput-root': {
+                borderRadius: '8px',
+                backgroundColor: 'white',
+                boxShadow: '0 2px 4px rgba(0,0,0,0.08)',
+                '&:hover fieldset': {
+                  borderColor: '#6495ED',
+                },
+                '&.Mui-focused fieldset': {
+                  borderColor: '#6495ED',
+                  borderWidth: '1px'
+                }
+              }
+            }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon sx={{ color: '#6495ED', fontSize: '18px' }} />
+                </InputAdornment>
+              )
+            }}
+          />
+          
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            onClick={() => setCreateDialogOpen(true)}
+            sx={{
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              color: 'white',
+              padding: '10px 20px',
+              borderRadius: '8px',
+              fontWeight: 600,
+              textTransform: 'none',
+              boxShadow: '0 4px 12px rgba(102, 126, 234, 0.3)',
+              '&:hover': {
+                background: 'linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%)',
+                boxShadow: '0 6px 16px rgba(102, 126, 234, 0.4)',
+                transform: 'translateY(-2px)',
+              },
+              transition: 'all 0.3s ease',
+            }}
+          >
+            Create Release
+          </Button>
+        </Box>
+      </Container>
+
+      {/* Search Results Accordion */}
+      {searchTerm.trim() && (
+        <Box sx={{ width: '100%', mb: 2, px: { xs: 3, md: 6 } }}>
+          <Accordion 
+            defaultExpanded
+            sx={{ 
+              width: '100%',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+              borderRadius: '12px',
+              overflow: 'hidden',
+              '&::before': { display: 'none' }
+            }}
+          >
+            <AccordionSummary 
+              expandIcon={<ExpandMoreIcon />}
+              sx={{
+                backgroundColor: '#f8f9fa',
+                borderBottom: '1px solid #e9ecef',
+                '& .MuiAccordionSummary-content': {
+                  margin: '16px 0'
+                }
+              }}
+            >
+              <Typography 
+                variant="h5" 
+                sx={{
+                  fontWeight: 600,
+                  color: '#2c3e50',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 1
+                }}
+              >
+                🔍 Search Results ({searchResults.length})
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails sx={{ p: 3 }}>
+              {searchResults.length > 0 ? (
+                <Grid container spacing={3}>
+                  {searchResults.map((release) => (
+                    <Grid key={release.id} item xs={12} sm={6} md={6}>
+                      <ReleaseCard 
+                        title={release.title}
+                        type={release.type}
+                        status={release.status}
+                        progress={release.progress}
+                        date={release.date}
+                        releaseId={release.id}
+                        fixVersion={release.fixVersion}
+                        description={release.description}
+                        onTitleClick={() => onReleaseClick(release.title, release.date, release.type)}
+                      />
+                    </Grid>
+                  ))}
+                </Grid>
+              ) : (
+                <Box sx={{ 
+                  textAlign: 'center', 
+                  py: 4,
+                  color: '#666'
+                }}>
+                  <SearchIcon sx={{ fontSize: 48, mb: 2, opacity: 0.5 }} />
+                  <Typography variant="h6" sx={{ mb: 1 }}>
+                    No releases found
+                  </Typography>
+                  <Typography variant="body2">
+                    Try adjusting your search term "{searchTerm}"
+                  </Typography>
+                </Box>
+              )}
+            </AccordionDetails>
+          </Accordion>
+        </Box>
+      )}
 
       {/* Current Releases Accordion */}
-      <Accordion className="releases-accordion current-releases">
-        <AccordionSummary 
-          expandIcon={<ExpandMoreIcon className="accordion-expand-icon" />}
-          className="accordion-summary"
-        >
-          <Typography 
-            variant="h5" 
-            className="accordion-title"
+      {!searchTerm.trim() && (
+        <Box sx={{ width: '100%', mb: 2, px: { xs: 3, md: 6 } }}>
+          <Accordion 
+            defaultExpanded
+            sx={{ 
+              width: '100%',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+              borderRadius: '12px',
+              overflow: 'hidden',
+              '&::before': { display: 'none' }
+            }}
           >
-            🚀 Current Releases Planned
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails className="accordion-details">
-          <Grid container spacing={3} className="cards-grid">
-            {currentReleases.map((release) => (
-              <Grid key={release.id} item xs={12} sm={6}>
-                <ReleaseCard 
-                  title={release.title}
-                  type={release.type}
-                  status={release.status}
-                  progress={release.progress}
-                  date={release.date}
-                  description={release.description}
-                  onTitleClick={() => onReleaseClick(release.title, release.date, release.type)}
-                />
+            <AccordionSummary 
+              expandIcon={<ExpandMoreIcon />}
+              sx={{
+                backgroundColor: '#f8f9fa',
+                borderBottom: '1px solid #e9ecef',
+                '& .MuiAccordionSummary-content': {
+                  margin: '16px 0'
+                }
+              }}
+            >
+              <Typography 
+                variant="h5" 
+                sx={{
+                  fontWeight: 600,
+                  color: '#2c3e50',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 1
+                }}
+              >
+                🚀 Current Releases Planned ({filteredCurrentReleases.length})
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails sx={{ p: 3 }}>
+              <Grid container spacing={3}>
+                {filteredCurrentReleases.map((release) => (
+                  <Grid key={release.id} item xs={12} sm={6} md={6}>
+                    <ReleaseCard 
+                      title={release.title}
+                      type={release.type}
+                      status={release.status}
+                      progress={release.progress}
+                      date={release.date}
+                      releaseId={release.id}
+                      fixVersion={release.fixVersion}
+                      description={release.description}
+                      onTitleClick={() => onReleaseClick(release.title, release.date, release.type)}
+                    />
+                  </Grid>
+                ))}
               </Grid>
-            ))}
-          </Grid>
-        </AccordionDetails>
-      </Accordion>
+            </AccordionDetails>
+          </Accordion>
+        </Box>
+      )}
 
       {/* Past Releases Accordion */}
-      <Accordion className="releases-accordion past-releases">
-        <AccordionSummary 
-          expandIcon={<ExpandMoreIcon className="accordion-expand-icon" />}
-          className="accordion-summary"
-        >
-          <Typography 
-            variant="h5" 
-            className="accordion-title"
+      {!searchTerm.trim() && (
+        <Box sx={{ width: '100%', mb: 2, px: { xs: 3, md: 6 } }}>
+          <Accordion 
+            sx={{ 
+              width: '100%',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+              borderRadius: '12px',
+              overflow: 'hidden',
+              '&::before': { display: 'none' }
+            }}
           >
-            ✅ Past Releases
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails className="accordion-details">
-          <Grid container spacing={3} className="cards-grid">
-            {pastReleases.map((release) => (
-              <Grid key={release.id} item xs={12} sm={6}>
-                <ReleaseCard 
-                  title={release.title}
-                  type={release.type}
-                  status={release.status}
-                  date={release.date}
-                  description={release.description}
-                  onTitleClick={() => onReleaseClick(release.title, release.date, release.type)}
-                />
+            <AccordionSummary 
+              expandIcon={<ExpandMoreIcon />}
+              sx={{
+                backgroundColor: '#f8f9fa',
+                borderBottom: '1px solid #e9ecef',
+                '& .MuiAccordionSummary-content': {
+                  margin: '16px 0'
+                }
+              }}
+            >
+              <Typography 
+                variant="h5" 
+                sx={{
+                  fontWeight: 600,
+                  color: '#2c3e50',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 1
+                }}
+              >
+                ✅ Past Releases ({filteredPastReleases.length})
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails sx={{ p: 3 }}>
+              <Grid container spacing={3}>
+                {filteredPastReleases.map((release) => (
+                  <Grid key={release.id} item xs={12} sm={6} md={6}>
+                    <ReleaseCard 
+                      title={release.title}
+                      type={release.type}
+                      status={release.status}
+                      date={release.date}
+                      releaseId={release.id}
+                      fixVersion={release.fixVersion}
+                      description={release.description}
+                      onTitleClick={() => onReleaseClick(release.title, release.date, release.type)}
+                    />
+                  </Grid>
+                ))}
               </Grid>
-            ))}
-          </Grid>
-        </AccordionDetails>
-      </Accordion>
+            </AccordionDetails>
+          </Accordion>
+        </Box>
+      )}
 
       {/* Create Release Dialog */}
       <CreateReleaseDialog
@@ -136,7 +323,7 @@ const Releases: React.FC<ReleasesProps> = ({ onReleaseClick }) => {
         onClose={() => setCreateDialogOpen(false)}
         onSubmit={handleCreateRelease}
       />
-    </div>
+    </Box>
   )
 }
 

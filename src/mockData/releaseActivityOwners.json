@@ -1,0 +1,32 @@
+[
+  {
+    "id": "1",
+    "activityId": "ACT001",
+    "contactId": "CON001",
+    "alternateContactId": "CON002"
+  },
+  {
+    "id": "2",
+    "activityId": "ACT002",
+    "contactId": "CON003",
+    "alternateContactId": "CON004"
+  },
+  {
+    "id": "3",
+    "activityId": "ACT003",
+    "contactId": "CON005",
+    "alternateContactId": "CON001"
+  },
+  {
+    "id": "4",
+    "activityId": "ACT004",
+    "contactId": "CON002",
+    "alternateContactId": "CON006"
+  },
+  {
+    "id": "5",
+    "activityId": "ACT005",
+    "contactId": "CON006",
+    "alternateContactId": "CON003"
+  }
+]

@@ -1,0 +1,32 @@
+[
+  {
+    "id": "1",
+    "governanceActivityId": "GOV001",
+    "governanceActivityName": "Code Review Process",
+    "cutOffDaysLeadtime": "3"
+  },
+  {
+    "id": "2", 
+    "governanceActivityId": "GOV002",
+    "governanceActivityName": "Security Assessment",
+    "cutOffDaysLeadtime": "5"
+  },
+  {
+    "id": "3",
+    "governanceActivityId": "GOV003", 
+    "governanceActivityName": "Performance Testing",
+    "cutOffDaysLeadtime": "2"
+  },
+  {
+    "id": "4",
+    "governanceActivityId": "GOV004",
+    "governanceActivityName": "Documentation Review",
+    "cutOffDaysLeadtime": "1"
+  },
+  {
+    "id": "5",
+    "governanceActivityId": "GOV005",
+    "governanceActivityName": "Business Approval",
+    "cutOffDaysLeadtime": "7"
+  }
+]

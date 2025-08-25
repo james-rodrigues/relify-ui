@@ -1,0 +1,32 @@
+[
+  {
+    "id": "1",
+    "categoryId": "CAT001",
+    "categoryName": "Development"
+  },
+  {
+    "id": "2",
+    "categoryId": "CAT002", 
+    "categoryName": "Testing"
+  },
+  {
+    "id": "3",
+    "categoryId": "CAT003",
+    "categoryName": "Security"
+  },
+  {
+    "id": "4",
+    "categoryId": "CAT004",
+    "categoryName": "Documentation"
+  },
+  {
+    "id": "5",
+    "categoryId": "CAT005",
+    "categoryName": "Deployment"
+  },
+  {
+    "id": "6",
+    "categoryId": "CAT006",
+    "categoryName": "Monitoring"
+  }
+]

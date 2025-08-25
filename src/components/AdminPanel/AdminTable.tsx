@@ -8,11 +8,13 @@ import {
   TablePagination,
   Chip,
   Box,
-  Button
+  Button,
+  IconButton
 } from '@mui/material'
 import { 
   Refresh as RefreshIcon, 
-  Add as AddIcon
+  Add as AddIcon,
+  Edit as EditIcon
 } from '@mui/icons-material'
 import { useState } from 'react'
 
@@ -29,9 +31,11 @@ interface AdminTableProps {
   data: Record<string, any>[]
   onRefresh?: () => void
   onAddEntry?: () => void
+  onEditEntry?: (rowData: Record<string, any>) => void
+  hideActionButtons?: boolean
 }
 
-const AdminTable = ({ columns, data, onRefresh, onAddEntry }: AdminTableProps) => {
+const AdminTable = ({ columns, data, onRefresh, onAddEntry, onEditEntry, hideActionButtons = false }: AdminTableProps) => {
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
 
@@ -56,7 +60,27 @@ const AdminTable = ({ columns, data, onRefresh, onAddEntry }: AdminTableProps) =
     return statusColors[status] || '#95a5a6'
   }
 
-  const renderCellContent = (column: Column, value: any) => {
+  const renderCellContent = (column: Column, value: any, rowData?: Record<string, any>) => {
+    // Handle edit column with edit icon
+    if (column.id === 'edit') {
+      return (
+        <IconButton
+          onClick={() => onEditEntry && onEditEntry(rowData!)}
+          sx={{
+            color: '#667eea',
+            '&:hover': {
+              backgroundColor: 'rgba(102, 126, 234, 0.1)',
+              color: '#5a6fd8'
+            },
+            transition: 'all 0.2s ease'
+          }}
+          size="small"
+        >
+          <EditIcon fontSize="small" />
+        </IconButton>
+      )
+    }
+
     // Handle status columns with chips
     if (column.id === 'status' && typeof value === 'string') {
       return (
@@ -70,6 +94,32 @@ const AdminTable = ({ columns, data, onRefresh, onAddEntry }: AdminTableProps) =
           }}
           size="small"
         />
+      )
+    }
+
+    // Handle repository links as clickable links
+    if (column.id === 'repositoryLink' && value && value.startsWith('http')) {
+      return (
+        <Box
+          component="a"
+          href={value}
+          target="_blank"
+          rel="noopener noreferrer"
+          sx={{
+            color: '#667eea',
+            textDecoration: 'none',
+            '&:hover': {
+              textDecoration: 'underline'
+            },
+            maxWidth: 200,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            display: 'block'
+          }}
+        >
+          {value}
+        </Box>
       )
     }
 
@@ -101,55 +151,57 @@ const AdminTable = ({ columns, data, onRefresh, onAddEntry }: AdminTableProps) =
 
   return (
     <Box>
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mb: 3 }}>
-        <Button
-          variant="contained"
-          startIcon={<RefreshIcon />}
-          onClick={onRefresh}
-          sx={{
-            background: 'linear-gradient(135deg, #6495ED 0%, #9370DB 100%)',
-            color: 'white',
-            fontWeight: 'bold',
-            borderRadius: '8px',
-            boxShadow: '0 4px 8px rgba(100, 149, 237, 0.3)',
-            textTransform: 'none',
-            padding: '10px 20px',
-            '&:hover': {
-              background: 'linear-gradient(135deg, #4169E1 0%, #8A2BE2 100%)',
-              boxShadow: '0 6px 12px rgba(100, 149, 237, 0.4)',
-              transform: 'translateY(-2px)',
-            },
-            transition: 'all 0.3s ease',
-          }}
-        >
-          Refresh
-        </Button>
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          onClick={onAddEntry}
-          sx={{
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            color: 'white',
-            padding: '10px 20px',
-            borderRadius: '8px',
-            fontWeight: 600,
-            textTransform: 'none',
-            boxShadow: '0 4px 12px rgba(102, 126, 234, 0.3)',
-            transition: 'all 0.3s ease',
-            '&:hover': {
-              transform: 'translateY(-2px)',
-              boxShadow: '0 8px 20px rgba(102, 126, 234, 0.4)',
-            },
-            '&:disabled': {
-              opacity: 0.7,
-              transform: 'none',
-            }
-          }}
-        >
-          Add Entry
-        </Button>
-      </Box>
+      {!hideActionButtons && (
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mb: 3 }}>
+          <Button
+            variant="contained"
+            startIcon={<RefreshIcon />}
+            onClick={onRefresh}
+            sx={{
+              background: 'linear-gradient(135deg, #6495ED 0%, #9370DB 100%)',
+              color: 'white',
+              fontWeight: 'bold',
+              borderRadius: '8px',
+              boxShadow: '0 4px 8px rgba(100, 149, 237, 0.3)',
+              textTransform: 'none',
+              padding: '10px 20px',
+              '&:hover': {
+                background: 'linear-gradient(135deg, #4169E1 0%, #8A2BE2 100%)',
+                boxShadow: '0 6px 12px rgba(100, 149, 237, 0.4)',
+                transform: 'translateY(-2px)',
+              },
+              transition: 'all 0.3s ease',
+            }}
+          >
+            Refresh
+          </Button>
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            onClick={onAddEntry}
+            sx={{
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              color: 'white',
+              padding: '10px 20px',
+              borderRadius: '8px',
+              fontWeight: 600,
+              textTransform: 'none',
+              boxShadow: '0 4px 12px rgba(102, 126, 234, 0.3)',
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                transform: 'translateY(-2px)',
+                boxShadow: '0 8px 20px rgba(102, 126, 234, 0.4)',
+              },
+              '&:disabled': {
+                opacity: 0.7,
+                transform: 'none',
+              }
+            }}
+          >
+            Add Entry
+          </Button>
+        </Box>
+      )}
       <TableContainer sx={{ maxHeight: 600 }}>
         <Table stickyHeader aria-label="admin table">
           <TableHead>
@@ -199,7 +251,7 @@ const AdminTable = ({ columns, data, onRefresh, onAddEntry }: AdminTableProps) =
                           py: 1.5
                         }}
                       >
-                        {renderCellContent(column, value)}
+                        {renderCellContent(column, value, row)}
                       </TableCell>
                     )
                   })}

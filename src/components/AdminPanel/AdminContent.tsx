@@ -1,111 +1,96 @@
-import { Box, Typography, Paper } from '@mui/material'
-import { useState } from 'react'
+import { Box, Typography, Paper, TextField, InputAdornment, Button } from '@mui/material'
+import { useState, useMemo } from 'react'
+import { Search as SearchIcon, Refresh as RefreshIcon, Add as AddIcon } from '@mui/icons-material'
 import AdminTable from './AdminTable'
 import AddEntryDialog from './AddEntryDialog'
+import ApplicationsAccordion from './ApplicationsAccordion'
 
 interface AdminContentProps {
   selectedMenuItem: string
   tableData: Record<string, any[]>
   onAddEntry: (menuItem: string, newEntry: Record<string, any>) => void
+  onEditEntry: (menuItem: string, editedEntry: Record<string, any>) => void
   onRefreshData: () => void
 }
 
-// Mock data for each table - in a real application, this would come from APIs
+// Table configurations with updated column definitions
 const tableConfigs = {
   'Release Governance Activities': {
     title: 'Release Governance Activities',
     columns: [
-      { id: 'id', label: 'ID', minWidth: 70 },
-      { id: 'name', label: 'Activity Name', minWidth: 200 },
-      { id: 'description', label: 'Description', minWidth: 300 },
-      { id: 'category', label: 'Category', minWidth: 150 },
-      { id: 'status', label: 'Status', minWidth: 100 }
-    ],
-    data: [
-      { id: '1', name: 'Code Review', description: 'Mandatory code review process', category: 'Quality', status: 'Active' },
-      { id: '2', name: 'Security Scan', description: 'Automated security vulnerability scanning', category: 'Security', status: 'Active' },
-      { id: '3', name: 'Performance Testing', description: 'Load and performance testing', category: 'Quality', status: 'Active' },
-      { id: '4', name: 'Documentation Update', description: 'Update release documentation', category: 'Documentation', status: 'Pending' }
+      { id: 'edit', label: 'Edit', minWidth: 80 },
+      { id: 'governanceActivityId', label: 'Governance Activity ID', minWidth: 180 },
+      { id: 'governanceActivityName', label: 'Governance Activity Name', minWidth: 250 },
+      { id: 'cutOffDaysLeadtime', label: 'Cut Off Days Leadtime', minWidth: 180 }
     ]
   },
   'Release Activities Categories': {
     title: 'Release Activities Categories',
     columns: [
-      { id: 'id', label: 'ID', minWidth: 70 },
-      { id: 'name', label: 'Category Name', minWidth: 200 },
-      { id: 'description', label: 'Description', minWidth: 300 },
-      { id: 'color', label: 'Color', minWidth: 100 },
-      { id: 'count', label: 'Activities Count', minWidth: 150 }
-    ],
-    data: [
-      { id: '1', name: 'Quality', description: 'Quality assurance activities', color: '#3498db', count: '15' },
-      { id: '2', name: 'Security', description: 'Security-related activities', color: '#e74c3c', count: '8' },
-      { id: '3', name: 'Documentation', description: 'Documentation activities', color: '#2ecc71', count: '5' },
-      { id: '4', name: 'Deployment', description: 'Deployment-related activities', color: '#f39c12', count: '12' }
+      { id: 'edit', label: 'Edit', minWidth: 80 },
+      { id: 'categoryId', label: 'Category ID', minWidth: 150 },
+      { id: 'categoryName', label: 'Category Name', minWidth: 200 }
     ]
   },
   'Release Activities': {
     title: 'Release Activities',
     columns: [
-      { id: 'id', label: 'ID', minWidth: 70 },
-      { id: 'name', label: 'Activity Name', minWidth: 200 },
-      { id: 'assignee', label: 'Assignee', minWidth: 150 },
-      { id: 'dueDate', label: 'Due Date', minWidth: 120 },
-      { id: 'status', label: 'Status', minWidth: 100 }
-    ],
-    data: [
-      { id: '1', name: 'API Testing', assignee: 'John Doe', dueDate: '2024-02-15', status: 'In Progress' },
-      { id: '2', name: 'UI Review', assignee: 'Jane Smith', dueDate: '2024-02-10', status: 'Completed' },
-      { id: '3', name: 'Database Migration', assignee: 'Bob Johnson', dueDate: '2024-02-20', status: 'Pending' },
-      { id: '4', name: 'Integration Testing', assignee: 'Alice Brown', dueDate: '2024-02-18', status: 'In Progress' }
+      { id: 'edit', label: 'Edit', minWidth: 80 },
+      { id: 'activityId', label: 'Activity ID', minWidth: 120 },
+      { id: 'activityName', label: 'Activity Name', minWidth: 200 },
+      { id: 'categoryId', label: 'Category ID', minWidth: 120 },
+      { id: 'type', label: 'Type', minWidth: 100 },
+      { id: 'activitySubjectPrefix', label: 'Activity Subject Prefix', minWidth: 180 },
+      { id: 'activityDetails', label: 'Activity Details', minWidth: 250 },
+      { id: 'isAutomated', label: 'Is Automated?', minWidth: 120 },
+      { id: 'apiUrl', label: 'API URL', minWidth: 200 },
+      { id: 'modeOfCommunication', label: 'Mode of Communication', minWidth: 180 },
+      { id: 'governanceActivityId', label: 'Governance Activity ID', minWidth: 180 }
     ]
   },
-  'Point of Contacts': {
-    title: 'Point of Contacts',
+  'Release Schedule': {
+    title: 'Release Schedule',
     columns: [
-      { id: 'id', label: 'ID', minWidth: 70 },
-      { id: 'name', label: 'Name', minWidth: 150 },
-      { id: 'email', label: 'Email', minWidth: 200 },
-      { id: 'role', label: 'Role', minWidth: 150 },
-      { id: 'department', label: 'Department', minWidth: 150 }
-    ],
-    data: [
-      { id: '1', name: 'John Doe', email: 'john.doe@company.com', role: 'Release Manager', department: 'Engineering' },
-      { id: '2', name: 'Jane Smith', email: 'jane.smith@company.com', role: 'QA Lead', department: 'Quality Assurance' },
-      { id: '3', name: 'Bob Johnson', email: 'bob.johnson@company.com', role: 'DevOps Engineer', department: 'Operations' },
-      { id: '4', name: 'Alice Brown', email: 'alice.brown@company.com', role: 'Security Analyst', department: 'Security' }
+      { id: 'edit', label: 'Edit', minWidth: 80 },
+      { id: 'scheduleId', label: 'Schedule ID', minWidth: 120 },
+      { id: 'activityId', label: 'Activity ID', minWidth: 120 },
+      { id: 'activityLeadTime', label: 'Activity Lead Time', minWidth: 150 },
+      { id: 'activityLeadTimeWrt', label: 'Activity Lead Time Wrt', minWidth: 180 },
+      { id: 'activityTime', label: 'Activity Time', minWidth: 180 }
     ]
   },
   'Release Activity Owners': {
     title: 'Release Activity Owners',
     columns: [
-      { id: 'id', label: 'ID', minWidth: 70 },
-      { id: 'name', label: 'Owner Name', minWidth: 150 },
-      { id: 'email', label: 'Email', minWidth: 200 },
-      { id: 'activities', label: 'Owned Activities', minWidth: 100 },
-      { id: 'team', label: 'Team', minWidth: 150 }
-    ],
-    data: [
-      { id: '1', name: 'Sarah Wilson', email: 'sarah.wilson@company.com', activities: '5', team: 'Backend Team' },
-      { id: '2', name: 'Mike Davis', email: 'mike.davis@company.com', activities: '3', team: 'Frontend Team' },
-      { id: '3', name: 'Lisa Chen', email: 'lisa.chen@company.com', activities: '7', team: 'QA Team' },
-      { id: '4', name: 'Tom Rodriguez', email: 'tom.rodriguez@company.com', activities: '4', team: 'DevOps Team' }
+      { id: 'edit', label: 'Edit', minWidth: 80 },
+      { id: 'activityId', label: 'Activity ID', minWidth: 150 },
+      { id: 'contactId', label: 'Contact ID', minWidth: 150 },
+      { id: 'alternateContactId', label: 'Alternate Contact ID', minWidth: 180 }
+    ]
+  },
+  'Point of Contacts': {
+    title: 'Point of Contacts',
+    columns: [
+      { id: 'edit', label: 'Edit', minWidth: 80 },
+      { id: 'contactId', label: 'Contact ID', minWidth: 120 },
+      { id: 'type', label: 'Type', minWidth: 100 },
+      { id: 'name', label: 'Name', minWidth: 150 },
+      { id: 'role', label: 'Role', minWidth: 150 },
+      { id: 'sid', label: 'SID', minWidth: 100 },
+      { id: 'emailId', label: 'Email ID', minWidth: 200 }
     ]
   },
   'Applications': {
     title: 'Applications',
     columns: [
-      { id: 'id', label: 'ID', minWidth: 70 },
-      { id: 'name', label: 'Application Name', minWidth: 200 },
-      { id: 'version', label: 'Version', minWidth: 100 },
-      { id: 'owner', label: 'Owner', minWidth: 150 },
-      { id: 'status', label: 'Status', minWidth: 100 }
-    ],
-    data: [
-      { id: '1', name: 'User Management API', version: '2.1.0', owner: 'Backend Team', status: 'Active' },
-      { id: '2', name: 'Customer Portal', version: '1.5.2', owner: 'Frontend Team', status: 'Active' },
-      { id: '3', name: 'Analytics Dashboard', version: '3.0.1', owner: 'Data Team', status: 'Active' },
-      { id: '4', name: 'Payment Gateway', version: '1.8.4', owner: 'Payment Team', status: 'Maintenance' }
+      { id: 'edit', label: 'Edit', minWidth: 80 },
+      { id: 'applicationId', label: 'Application ID', minWidth: 130 },
+      { id: 'appName', label: 'App Name', minWidth: 180 },
+      { id: 'appType', label: 'App Type', minWidth: 140 },
+      { id: 'projectName', label: 'Project Name', minWidth: 160 },
+      { id: 'platform', label: 'Platform', minWidth: 140 },
+      { id: 'repositoryLink', label: 'Repository Link', minWidth: 200 },
+      { id: 'deploymentPlatform', label: 'Deployment Platform', minWidth: 180 }
     ]
   }
 }
@@ -114,9 +99,12 @@ const AdminContent = ({
   selectedMenuItem, 
   tableData, 
   onAddEntry, 
+  onEditEntry,
   onRefreshData 
 }: AdminContentProps) => {
   const [dialogOpen, setDialogOpen] = useState(false)
+  const [editingEntry, setEditingEntry] = useState<Record<string, any> | null>(null)
+  const [searchTerm, setSearchTerm] = useState('')
   const config = tableConfigs[selectedMenuItem as keyof typeof tableConfigs]
 
   const handleRefresh = () => {
@@ -124,17 +112,58 @@ const AdminContent = ({
   }
 
   const handleAddEntryClick = () => {
+    setEditingEntry(null)
     setDialogOpen(true)
   }
 
-  const handleDialogSubmit = (newEntry: Record<string, any>) => {
-    onAddEntry(selectedMenuItem, newEntry)
+  const handleEditEntryClick = (rowData: Record<string, any>) => {
+    setEditingEntry(rowData)
+    setDialogOpen(true)
+  }
+
+  const handleDialogSubmit = (entryData: Record<string, any>) => {
+    if (editingEntry) {
+      // Edit mode
+      onEditEntry(selectedMenuItem, { ...editingEntry, ...entryData })
+    } else {
+      // Add mode
+      onAddEntry(selectedMenuItem, entryData)
+    }
     setDialogOpen(false)
+    setEditingEntry(null)
   }
 
   const handleDialogClose = () => {
     setDialogOpen(false)
+    setEditingEntry(null)
   }
+
+  // Get the search field for current menu
+  const getSearchField = (menuItem: string) => {
+    const searchFields: Record<string, string> = {
+      'Release Governance Activities': 'governanceActivityName',
+      'Release Activities Categories': 'categoryName', 
+      'Release Activities': 'activityName',
+      'Release Schedule': 'scheduleId',
+      'Release Activity Owners': 'activityId',
+      'Point of Contacts': 'name',
+      'Applications': 'appName'
+    }
+    return searchFields[menuItem] || 'id'
+  }
+
+  // Filter data based on search term
+  const filteredData = useMemo(() => {
+    if (!searchTerm.trim()) {
+      return tableData[selectedMenuItem] || []
+    }
+    
+    const searchField = getSearchField(selectedMenuItem)
+    return (tableData[selectedMenuItem] || []).filter(item => {
+      const searchValue = item[searchField]?.toString().toLowerCase() || ''
+      return searchValue.includes(searchTerm.toLowerCase())
+    })
+  }, [tableData, selectedMenuItem, searchTerm])
 
   if (!config) {
     return (
@@ -142,6 +171,50 @@ const AdminContent = ({
         <Typography variant="h5" color="error">
           Invalid menu selection
         </Typography>
+      </Box>
+    )
+  }
+
+  // Special handling for Applications - use accordion layout
+  if (selectedMenuItem === 'Applications') {
+    return (
+      <Box className="admin-content">
+        <Box className="admin-content-header">
+          <Typography 
+            variant="h4" 
+            sx={{ 
+              fontWeight: 700,
+              color: '#2c3e50',
+              mb: 1
+            }}
+          >
+            {config.title}
+          </Typography>
+          <Typography 
+            variant="body1" 
+            sx={{ 
+              color: '#5a6c7d',
+              mb: 3
+            }}
+          >
+            Manage and configure {config.title.toLowerCase()}
+          </Typography>
+        </Box>
+        <Paper 
+          elevation={1} 
+          sx={{ 
+            borderRadius: 2, 
+            overflow: 'hidden',
+            p: 3
+          }}
+        >
+          <ApplicationsAccordion
+            onAddEntry={(entry) => onAddEntry(selectedMenuItem, entry)}
+            onEditEntry={(entry) => onEditEntry(selectedMenuItem, entry)}
+            searchTerm={searchTerm}
+            onSearchChange={setSearchTerm}
+          />
+        </Paper>
       </Box>
     )
   }
@@ -178,11 +251,104 @@ const AdminContent = ({
           p: 3 // Add padding inside the paper container
         }}
       >
+        {/* Search and Action Bar */}
+        <Box sx={{ 
+          display: 'flex', 
+          justifyContent: 'space-between', 
+          alignItems: 'center', 
+          mb: 3,
+          gap: 2
+        }}>
+          <TextField
+            placeholder={`Search by ${getSearchField(selectedMenuItem) === 'appName' ? 'Application Name' : 
+              getSearchField(selectedMenuItem) === 'activityName' ? 'Activity Name' :
+              getSearchField(selectedMenuItem) === 'governanceActivityName' ? 'Governance Activity Name' :
+              getSearchField(selectedMenuItem) === 'categoryName' ? 'Category Name' :
+              getSearchField(selectedMenuItem) === 'name' ? 'Name' :
+              getSearchField(selectedMenuItem) === 'scheduleId' ? 'Schedule ID' :
+              getSearchField(selectedMenuItem) === 'activityId' ? 'Activity ID' : 'ID'}...`}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            variant="outlined"
+            size="small"
+            sx={{ 
+              minWidth: 300,
+              '& .MuiOutlinedInput-root': {
+                borderRadius: '8px',
+                '&:hover fieldset': {
+                  borderColor: '#6495ED',
+                },
+                '&.Mui-focused fieldset': {
+                  borderColor: '#6495ED',
+                }
+              }
+            }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon sx={{ color: '#6495ED', fontSize: '20px' }} />
+                </InputAdornment>
+              ),
+            }}
+          />
+          <Box sx={{ display: 'flex', gap: 1 }}>
+            <Button
+              variant="contained"
+              startIcon={<RefreshIcon />}
+              onClick={handleRefresh}
+              sx={{
+                background: 'linear-gradient(135deg, #6495ED 0%, #9370DB 100%)',
+                color: 'white',
+                fontWeight: 'bold',
+                borderRadius: '8px',
+                boxShadow: '0 4px 8px rgba(100, 149, 237, 0.3)',
+                textTransform: 'none',
+                padding: '10px 20px',
+                '&:hover': {
+                  background: 'linear-gradient(135deg, #4169E1 0%, #8A2BE2 100%)',
+                  boxShadow: '0 6px 12px rgba(100, 149, 237, 0.4)',
+                  transform: 'translateY(-2px)',
+                },
+                transition: 'all 0.3s ease',
+              }}
+            >
+              Refresh
+            </Button>
+            <Button
+              variant="contained"
+              startIcon={<AddIcon />}
+              onClick={handleAddEntryClick}
+              sx={{
+                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                color: 'white',
+                padding: '10px 20px',
+                borderRadius: '8px',
+                fontWeight: 600,
+                textTransform: 'none',
+                boxShadow: '0 4px 12px rgba(102, 126, 234, 0.3)',
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  transform: 'translateY(-2px)',
+                  boxShadow: '0 8px 20px rgba(102, 126, 234, 0.4)',
+                },
+                '&:disabled': {
+                  opacity: 0.7,
+                  transform: 'none',
+                }
+              }}
+            >
+              Add Entry
+            </Button>
+          </Box>
+        </Box>
+        
         <AdminTable 
           columns={config.columns}
-          data={tableData[selectedMenuItem] || []}
+          data={filteredData}
           onRefresh={handleRefresh}
           onAddEntry={handleAddEntryClick}
+          onEditEntry={handleEditEntryClick}
+          hideActionButtons={true}
         />
       </Paper>
       
@@ -192,6 +358,8 @@ const AdminContent = ({
         onSubmit={handleDialogSubmit}
         columns={config.columns}
         title={config.title}
+        editingEntry={editingEntry}
+        isEdit={!!editingEntry}
       />
     </Box>
   )

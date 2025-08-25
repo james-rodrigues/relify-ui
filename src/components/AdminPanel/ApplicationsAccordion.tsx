@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import implementationPlanData from '../../mockData/implementationPlanData.json';
+import React, { useState, useMemo } from 'react';
 import {
   Typography,
   Button,
@@ -17,26 +16,40 @@ import {
   ListItemIcon,
   ListItemText,
   Chip,
-  IconButton
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
+  IconButton,
+  InputAdornment
 } from '@mui/material';
 import {
   Add as AddIcon,
   ExpandMore as ExpandMoreIcon,
   CheckCircle as CheckCircleIcon,
   Edit as EditIcon,
+  Apps as AppsIcon,
   Code as CodeIcon,
   Build as BuildIcon,
   Security as SecurityIcon,
   Verified as VerifiedIcon,
   Info as InfoIcon,
   Link as LinkIcon,
-  AccountTree as BranchIcon
+  Storage as StorageIcon,
+  CloudQueue as CloudIcon,
+  Search as SearchIcon
 } from '@mui/icons-material';
+import applicationsData from '../../mockData/applications.json';
 
-interface ImplementationEntry {
-  repoName: string;
-  backoutBranchName: string;
-  pocNames: string;
+interface ApplicationEntry {
+  id: string;
+  applicationId: string;
+  appName: string;
+  appType: string;
+  projectName: string;
+  platform: string;
+  repositoryLink: string;
+  deploymentPlatform: string;
   preImplementationSteps: string;
   implementationSteps: string;
   postValidationSteps: string;
@@ -44,25 +57,33 @@ interface ImplementationEntry {
   backoutValidationSteps: string;
 }
 
-interface ImplementationPlanTabProps {
-  releaseName: string;
-  releaseDate: string;
+interface ApplicationsAccordionProps {
+  onAddEntry: (entry: ApplicationEntry) => void;
+  onEditEntry: (entry: ApplicationEntry) => void;
+  searchTerm: string;
+  onSearchChange: (searchTerm: string) => void;
 }
 
-const ImplementationPlanTab: React.FC<ImplementationPlanTabProps> = ({
-  releaseName,
-  releaseDate,
+const ApplicationsAccordion: React.FC<ApplicationsAccordionProps> = ({
+  onAddEntry,
+  onEditEntry,
+  searchTerm,
+  onSearchChange,
 }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [newEntry, setNewEntry] = useState({
-    repoName: '',
-    backoutBranchName: '',
-    pocNames: ''
+    applicationId: '',
+    appName: '',
+    appType: '',
+    projectName: '',
+    platform: '',
+    repositoryLink: '',
+    deploymentPlatform: ''
   });
-  const [editEntry, setEditEntry] = useState<ImplementationEntry | null>(null);
-  const [entries, setEntries] = useState<ImplementationEntry[]>(implementationPlanData as ImplementationEntry[]);
+  const [editEntry, setEditEntry] = useState<ApplicationEntry | null>(null);
+  const [entries, setEntries] = useState<ApplicationEntry[]>(applicationsData as ApplicationEntry[]);
 
   const handleEntryChange = (field: keyof typeof newEntry, value: string) => {
     setNewEntry(prev => ({ ...prev, [field]: value }));
@@ -70,10 +91,15 @@ const ImplementationPlanTab: React.FC<ImplementationPlanTabProps> = ({
 
   const handleAddEntry = () => {
     const defaultSteps = 'TBD - Please update implementation steps';
-    const newImplementationEntry: ImplementationEntry = {
-      repoName: newEntry.repoName,
-      backoutBranchName: newEntry.backoutBranchName,
-      pocNames: newEntry.pocNames,
+    const newApplicationEntry: ApplicationEntry = {
+      id: Date.now().toString(),
+      applicationId: newEntry.applicationId,
+      appName: newEntry.appName,
+      appType: newEntry.appType,
+      projectName: newEntry.projectName,
+      platform: newEntry.platform,
+      repositoryLink: newEntry.repositoryLink,
+      deploymentPlatform: newEntry.deploymentPlatform,
       preImplementationSteps: defaultSteps,
       implementationSteps: defaultSteps,
       postValidationSteps: defaultSteps,
@@ -81,9 +107,18 @@ const ImplementationPlanTab: React.FC<ImplementationPlanTabProps> = ({
       backoutValidationSteps: defaultSteps
     };
     
-    setEntries(prev => [...prev, newImplementationEntry]);
+    setEntries(prev => [...prev, newApplicationEntry]);
+    onAddEntry(newApplicationEntry);
     setDialogOpen(false);
-    setNewEntry({ repoName: '', backoutBranchName: '', pocNames: '' }); // Reset form
+    setNewEntry({
+      applicationId: '',
+      appName: '',
+      appType: '',
+      projectName: '',
+      platform: '',
+      repositoryLink: '',
+      deploymentPlatform: ''
+    });
   };
 
   const handleEditEntry = (index: number) => {
@@ -97,13 +132,14 @@ const ImplementationPlanTab: React.FC<ImplementationPlanTabProps> = ({
       setEntries(prev => prev.map((entry, index) => 
         index === editingIndex ? editEntry : entry
       ));
+      onEditEntry(editEntry);
       setEditDialogOpen(false);
       setEditingIndex(null);
       setEditEntry(null);
     }
   };
 
-  const handleEditEntryChange = (field: keyof ImplementationEntry, value: string) => {
+  const handleEditEntryChange = (field: keyof ApplicationEntry, value: string) => {
     if (editEntry) {
       setEditEntry(prev => prev ? { ...prev, [field]: value } : null);
     }
@@ -126,12 +162,55 @@ const ImplementationPlanTab: React.FC<ImplementationPlanTabProps> = ({
     }
   };
 
+  // Filter entries based on search term
+  const filteredEntries = useMemo(() => {
+    if (!searchTerm.trim()) {
+      return entries
+    }
+    return entries.filter(entry => 
+      entry.appName.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+  }, [entries, searchTerm])
+
+  const appTypeOptions = ['Backend Service', 'Web Application', 'Mobile App', 'Microservice', 'Data Visualization', 'API Service'];
+  const platformOptions = ['AWS ECS', 'React/Node.js', 'React/Python', 'Java Spring Boot', 'Node.js', 'React Native', 'Kubernetes'];
+  const deploymentPlatformOptions = ['AWS ECS Fargate', 'AWS S3/CloudFront', 'Kubernetes', 'AWS EKS', 'AWS Lambda', 'App Store/Google Play'];
+
   return (
-    <div className="implementation-content">
-      <Typography variant="h5" className="section-title" sx={{ mb: 2 }}>
-        Implementation Plan for {releaseName}
-      </Typography>
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
+    <div className="applications-content">
+      <Box sx={{ 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'center', 
+        mb: 3,
+        gap: 2
+      }}>
+        <TextField
+          placeholder="Search by Application Name..."
+          value={searchTerm}
+          onChange={(e) => onSearchChange(e.target.value)}
+          variant="outlined"
+          size="small"
+          sx={{ 
+            minWidth: 300,
+            '& .MuiOutlinedInput-root': {
+              borderRadius: '8px',
+              '&:hover fieldset': {
+                borderColor: '#6495ED',
+              },
+              '&.Mui-focused fieldset': {
+                borderColor: '#6495ED',
+              }
+            }
+          }}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon sx={{ color: '#6495ED', fontSize: '20px' }} />
+              </InputAdornment>
+            ),
+          }}
+        />
         <Button
           variant="contained"
           startIcon={<AddIcon />}
@@ -151,37 +230,82 @@ const ImplementationPlanTab: React.FC<ImplementationPlanTabProps> = ({
             transition: 'all 0.3s ease',
           }}
         >
-          Add Entry
+          Add Application
         </Button>
       </Box>
 
-      <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)} fullWidth maxWidth="sm">
-        <DialogTitle>Add Implementation Entry</DialogTitle>
+      {/* Add Dialog */}
+      <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)} fullWidth maxWidth="md">
+        <DialogTitle>Add Application Entry</DialogTitle>
         <DialogContent>
           <TextField 
             fullWidth 
             margin="normal" 
-            label="Repository Name" 
-            value={newEntry.repoName} 
-            onChange={e => handleEntryChange('repoName', e.target.value)}
-            placeholder="e.g., user-service"
+            label="Application ID" 
+            value={newEntry.applicationId} 
+            onChange={e => handleEntryChange('applicationId', e.target.value)}
+            placeholder="e.g., APP001"
           />
           <TextField 
             fullWidth 
             margin="normal" 
-            label="Backout Branch Name" 
-            value={newEntry.backoutBranchName} 
-            onChange={e => handleEntryChange('backoutBranchName', e.target.value)}
-            placeholder="e.g., user-service-backout"
+            label="Application Name" 
+            value={newEntry.appName} 
+            onChange={e => handleEntryChange('appName', e.target.value)}
+            placeholder="e.g., User Management API"
           />
+          <FormControl fullWidth margin="normal">
+            <InputLabel>App Type</InputLabel>
+            <Select
+              value={newEntry.appType}
+              onChange={e => handleEntryChange('appType', e.target.value)}
+              label="App Type"
+            >
+              {appTypeOptions.map(option => (
+                <MenuItem key={option} value={option}>{option}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
           <TextField 
             fullWidth 
             margin="normal" 
-            label="POC Names" 
-            value={newEntry.pocNames} 
-            onChange={e => handleEntryChange('pocNames', e.target.value)}
-            placeholder="e.g., John Doe, Jane Smith"
+            label="Project Name" 
+            value={newEntry.projectName} 
+            onChange={e => handleEntryChange('projectName', e.target.value)}
+            placeholder="e.g., Identity Platform"
           />
+          <FormControl fullWidth margin="normal">
+            <InputLabel>Platform</InputLabel>
+            <Select
+              value={newEntry.platform}
+              onChange={e => handleEntryChange('platform', e.target.value)}
+              label="Platform"
+            >
+              {platformOptions.map(option => (
+                <MenuItem key={option} value={option}>{option}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <TextField 
+            fullWidth 
+            margin="normal" 
+            label="Repository Link" 
+            value={newEntry.repositoryLink} 
+            onChange={e => handleEntryChange('repositoryLink', e.target.value)}
+            placeholder="https://github.com/company/repo-name"
+          />
+          <FormControl fullWidth margin="normal">
+            <InputLabel>Deployment Platform</InputLabel>
+            <Select
+              value={newEntry.deploymentPlatform}
+              onChange={e => handleEntryChange('deploymentPlatform', e.target.value)}
+              label="Deployment Platform"
+            >
+              {deploymentPlatformOptions.map(option => (
+                <MenuItem key={option} value={option}>{option}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </DialogContent>
         <DialogActions>
           <Button 
@@ -203,7 +327,7 @@ const ImplementationPlanTab: React.FC<ImplementationPlanTabProps> = ({
           <Button 
             variant="contained" 
             onClick={handleAddEntry}
-            disabled={!newEntry.repoName.trim() || !newEntry.pocNames.trim()}
+            disabled={!newEntry.applicationId.trim() || !newEntry.appName.trim() || !newEntry.appType.trim()}
             sx={{
               background: 'linear-gradient(135deg, #6495ED 0%, #9370DB 100%)',
               color: 'white',
@@ -231,24 +355,47 @@ const ImplementationPlanTab: React.FC<ImplementationPlanTabProps> = ({
       </Dialog>
 
       {/* Edit Dialog */}
-      <Dialog open={editDialogOpen} onClose={() => setEditDialogOpen(false)} fullWidth maxWidth="md">
-        <DialogTitle>Edit Implementation Steps</DialogTitle>
+      <Dialog open={editDialogOpen} onClose={() => setEditDialogOpen(false)} fullWidth maxWidth="lg">
+        <DialogTitle>Edit Application Steps</DialogTitle>
         <DialogContent>
-          <TextField 
-            fullWidth 
-            margin="normal" 
-            label="Repository Name" 
-            value={editEntry?.repoName || ''} 
-            onChange={e => handleEditEntryChange('repoName', e.target.value)}
-            disabled
-          />
-          <TextField 
-            fullWidth 
-            margin="normal" 
-            label="POC Names" 
-            value={editEntry?.pocNames || ''} 
-            onChange={e => handleEditEntryChange('pocNames', e.target.value)}
-          />
+          <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
+            <TextField 
+              fullWidth 
+              margin="normal" 
+              label="Application ID" 
+              value={editEntry?.applicationId || ''} 
+              onChange={e => handleEditEntryChange('applicationId', e.target.value)}
+              disabled
+            />
+            <TextField 
+              fullWidth 
+              margin="normal" 
+              label="Application Name" 
+              value={editEntry?.appName || ''} 
+              onChange={e => handleEditEntryChange('appName', e.target.value)}
+            />
+          </Box>
+          <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
+            <FormControl fullWidth margin="normal">
+              <InputLabel>App Type</InputLabel>
+              <Select
+                value={editEntry?.appType || ''}
+                onChange={e => handleEditEntryChange('appType', e.target.value)}
+                label="App Type"
+              >
+                {appTypeOptions.map(option => (
+                  <MenuItem key={option} value={option}>{option}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <TextField 
+              fullWidth 
+              margin="normal" 
+              label="Project Name" 
+              value={editEntry?.projectName || ''} 
+              onChange={e => handleEditEntryChange('projectName', e.target.value)}
+            />
+          </Box>
           <TextField 
             fullWidth 
             margin="normal" 
@@ -256,7 +403,7 @@ const ImplementationPlanTab: React.FC<ImplementationPlanTabProps> = ({
             value={editEntry?.preImplementationSteps || ''} 
             onChange={e => handleEditEntryChange('preImplementationSteps', e.target.value)}
             multiline
-            rows={3}
+            rows={4}
           />
           <TextField 
             fullWidth 
@@ -265,7 +412,7 @@ const ImplementationPlanTab: React.FC<ImplementationPlanTabProps> = ({
             value={editEntry?.implementationSteps || ''} 
             onChange={e => handleEditEntryChange('implementationSteps', e.target.value)}
             multiline
-            rows={3}
+            rows={4}
           />
           <TextField 
             fullWidth 
@@ -274,7 +421,7 @@ const ImplementationPlanTab: React.FC<ImplementationPlanTabProps> = ({
             value={editEntry?.postValidationSteps || ''} 
             onChange={e => handleEditEntryChange('postValidationSteps', e.target.value)}
             multiline
-            rows={3}
+            rows={4}
           />
           <TextField 
             fullWidth 
@@ -283,7 +430,7 @@ const ImplementationPlanTab: React.FC<ImplementationPlanTabProps> = ({
             value={editEntry?.backoutSteps || ''} 
             onChange={e => handleEditEntryChange('backoutSteps', e.target.value)}
             multiline
-            rows={3}
+            rows={4}
           />
           <TextField 
             fullWidth 
@@ -292,7 +439,7 @@ const ImplementationPlanTab: React.FC<ImplementationPlanTabProps> = ({
             value={editEntry?.backoutValidationSteps || ''} 
             onChange={e => handleEditEntryChange('backoutValidationSteps', e.target.value)}
             multiline
-            rows={3}
+            rows={4}
           />
         </DialogContent>
         <DialogActions>
@@ -335,26 +482,44 @@ const ImplementationPlanTab: React.FC<ImplementationPlanTabProps> = ({
         </DialogActions>
       </Dialog>
 
-      {entries.map((entry, index) => (
-        <Accordion key={index} sx={{ mb: 2, borderRadius: '8px', overflow: 'hidden', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
+      {filteredEntries.length === 0 ? (
+        <Box sx={{ 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'center', 
+          py: 8,
+          color: '#666'
+        }}>
+          <SearchIcon sx={{ fontSize: 64, mb: 2, color: '#ccc' }} />
+          <Typography variant="h6" sx={{ mb: 1, color: '#666' }}>
+            {searchTerm ? 'No applications found' : 'No applications available'}
+          </Typography>
+          <Typography variant="body2" sx={{ color: '#999' }}>
+            {searchTerm ? `Try adjusting your search term "${searchTerm}"` : 'Add an application to get started'}
+          </Typography>
+        </Box>
+      ) : (
+        filteredEntries.map((entry, index) => (
+        <Accordion key={entry.id} sx={{ mb: 2, borderRadius: '8px', overflow: 'hidden', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
-            sx={{ bgcolor: 'linear-gradient(to right, #f0f0f0, #e0e0e0)'}}>
+            sx={{ bgcolor: 'linear-gradient(to right, #f0f0f0, #e0e0e0)' }}
+          >
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
               <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                 <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-                  {entry.repoName}
+                  {entry.appName}
                 </Typography>
                 <Box sx={{ display: 'flex', gap: 1 }}>
                   <Chip 
-                    label={entry.pocNames} 
+                    label={entry.appType} 
                     color="primary" 
                     variant="filled" 
                     size="small"
                     sx={{ bgcolor: '#6495ED', color: 'white' }}
                   />
                   <Chip 
-                    label={entry.backoutBranchName} 
+                    label={entry.platform} 
                     color="secondary" 
                     variant="outlined" 
                     size="small"
@@ -375,10 +540,10 @@ const ImplementationPlanTab: React.FC<ImplementationPlanTabProps> = ({
             </Box>
           </AccordionSummary>
           <AccordionDetails sx={{ bgcolor: '#f9f9f9', p: 4 }}>
-            {/* Repository Metadata Section */}
+            {/* Application Metadata Section */}
             <Box sx={{ mb: 4 }}>
               <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2, color: '#2c3e50' }}>
-                Repository Details
+                Application Details
               </Typography>
               <Box sx={{ 
                 display: 'grid', 
@@ -395,11 +560,11 @@ const ImplementationPlanTab: React.FC<ImplementationPlanTabProps> = ({
                   <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                     <InfoIcon sx={{ color: '#6495ED', fontSize: '18px', mr: 1 }} />
                     <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#333' }}>
-                      Repository Name
+                      Application ID
                     </Typography>
                   </Box>
                   <Typography variant="body2" sx={{ color: '#666' }}>
-                    {entry.repoName}
+                    {entry.applicationId}
                   </Typography>
                 </Box>
                 <Box sx={{ 
@@ -409,13 +574,45 @@ const ImplementationPlanTab: React.FC<ImplementationPlanTabProps> = ({
                   border: '1px solid rgba(100, 149, 237, 0.1)'
                 }}>
                   <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                    <BranchIcon sx={{ color: '#6495ED', fontSize: '18px', mr: 1 }} />
+                    <AppsIcon sx={{ color: '#6495ED', fontSize: '18px', mr: 1 }} />
                     <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#333' }}>
-                      Backout Branch Name
+                      Project Name
                     </Typography>
                   </Box>
                   <Typography variant="body2" sx={{ color: '#666' }}>
-                    {entry.backoutBranchName}
+                    {entry.projectName}
+                  </Typography>
+                </Box>
+                <Box sx={{ 
+                  p: 2,
+                  bgcolor: 'rgba(100, 149, 237, 0.03)',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(100, 149, 237, 0.1)'
+                }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                    <StorageIcon sx={{ color: '#6495ED', fontSize: '18px', mr: 1 }} />
+                    <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#333' }}>
+                      Platform
+                    </Typography>
+                  </Box>
+                  <Typography variant="body2" sx={{ color: '#666' }}>
+                    {entry.platform}
+                  </Typography>
+                </Box>
+                <Box sx={{ 
+                  p: 2,
+                  bgcolor: 'rgba(100, 149, 237, 0.03)',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(100, 149, 237, 0.1)'
+                }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                    <CloudIcon sx={{ color: '#6495ED', fontSize: '18px', mr: 1 }} />
+                    <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#333' }}>
+                      Deployment Platform
+                    </Typography>
+                  </Box>
+                  <Typography variant="body2" sx={{ color: '#666' }}>
+                    {entry.deploymentPlatform}
                   </Typography>
                 </Box>
               </Box>
@@ -429,11 +626,22 @@ const ImplementationPlanTab: React.FC<ImplementationPlanTabProps> = ({
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                   <LinkIcon sx={{ color: '#6495ED', fontSize: '18px', mr: 1 }} />
                   <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#333' }}>
-                    Points of Contact
+                    Repository Link
                   </Typography>
                 </Box>
-                <Typography variant="body2" sx={{ color: '#666' }}>
-                  {entry.pocNames}
+                <Typography 
+                  variant="body2" 
+                  sx={{ 
+                    color: '#6495ED', 
+                    textDecoration: 'underline',
+                    cursor: 'pointer',
+                    '&:hover': {
+                      color: '#4169E1'
+                    }
+                  }}
+                  onClick={() => window.open(entry.repositoryLink, '_blank')}
+                >
+                  {entry.repositoryLink}
                 </Typography>
               </Box>
             </Box>
@@ -445,7 +653,7 @@ const ImplementationPlanTab: React.FC<ImplementationPlanTabProps> = ({
               </Typography>
             </Box>
             <List sx={{ width: '100%', p: 0 }}>
-              <ListItem 
+              <ListItem
                 sx={{ 
                   display: 'flex', 
                   alignItems: 'flex-start', 
@@ -602,10 +810,10 @@ const ImplementationPlanTab: React.FC<ImplementationPlanTabProps> = ({
             </List>
           </AccordionDetails>
         </Accordion>
-      ))}
+        ))
+      )}
     </div>
   );
 };
 
-export default ImplementationPlanTab;
-
+export default ApplicationsAccordion;

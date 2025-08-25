@@ -1,0 +1,56 @@
+[
+  {
+    "id": "1",
+    "contactId": "CON001",
+    "type": "Primary",
+    "name": "John Doe",
+    "role": "Release Manager",
+    "sid": "jdoe",
+    "emailId": "john.doe@company.com"
+  },
+  {
+    "id": "2",
+    "contactId": "CON002",
+    "type": "Alternate",
+    "name": "Jane Smith",
+    "role": "QA Lead",
+    "sid": "jsmith",
+    "emailId": "jane.smith@company.com"
+  },
+  {
+    "id": "3",
+    "contactId": "CON003",
+    "type": "Primary",
+    "name": "Bob Johnson",
+    "role": "DevOps Engineer",
+    "sid": "bjohnson",
+    "emailId": "bob.johnson@company.com"
+  },
+  {
+    "id": "4",
+    "contactId": "CON004",
+    "type": "Alternate",
+    "name": "Alice Brown",
+    "role": "Security Analyst",
+    "sid": "abrown",
+    "emailId": "alice.brown@company.com"
+  },
+  {
+    "id": "5",
+    "contactId": "CON005",
+    "type": "Primary",
+    "name": "Michael Davis",
+    "role": "Product Manager",
+    "sid": "mdavis",
+    "emailId": "michael.davis@company.com"
+  },
+  {
+    "id": "6",
+    "contactId": "CON006",
+    "type": "Alternate",
+    "name": "Sarah Wilson",
+    "role": "Technical Lead",
+    "sid": "swilson",
+    "emailId": "sarah.wilson@company.com"
+  }
+]

@@ -1,0 +1,80 @@
+[
+  {
+    "id": "1",
+    "activityId": "ACT001",
+    "activityName": "Code Build and Compilation",
+    "categoryId": "CAT001",
+    "type": "Technical",
+    "activitySubjectPrefix": "[BUILD]",
+    "activityDetails": "Compile and build application code with all dependencies",
+    "isAutomated": "Yes",
+    "apiUrl": "https://api.company.com/build/compile",
+    "modeOfCommunication": "API",
+    "governanceActivityId": "GOV001"
+  },
+  {
+    "id": "2",
+    "activityId": "ACT002", 
+    "activityName": "Unit Testing Execution",
+    "categoryId": "CAT002",
+    "type": "Testing",
+    "activitySubjectPrefix": "[TEST]",
+    "activityDetails": "Execute comprehensive unit tests for all modules",
+    "isAutomated": "Yes",
+    "apiUrl": "https://api.company.com/test/unit",
+    "modeOfCommunication": "API",
+    "governanceActivityId": "GOV003"
+  },
+  {
+    "id": "3",
+    "activityId": "ACT003",
+    "activityName": "Security Vulnerability Scan", 
+    "categoryId": "CAT003",
+    "type": "Security",
+    "activitySubjectPrefix": "[SECURITY]",
+    "activityDetails": "Perform automated security scanning for vulnerabilities",
+    "isAutomated": "Yes",
+    "apiUrl": "https://api.company.com/security/scan",
+    "modeOfCommunication": "API",
+    "governanceActivityId": "GOV002"
+  },
+  {
+    "id": "4",
+    "activityId": "ACT004",
+    "activityName": "Release Documentation Update",
+    "categoryId": "CAT004", 
+    "type": "Documentation",
+    "activitySubjectPrefix": "[DOCS]",
+    "activityDetails": "Update release notes and technical documentation",
+    "isAutomated": "No",
+    "apiUrl": "",
+    "modeOfCommunication": "Email",
+    "governanceActivityId": "GOV004"
+  },
+  {
+    "id": "5",
+    "activityId": "ACT005",
+    "activityName": "Database Migration Scripts",
+    "categoryId": "CAT005",
+    "type": "Technical", 
+    "activitySubjectPrefix": "[DB]",
+    "activityDetails": "Execute database schema migration scripts",
+    "isAutomated": "Yes",
+    "apiUrl": "https://api.company.com/db/migrate",
+    "modeOfCommunication": "API",
+    "governanceActivityId": "GOV001"
+  },
+  {
+    "id": "6",
+    "activityId": "ACT006",
+    "activityName": "Performance Monitoring Setup",
+    "categoryId": "CAT006",
+    "type": "Monitoring",
+    "activitySubjectPrefix": "[MONITOR]", 
+    "activityDetails": "Configure performance monitoring and alerting",
+    "isAutomated": "No",
+    "apiUrl": "",
+    "modeOfCommunication": "Slack",
+    "governanceActivityId": "GOV003"
+  }
+]

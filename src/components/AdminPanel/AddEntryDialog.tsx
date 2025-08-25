@@ -29,21 +29,34 @@ interface AddEntryDialogProps {
   onSubmit: (data: Record<string, any>) => void
   columns: Column[]
   title: string
+  editingEntry?: Record<string, any> | null
+  isEdit?: boolean
 }
 
-const AddEntryDialog = ({ open, onClose, onSubmit, columns, title }: AddEntryDialogProps) => {
+const AddEntryDialog = ({ 
+  open, 
+  onClose, 
+  onSubmit, 
+  columns, 
+  title, 
+  editingEntry, 
+  isEdit = false 
+}: AddEntryDialogProps) => {
   const [formData, setFormData] = useState<Record<string, any>>({})
   const [errors, setErrors] = useState<Record<string, string>>({})
 
-  // Filter out ID column since it's auto-generated
-  const editableColumns = columns.filter(col => col.id !== 'id')
+  // Filter out ID and edit columns since they're not editable
+  const editableColumns = columns.filter(col => col.id !== 'id' && col.id !== 'edit')
 
   useEffect(() => {
     if (open) {
       // Reset form when dialog opens
       const initialData: Record<string, any> = {}
       editableColumns.forEach(col => {
-        if (col.id === 'color') {
+        if (isEdit && editingEntry && editingEntry[col.id] !== undefined) {
+          // Pre-fill with existing data for edit mode
+          initialData[col.id] = editingEntry[col.id]
+        } else if (col.id === 'color') {
           initialData[col.id] = '#3498db'
         } else {
           initialData[col.id] = ''
@@ -52,7 +65,7 @@ const AddEntryDialog = ({ open, onClose, onSubmit, columns, title }: AddEntryDia
       setFormData(initialData)
       setErrors({})
     }
-  }, [open])
+  }, [open, isEdit, editingEntry])
 
   const handleInputChange = (field: string, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }))
@@ -83,17 +96,25 @@ const AddEntryDialog = ({ open, onClose, onSubmit, columns, title }: AddEntryDia
   const getFieldType = (columnId: string) => {
     if (columnId.toLowerCase().includes('email')) return 'email'
     if (columnId.toLowerCase().includes('date')) return 'date'
-    if (columnId.toLowerCase().includes('version') || columnId.toLowerCase().includes('count') || columnId.toLowerCase().includes('activities')) return 'text'
+    if (columnId.toLowerCase().includes('time') && columnId !== 'activityLeadTime' && columnId !== 'activityLeadTimeWrt') return 'datetime-local'
+    if (columnId.toLowerCase().includes('url')) return 'url'
+    if (columnId.toLowerCase().includes('version') || columnId.toLowerCase().includes('count') || columnId.toLowerCase().includes('activities') || columnId === 'activityLeadTime' || columnId.toLowerCase().includes('leadtime')) return 'number'
     return 'text'
   }
 
   const getSelectOptions = (columnId: string) => {
     const optionsMap: Record<string, string[]> = {
       'status': ['Active', 'Inactive', 'Pending', 'Completed', 'In Progress', 'Maintenance'],
-      'category': ['Quality', 'Security', 'Documentation', 'Deployment'],
-      'department': ['Engineering', 'Quality Assurance', 'Operations', 'Security', 'Data Team'],
-      'role': ['Release Manager', 'QA Lead', 'DevOps Engineer', 'Security Analyst', 'Developer', 'Product Manager'],
-      'team': ['Backend Team', 'Frontend Team', 'QA Team', 'DevOps Team', 'Data Team', 'Security Team'],
+      'type': ['Technical', 'Testing', 'Security', 'Documentation', 'Monitoring', 'Business', 'Primary', 'Alternate'],
+      'appType': ['Backend Service', 'Web Application', 'Mobile App', 'Microservice', 'Data Visualization', 'API Service'],
+      'isAutomated': ['Yes', 'No'],
+      'modeOfCommunication': ['API', 'Email', 'Slack', 'Teams', 'SMS', 'Webhook'],
+      'platform': ['AWS ECS', 'React/Node.js', 'React/Python', 'Java Spring Boot', 'Node.js', 'React Native', 'Kubernetes'],
+      'deploymentPlatform': ['AWS ECS Fargate', 'AWS S3/CloudFront', 'Kubernetes', 'AWS EKS', 'AWS Lambda', 'App Store/Google Play'],
+      'activityLeadTimeWrt': ['Business Days', 'Calendar Days', 'Business Hours', 'Calendar Hours', 'Weeks'],
+      'department': ['Engineering', 'Quality Assurance', 'Operations', 'Security', 'Data Team', 'Product'],
+      'role': ['Release Manager', 'QA Lead', 'DevOps Engineer', 'Security Analyst', 'Developer', 'Product Manager', 'Technical Lead'],
+      'team': ['Backend Team', 'Frontend Team', 'QA Team', 'DevOps Team', 'Data Team', 'Security Team', 'Mobile Team'],
       'changeType': ['Defect', 'Feature Enhancement', 'Infra/Config Updates'],
       'readinessState': ['Ready', 'In Progress']
     }
@@ -156,8 +177,8 @@ const AddEntryDialog = ({ open, onClose, onSubmit, columns, title }: AddEntryDia
         onChange={(e) => handleInputChange(column.id, e.target.value)}
         error={!!errors[column.id]}
         helperText={errors[column.id]}
-        multiline={column.id === 'description' || column.id === 'comments'}
-        rows={column.id === 'description' || column.id === 'comments' ? 3 : 1}
+        multiline={column.id === 'activityDetails' || column.id === 'description' || column.id === 'comments'}
+        rows={column.id === 'activityDetails' || column.id === 'description' || column.id === 'comments' ? 3 : 1}
       />
     )
   }
@@ -185,7 +206,7 @@ const AddEntryDialog = ({ open, onClose, onSubmit, columns, title }: AddEntryDia
           fontWeight: 700
         }}
       >
-        Add New {title.replace(/s$/, '')}
+        {isEdit ? 'Edit' : 'Add New'} {title.replace(/s$/, '')}
         <Button
           onClick={onClose}
           sx={{ 

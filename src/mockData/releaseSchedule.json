@@ -1,0 +1,50 @@
+[
+  {
+    "id": "1",
+    "scheduleId": "SCH001",
+    "activityId": "ACT001",
+    "activityLeadTime": "3",
+    "activityLeadTimeWrt": "Business Days",
+    "activityTime": "2024-02-15T10:00:00"
+  },
+  {
+    "id": "2",
+    "scheduleId": "SCH002",
+    "activityId": "ACT002",
+    "activityLeadTime": "5",
+    "activityLeadTimeWrt": "Calendar Days",
+    "activityTime": "2024-02-20T14:30:00"
+  },
+  {
+    "id": "3",
+    "scheduleId": "SCH003",
+    "activityId": "ACT003",
+    "activityLeadTime": "2",
+    "activityLeadTimeWrt": "Business Days",
+    "activityTime": "2024-02-18T09:00:00"
+  },
+  {
+    "id": "4",
+    "scheduleId": "SCH004",
+    "activityId": "ACT004",
+    "activityLeadTime": "1",
+    "activityLeadTimeWrt": "Business Hours",
+    "activityTime": "2024-02-16T16:00:00"
+  },
+  {
+    "id": "5",
+    "scheduleId": "SCH005",
+    "activityId": "ACT005",
+    "activityLeadTime": "7",
+    "activityLeadTimeWrt": "Calendar Days",
+    "activityTime": "2024-02-22T11:15:00"
+  },
+  {
+    "id": "6",
+    "scheduleId": "SCH006",
+    "activityId": "ACT006",
+    "activityLeadTime": "4",
+    "activityLeadTimeWrt": "Business Days",
+    "activityTime": "2024-02-19T13:45:00"
+  }
+]

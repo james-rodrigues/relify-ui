@@ -13,6 +13,7 @@ import {
   AdminPanelSettings as AdminIcon,
   Category as CategoryIcon,
   Assignment as AssignmentIcon,
+  Schedule as ScheduleIcon,
   Contacts as ContactsIcon,
   Person as PersonIcon,
   Apps as AppsIcon
@@ -28,8 +29,9 @@ const menuItems = [
   { label: 'Release Governance Activities', icon: <AdminIcon /> },
   { label: 'Release Activities Categories', icon: <CategoryIcon /> },
   { label: 'Release Activities', icon: <AssignmentIcon /> },
-  { label: 'Point of Contacts', icon: <ContactsIcon /> },
+  { label: 'Release Schedule', icon: <ScheduleIcon /> },
   { label: 'Release Activity Owners', icon: <PersonIcon /> },
+  { label: 'Point of Contacts', icon: <ContactsIcon /> },
   { label: 'Applications', icon: <AppsIcon /> }
 ]
 

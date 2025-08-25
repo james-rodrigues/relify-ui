@@ -14,9 +14,35 @@ import {
   Typography,
   IconButton,
   Grid,
-  Link
+  Link,
+  Chip,
+  Card,
+  CardContent,
+  Divider,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText
 } from '@mui/material';
-import { Add as AddIcon, ExpandMore as ExpandMoreIcon, Edit as EditIcon } from '@mui/icons-material';
+import { 
+  Add as AddIcon, 
+  ExpandMore as ExpandMoreIcon, 
+  Edit as EditIcon,
+  Assignment as ChangeIcon,
+  Group as TeamIcon,
+  Person as PersonIcon,
+  Build as BuildIcon,
+  Link as LinkIcon,
+  Security as SecurityIcon,
+  CheckCircle as CheckIcon,
+  Warning as WarningIcon,
+  Timeline as TimelineIcon,
+  CloudQueue as ServiceIcon,
+  BugReport as IncidentIcon,
+  Code as CodeIcon,
+  Info as InfoIcon,
+  Storage as DataIcon
+} from '@mui/icons-material';
 import { getReleaseScopeData, type ReleaseScopeEntry } from '../../utils/mockDataLoader';
 
 // Interface extends from mock data loader to include jiraIds field
@@ -192,9 +218,32 @@ const ReleaseScope: React.FC = () => {
             sx={{ bgcolor: 'linear-gradient(to right, #f0f0f0, #e0e0e0)'}}
           >
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-              <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#2c3e50' }}>
-                Release Scope Item {index + 1}
-              </Typography>
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                  {entry.changeRequestNumber || `Change Request ${index + 1}`}
+                </Typography>
+                <Box sx={{ display: 'flex', gap: 1 }}>
+                  <Chip 
+                    label={entry.teamName || 'Unknown Team'} 
+                    color="primary" 
+                    variant="filled" 
+                    size="small"
+                    sx={{ bgcolor: '#6495ED', color: 'white' }}
+                  />
+                  <Chip 
+                    label={entry.snowflakeImpact || 'Impact TBD'} 
+                    color="secondary" 
+                    variant="outlined" 
+                    size="small"
+                    sx={{ 
+                      borderColor: entry.snowflakeImpact === 'High Impact' ? '#f44336' : 
+                                   entry.snowflakeImpact === 'Medium Impact' ? '#ff9800' : '#4caf50',
+                      color: entry.snowflakeImpact === 'High Impact' ? '#f44336' : 
+                             entry.snowflakeImpact === 'Medium Impact' ? '#ff9800' : '#4caf50'
+                    }}
+                  />
+                </Box>
+              </Box>
               <IconButton
                 size="small"
                 onClick={(e) => {
@@ -208,78 +257,395 @@ const ReleaseScope: React.FC = () => {
             </Box>
           </AccordionSummary>
           <AccordionDetails sx={{ bgcolor: '#f9f9f9', p: 4 }}>
-            <Grid container spacing={4}>
-              <Grid item xs={12} md={6}>
-                {Object.entries(entry).map(([key, value]) => {
-                  const isLink = key.includes('Link') || key.includes('link');
-                  const isJiraField = key.toLowerCase().includes('jira') || key.toLowerCase().includes('epic') || key.toLowerCase().includes('initiative') || key.toLowerCase().includes('story');
-                  const isIncidentField = key.toLowerCase().includes('incident') || key.toLowerCase().includes('related');
-                  const isBooleanField = typeof value === 'string' && ['yes', 'no', 'n/a'].includes(value.toLowerCase());
-                  const isRightColumn = isLink || isJiraField || isIncidentField || isBooleanField;
+            {/* Change Request Details Section */}
+            <Box sx={{ mb: 4 }}>
+              <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2, color: '#2c3e50' }}>
+                Change Request Details
+              </Typography>
+              <Box sx={{ 
+                display: 'grid', 
+                gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, 
+                gap: 2,
+                mb: 3
+              }}>
+                <Box sx={{ 
+                  p: 2,
+                  bgcolor: 'rgba(100, 149, 237, 0.03)',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(100, 149, 237, 0.1)'
+                }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                    <ChangeIcon sx={{ color: '#6495ED', fontSize: '18px', mr: 1 }} />
+                    <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#333' }}>
+                      Change Request Number
+                    </Typography>
+                  </Box>
+                  <Typography variant="body2" sx={{ color: '#666' }}>
+                    {entry.changeRequestNumber || 'Not specified'}
+                  </Typography>
+                </Box>
+                <Box sx={{ 
+                  p: 2,
+                  bgcolor: 'rgba(100, 149, 237, 0.03)',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(100, 149, 237, 0.1)'
+                }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                    <SecurityIcon sx={{ color: '#6495ED', fontSize: '18px', mr: 1 }} />
+                    <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#333' }}>
+                      SEAL ID
+                    </Typography>
+                  </Box>
+                  <Typography variant="body2" sx={{ color: '#666' }}>
+                    {entry.sealId || 'Not specified'}
+                  </Typography>
+                </Box>
+                <Box sx={{ 
+                  p: 2,
+                  bgcolor: 'rgba(100, 149, 237, 0.03)',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(100, 149, 237, 0.1)'
+                }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                    <CodeIcon sx={{ color: '#6495ED', fontSize: '18px', mr: 1 }} />
+                    <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#333' }}>
+                      Release Branch
+                    </Typography>
+                  </Box>
+                  <Typography variant="body2" sx={{ color: '#666' }}>
+                    {entry.releaseBranchName || 'Not specified'}
+                  </Typography>
+                </Box>
+                <Box sx={{ 
+                  p: 2,
+                  bgcolor: 'rgba(100, 149, 237, 0.03)',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(100, 149, 237, 0.1)'
+                }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                    <DataIcon sx={{ color: '#6495ED', fontSize: '18px', mr: 1 }} />
+                    <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#333' }}>
+                      Snowflake Impact
+                    </Typography>
+                  </Box>
+                  <Chip 
+                    label={entry.snowflakeImpact || 'Impact TBD'} 
+                    size="small"
+                    sx={{ 
+                      bgcolor: entry.snowflakeImpact === 'High Impact' ? '#f44336' : 
+                               entry.snowflakeImpact === 'Medium Impact' ? '#ff9800' : '#4caf50',
+                      color: 'white',
+                      fontWeight: 'bold'
+                    }}
+                  />
+                </Box>
+              </Box>
+            </Box>
 
-                  return isRightColumn ? null : (
-                    <Box sx={{ display: 'flex', flexDirection: 'column', mb: 3 }} key={key}>
-                      <Typography variant="subtitle2" sx={{ fontWeight: 'bold', color: '#2c3e50', mb: 1 }}>
-                        {key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
-                      </Typography>
-                      <Typography variant="body2" sx={{ color: '#555', wordBreak: 'break-word' }}>
-                        {value || '-'}
+            {/* Team & Contacts Section */}
+            <Box sx={{ mb: 4 }}>
+              <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2, color: '#2c3e50' }}>
+                Team & Contacts
+              </Typography>
+              <Box sx={{ 
+                display: 'grid', 
+                gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, 
+                gap: 2
+              }}>
+                <Card sx={{ boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
+                  <CardContent sx={{ p: 2 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
+                      <TeamIcon sx={{ color: '#6495ED', fontSize: '20px', mr: 1 }} />
+                      <Typography variant="subtitle1" sx={{ fontWeight: 'bold', color: '#333' }}>
+                        Development Team
                       </Typography>
                     </Box>
-                  );
-                })}
-              </Grid>
-              <Grid item xs={12} md={6}>
-                {Object.entries(entry).map(([key, value]) => {
-                  const isLink = key.includes('Link') || key.includes('link');
-                  const isJiraField = key.toLowerCase().includes('jira') || key.toLowerCase().includes('epic') || key.toLowerCase().includes('initiative') || key.toLowerCase().includes('story');
-                  const isIncidentField = key.toLowerCase().includes('incident') || key.toLowerCase().includes('related');
-                  const isBooleanField = typeof value === 'string' && ['yes', 'no', 'n/a'].includes(value.toLowerCase());
-                  const isRightColumn = isLink || isJiraField || isIncidentField || isBooleanField;
-                  const linkValues = typeof value === 'string' ? value.split(', ') : [];
-
-                  let displayValue = value;
-                  if (isBooleanField) {
-                    displayValue = value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
-                  }
-
-                  return isRightColumn ? (
-                    <Box sx={{ display: 'flex', flexDirection: 'column', mb: 3 }} key={key}>
-                      <Typography variant="subtitle2" sx={{ fontWeight: 'bold', color: '#2c3e50', mb: 1 }}>
-                        {key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
+                    <List dense sx={{ p: 0 }}>
+                      <ListItem sx={{ px: 0, py: 0.5 }}>
+                        <ListItemIcon sx={{ minWidth: 32 }}>
+                          <PersonIcon sx={{ color: '#666', fontSize: '16px' }} />
+                        </ListItemIcon>
+                        <ListItemText 
+                          primary="Key Dev Lead" 
+                          secondary={entry.keyDevLead || 'Not assigned'}
+                          primaryTypographyProps={{ fontSize: '0.75rem', color: '#999' }}
+                          secondaryTypographyProps={{ fontSize: '0.85rem', color: '#333' }}
+                        />
+                      </ListItem>
+                      <ListItem sx={{ px: 0, py: 0.5 }}>
+                        <ListItemIcon sx={{ minWidth: 32 }}>
+                          <BuildIcon sx={{ color: '#666', fontSize: '16px' }} />
+                        </ListItemIcon>
+                        <ListItemText 
+                          primary="Tech Lead" 
+                          secondary={entry.techLead || 'Not assigned'}
+                          primaryTypographyProps={{ fontSize: '0.75rem', color: '#999' }}
+                          secondaryTypographyProps={{ fontSize: '0.85rem', color: '#333' }}
+                        />
+                      </ListItem>
+                      <ListItem sx={{ px: 0, py: 0.5 }}>
+                        <ListItemIcon sx={{ minWidth: 32 }}>
+                          <PersonIcon sx={{ color: '#666', fontSize: '16px' }} />
+                        </ListItemIcon>
+                        <ListItemText 
+                          primary="Product Contact" 
+                          secondary={entry.productContact || 'Not assigned'}
+                          primaryTypographyProps={{ fontSize: '0.75rem', color: '#999' }}
+                          secondaryTypographyProps={{ fontSize: '0.85rem', color: '#333' }}
+                        />
+                      </ListItem>
+                    </List>
+                  </CardContent>
+                </Card>
+                <Card sx={{ boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
+                  <CardContent sx={{ p: 2 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
+                      <SecurityIcon sx={{ color: '#6495ED', fontSize: '20px', mr: 1 }} />
+                      <Typography variant="subtitle1" sx={{ fontWeight: 'bold', color: '#333' }}>
+                        On-Call Contacts
                       </Typography>
-                      {isLink || isJiraField ? (
-                        linkValues.map((link, idx) => (
-                          <Link 
-                            key={idx}
-                            href={isLink ? link : `https://jira.company.com/browse/${link}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            sx={{
-                              color: '#6495ED',
-                              textDecoration: 'none',
-                              fontWeight: 500,
-                              '&:hover': {
-                                textDecoration: 'underline',
-                                color: '#4169E1',
-                              },
-                              display: 'block',
-                              mb: 0.5
-                            }}
-                          >
-                            {link}
-                          </Link>
-                        ))
-                      ) : (
-                        <Typography variant="body2" sx={{ color: isBooleanField ? '#0070f3' : '#555', fontWeight: isBooleanField ? 'bold' : 'normal' }}>
-                          {displayValue || '-'}
+                    </Box>
+                    <List dense sx={{ p: 0 }}>
+                      <ListItem sx={{ px: 0, py: 0.5 }}>
+                        <ListItemIcon sx={{ minWidth: 32 }}>
+                          <PersonIcon sx={{ color: '#4caf50', fontSize: '16px' }} />
+                        </ListItemIcon>
+                        <ListItemText 
+                          primary="Primary On-Call" 
+                          secondary={entry.personOnCallPrimary || 'Not assigned'}
+                          primaryTypographyProps={{ fontSize: '0.75rem', color: '#999' }}
+                          secondaryTypographyProps={{ fontSize: '0.85rem', color: '#333' }}
+                        />
+                      </ListItem>
+                      <ListItem sx={{ px: 0, py: 0.5 }}>
+                        <ListItemIcon sx={{ minWidth: 32 }}>
+                          <PersonIcon sx={{ color: '#ff9800', fontSize: '16px' }} />
+                        </ListItemIcon>
+                        <ListItemText 
+                          primary="Secondary On-Call" 
+                          secondary={entry.personOnCallSecondary || 'Not assigned'}
+                          primaryTypographyProps={{ fontSize: '0.75rem', color: '#999' }}
+                          secondaryTypographyProps={{ fontSize: '0.85rem', color: '#333' }}
+                        />
+                      </ListItem>
+                    </List>
+                  </CardContent>
+                </Card>
+              </Box>
+            </Box>
+
+            {/* Release Information Section */}
+            <Box sx={{ mb: 4 }}>
+              <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2, color: '#2c3e50' }}>
+                Release Information
+              </Typography>
+              <Box sx={{ 
+                display: 'grid', 
+                gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, 
+                gap: 2
+              }}>
+                <Card sx={{ boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
+                  <CardContent sx={{ p: 2 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
+                      <ServiceIcon sx={{ color: '#6495ED', fontSize: '20px', mr: 1 }} />
+                      <Typography variant="subtitle1" sx={{ fontWeight: 'bold', color: '#333' }}>
+                        Services & Changes
+                      </Typography>
+                    </Box>
+                    <Typography variant="caption" sx={{ color: '#666', mb: 1, display: 'block' }}>
+                      Services to Deploy:
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: '#333', mb: 2, whiteSpace: 'pre-wrap' }}>
+                      {entry.servicesToBeDeployed || 'None specified'}
+                    </Typography>
+                    <Typography variant="caption" sx={{ color: '#666', mb: 1, display: 'block' }}>
+                      Changes Involved:
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: '#333', whiteSpace: 'pre-wrap' }}>
+                      {entry.changesInvolved || 'None specified'}
+                    </Typography>
+                  </CardContent>
+                </Card>
+                <Card sx={{ boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
+                  <CardContent sx={{ p: 2 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
+                      <CheckIcon sx={{ color: '#6495ED', fontSize: '20px', mr: 1 }} />
+                      <Typography variant="subtitle1" sx={{ fontWeight: 'bold', color: '#333' }}>
+                        Testing Status
+                      </Typography>
+                    </Box>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <Typography variant="body2" sx={{ color: '#666' }}>IST Tested:</Typography>
+                        <Chip 
+                          label={entry.istTested || 'N/A'} 
+                          size="small"
+                          color={entry.istTested === 'Yes' ? 'success' : entry.istTested === 'No' ? 'error' : 'default'}
+                          variant="outlined"
+                        />
+                      </Box>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <Typography variant="body2" sx={{ color: '#666' }}>UAT Tested:</Typography>
+                        <Chip 
+                          label={entry.uatTested || 'N/A'} 
+                          size="small"
+                          color={entry.uatTested === 'Yes' ? 'success' : entry.uatTested === 'No' ? 'error' : 'default'}
+                          variant="outlined"
+                        />
+                      </Box>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <Typography variant="body2" sx={{ color: '#666' }}>SRE KT Done:</Typography>
+                        <Chip 
+                          label={entry.sreKTDone || 'N/A'} 
+                          size="small"
+                          color={entry.sreKTDone === 'Yes' ? 'success' : entry.sreKTDone === 'No' ? 'error' : 'default'}
+                          variant="outlined"
+                        />
+                      </Box>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <Typography variant="body2" sx={{ color: '#666' }}>Runbook Updated:</Typography>
+                        <Chip 
+                          label={entry.runbookUpdateDone || 'N/A'} 
+                          size="small"
+                          color={entry.runbookUpdateDone === 'Yes' ? 'success' : entry.runbookUpdateDone === 'No' ? 'error' : 'default'}
+                          variant="outlined"
+                        />
+                      </Box>
+                    </Box>
+                  </CardContent>
+                </Card>
+              </Box>
+            </Box>
+
+            {/* Links & References Section */}
+            <Box sx={{ mb: 4 }}>
+              <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2, color: '#2c3e50' }}>
+                Links & References
+              </Typography>
+              <Box sx={{ 
+                display: 'grid', 
+                gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, 
+                gap: 2
+              }}>
+                <Card sx={{ boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
+                  <CardContent sx={{ p: 2 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
+                      <LinkIcon sx={{ color: '#6495ED', fontSize: '20px', mr: 1 }} />
+                      <Typography variant="subtitle1" sx={{ fontWeight: 'bold', color: '#333' }}>
+                        JIRA Links
+                      </Typography>
+                    </Box>
+                    <List dense sx={{ p: 0 }}>
+                      <ListItem sx={{ px: 0, py: 0.5 }}>
+                        <ListItemText 
+                          primary="Initiative" 
+                          secondary={
+                            entry.initiativeLink ? (
+                              <Link 
+                                href={entry.initiativeLink} 
+                                target="_blank" 
+                                sx={{ color: '#6495ED', textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}
+                              >
+                                {entry.initiativeLink}
+                              </Link>
+                            ) : 'Not specified'
+                          }
+                          primaryTypographyProps={{ fontSize: '0.75rem', color: '#999' }}
+                        />
+                      </ListItem>
+                      <ListItem sx={{ px: 0, py: 0.5 }}>
+                        <ListItemText 
+                          primary="Epic" 
+                          secondary={
+                            entry.epicLink ? (
+                              <Link 
+                                href={entry.epicLink} 
+                                target="_blank" 
+                                sx={{ color: '#6495ED', textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}
+                              >
+                                {entry.epicLink}
+                              </Link>
+                            ) : 'Not specified'
+                          }
+                          primaryTypographyProps={{ fontSize: '0.75rem', color: '#999' }}
+                        />
+                      </ListItem>
+                      <ListItem sx={{ px: 0, py: 0.5 }}>
+                        <ListItemText 
+                          primary="Story" 
+                          secondary={
+                            entry.storyLink ? (
+                              <Link 
+                                href={entry.storyLink} 
+                                target="_blank" 
+                                sx={{ color: '#6495ED', textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}
+                              >
+                                {entry.storyLink}
+                              </Link>
+                            ) : 'Not specified'
+                          }
+                          primaryTypographyProps={{ fontSize: '0.75rem', color: '#999' }}
+                        />
+                      </ListItem>
+                    </List>
+                  </CardContent>
+                </Card>
+                <Card sx={{ boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
+                  <CardContent sx={{ p: 2 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
+                      <IncidentIcon sx={{ color: '#f44336', fontSize: '20px', mr: 1 }} />
+                      <Typography variant="subtitle1" sx={{ fontWeight: 'bold', color: '#333' }}>
+                        Related Incidents
+                      </Typography>
+                    </Box>
+                    <Typography variant="body2" sx={{ color: entry.relatedIncidents ? '#333' : '#999' }}>
+                      {entry.relatedIncidents || 'None reported'}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Box>
+            </Box>
+
+            {/* Comments Section */}
+            {(entry.drmComments || entry.manualTaskComments) && (
+              <Box>
+                <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2, color: '#2c3e50' }}>
+                  Comments & Notes
+                </Typography>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                  {entry.drmComments && (
+                    <Card sx={{ boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
+                      <CardContent sx={{ p: 2 }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                          <InfoIcon sx={{ color: '#6495ED', fontSize: '18px', mr: 1 }} />
+                          <Typography variant="subtitle2" sx={{ fontWeight: 'bold', color: '#333' }}>
+                            DRM Comments
+                          </Typography>
+                        </Box>
+                        <Typography variant="body2" sx={{ color: '#666', whiteSpace: 'pre-wrap' }}>
+                          {entry.drmComments}
                         </Typography>
-                      )}
-                    </Box>
-                  ) : null;
-                })}
-              </Grid>
-            </Grid>
+                      </CardContent>
+                    </Card>
+                  )}
+                  {entry.manualTaskComments && (
+                    <Card sx={{ boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
+                      <CardContent sx={{ p: 2 }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                          <WarningIcon sx={{ color: '#ff9800', fontSize: '18px', mr: 1 }} />
+                          <Typography variant="subtitle2" sx={{ fontWeight: 'bold', color: '#333' }}>
+                            Manual Task Comments
+                          </Typography>
+                        </Box>
+                        <Typography variant="body2" sx={{ color: '#666', whiteSpace: 'pre-wrap' }}>
+                          {entry.manualTaskComments}
+                        </Typography>
+                      </CardContent>
+                    </Card>
+                  )}
+                </Box>
+              </Box>
+            )}
           </AccordionDetails>
         </Accordion>
       ))}

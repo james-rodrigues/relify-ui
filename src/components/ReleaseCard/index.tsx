@@ -5,6 +5,7 @@ import {
   PlayArrow as PlayIcon,
   CalendarToday as CalendarIcon
 } from '@mui/icons-material'
+import { useState, useEffect } from 'react'
 import './styles.scss'
 
 interface ReleaseCardProps {
@@ -20,6 +21,19 @@ interface ReleaseCardProps {
 }
 
 const ReleaseCard = ({ title, type, status, progress = 0, date, releaseId, fixVersion, description, onTitleClick }: ReleaseCardProps) => {
+  const [animatedProgress, setAnimatedProgress] = useState(0)
+
+  useEffect(() => {
+    if (status === 'planned' && progress !== undefined) {
+      // Start animation after a short delay
+      const timer = setTimeout(() => {
+        setAnimatedProgress(progress)
+      }, 300)
+      
+      return () => clearTimeout(timer)
+    }
+  }, [progress, status])
+
   const getStatusColor = () => {
     switch (status) {
       case 'planned':
@@ -116,20 +130,32 @@ const ReleaseCard = ({ title, type, status, progress = 0, date, releaseId, fixVe
           )}
         </Box>
 
-        {status === 'planned' && progress > 0 && (
+        {status === 'planned' && (
           <Box className="progress-section">
             <Box className="progress-header">
               <Typography variant="body2" color="text.secondary" className="progress-label">
                 Progress
               </Typography>
               <Typography variant="body2" color="text.secondary" className="progress-value">
-                {progress}%
+                {progress || 0}%
               </Typography>
             </Box>
             <LinearProgress 
               variant="determinate" 
-              value={progress} 
+              value={animatedProgress} 
               className={`progress-bar progress-bar--${status}${status === 'planned' ? `-${type}` : ''}`}
+              sx={{
+                height: 10,
+                borderRadius: 5,
+                backgroundColor: type === 'monthly' ? 'rgba(102, 126, 234, 0.2)' : 'rgba(118, 75, 162, 0.2)',
+                '& .MuiLinearProgress-bar': {
+                  background: type === 'monthly' 
+                    ? 'linear-gradient(90deg, #667eea, rgba(102, 126, 234, 0.8))'
+                    : 'linear-gradient(90deg, #764ba2, rgba(118, 75, 162, 0.8))',
+                  borderRadius: 5,
+                  transition: 'transform 2.5s cubic-bezier(0.4, 0, 0.2, 1)'
+                }
+              }}
             />
           </Box>
         )}

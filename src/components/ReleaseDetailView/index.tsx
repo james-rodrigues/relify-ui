@@ -226,6 +226,26 @@ const ReleaseDetailView: React.FC<ReleaseDetailViewProps> = ({
   }
 
 
+  // Get record counts for each tab
+  const getRecordCount = (tabIndex: number) => {
+    switch (tabIndex) {
+      case 0: // Overview
+        return overviewData.activityTimeline?.length || 0
+      case 1: // Release Scope
+        return 4 // Mock count - in real app, get from ReleaseScope component
+      case 2: // Implementation Plan
+        return 3 // Mock count - in real app, get from ImplementationPlan component
+      case 3: // Jira
+        return 15 // Mock count - in real app, get from JiraIntegration component
+      case 4: // Pipelines
+        return 8 // Mock count - in real app, get from ApplicationPipelines component
+      case 5: // Evidence
+        return 12 // Mock count - in real app, get from Evidence component
+      default:
+        return 0
+    }
+  }
+
   const tabs = [
     'Overview',
     'Release Scope',
@@ -261,18 +281,67 @@ const ReleaseDetailView: React.FC<ReleaseDetailViewProps> = ({
       <Box className="detail-content">
         <Container maxWidth={false} sx={{ maxWidth: '1400px', height: '100%' }}>
           <Paper className="content-paper" sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-            <Box className="tabs-container">
+            <Box className="tabs-container" sx={{ position: 'relative' }}>
               <Tabs
                 value={activeTab}
                 onChange={handleTabChange}
                 className="detail-tabs"
                 variant="scrollable"
                 scrollButtons="auto"
+                sx={{
+                  '& .MuiTabs-root': {
+                    borderRadius: '12px 12px 0 0'
+                  },
+                  '& .MuiTab-root': {
+                    borderRadius: '8px 8px 0 0',
+                    textTransform: 'none',
+                    fontWeight: 600,
+                    fontSize: '0.95rem',
+                    minHeight: 48,
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                      backgroundColor: 'rgba(100, 149, 237, 0.08)'
+                    }
+                  },
+                  '& .MuiTabs-indicator': {
+                    height: 3,
+                    borderRadius: '3px 3px 0 0',
+                    background: 'linear-gradient(90deg, #6495ED, #9370DB)'
+                  },
+                  '& .Mui-selected': {
+                    color: '#6495ED',
+                    backgroundColor: 'rgba(100, 149, 237, 0.05)'
+                  }
+                }}
               >
                 {tabs.map((tab, index) => (
-                  <Tab key={index} label={tab} className="detail-tab" />
+                  <Tab 
+                    key={index} 
+                    label={tab} 
+                    className="detail-tab"
+                  />
                 ))}
               </Tabs>
+              
+              {/* Record Count Display */}
+              <Box sx={{
+                position: 'absolute',
+                top: 8,
+                right: 16,
+                backgroundColor: 'rgba(100, 149, 237, 0.1)',
+                borderRadius: '16px',
+                padding: '4px 12px',
+                border: '1px solid rgba(100, 149, 237, 0.2)',
+                zIndex: 1
+              }}>
+                <Typography variant="caption" sx={{ 
+                  color: '#6495ED',
+                  fontWeight: 600,
+                  fontSize: '0.75rem'
+                }}>
+                  {getRecordCount(activeTab)} records
+                </Typography>
+              </Box>
             </Box>
 
             <Box className="tab-panels" sx={{ flex: 1, overflow: 'auto' }}>

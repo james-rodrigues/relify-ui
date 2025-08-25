@@ -64,7 +64,7 @@ const Releases: React.FC<ReleasesProps> = ({ onReleaseClick }) => {
   return (
     <Box sx={{ width: '100%', px: 0 }}>
       {/* Search and Create Section */}
-      <Container maxWidth={false} sx={{ px: { xs: 3, md: 6 }, mb: 3 }}>
+      <Container maxWidth={false} sx={{ px: { xs: 3, md: 6 }, mb: 3, mt: 4 }}>
         <Box sx={{
           display: 'flex',
           justifyContent: 'flex-end',
@@ -164,23 +164,27 @@ const Releases: React.FC<ReleasesProps> = ({ onReleaseClick }) => {
             </AccordionSummary>
             <AccordionDetails sx={{ p: 3 }}>
               {searchResults.length > 0 ? (
-                <Grid container spacing={3}>
+                <Box sx={{ 
+                  display: 'flex', 
+                  flexWrap: 'wrap', 
+                  gap: 3, 
+                  justifyContent: 'center' 
+                }}>
                   {searchResults.map((release) => (
-                    <Grid key={release.id} item xs={12} sm={6} md={6}>
-                      <ReleaseCard 
-                        title={release.title}
-                        type={release.type}
-                        status={release.status}
-                        progress={release.progress}
-                        date={release.date}
-                        releaseId={release.id}
-                        fixVersion={release.fixVersion}
-                        description={release.description}
-                        onTitleClick={() => onReleaseClick(release.title, release.date, release.type)}
-                      />
-                    </Grid>
+                    <ReleaseCard 
+                      key={release.id}
+                      title={release.title}
+                      type={release.type}
+                      status={release.status}
+                      progress={release.progress}
+                      date={release.date}
+                      releaseId={release.id}
+                      fixVersion={release.fixVersion}
+                      description={release.description}
+                      onTitleClick={() => onReleaseClick(release.title, release.date, release.type)}
+                    />
                   ))}
-                </Grid>
+                </Box>
               ) : (
                 <Box sx={{ 
                   textAlign: 'center', 
@@ -238,23 +242,27 @@ const Releases: React.FC<ReleasesProps> = ({ onReleaseClick }) => {
               </Typography>
             </AccordionSummary>
             <AccordionDetails sx={{ p: 3 }}>
-              <Grid container spacing={3}>
+              <Box sx={{ 
+                display: 'flex', 
+                flexWrap: 'wrap', 
+                gap: 3, 
+                justifyContent: 'center' 
+              }}>
                 {filteredCurrentReleases.map((release) => (
-                  <Grid key={release.id} item xs={12} sm={6} md={6}>
-                    <ReleaseCard 
-                      title={release.title}
-                      type={release.type}
-                      status={release.status}
-                      progress={release.progress}
-                      date={release.date}
-                      releaseId={release.id}
-                      fixVersion={release.fixVersion}
-                      description={release.description}
-                      onTitleClick={() => onReleaseClick(release.title, release.date, release.type)}
-                    />
-                  </Grid>
+                  <ReleaseCard 
+                    key={release.id}
+                    title={release.title}
+                    type={release.type}
+                    status={release.status}
+                    progress={release.progress}
+                    date={release.date}
+                    releaseId={release.id}
+                    fixVersion={release.fixVersion}
+                    description={release.description}
+                    onTitleClick={() => onReleaseClick(release.title, release.date, release.type)}
+                  />
                 ))}
-              </Grid>
+              </Box>
             </AccordionDetails>
           </Accordion>
         </Box>
@@ -296,22 +304,26 @@ const Releases: React.FC<ReleasesProps> = ({ onReleaseClick }) => {
               </Typography>
             </AccordionSummary>
             <AccordionDetails sx={{ p: 3 }}>
-              <Grid container spacing={3}>
+              <Box sx={{ 
+                display: 'flex', 
+                flexWrap: 'wrap', 
+                gap: 3, 
+                justifyContent: 'center' 
+              }}>
                 {filteredPastReleases.map((release) => (
-                  <Grid key={release.id} item xs={12} sm={6} md={6}>
-                    <ReleaseCard 
-                      title={release.title}
-                      type={release.type}
-                      status={release.status}
-                      date={release.date}
-                      releaseId={release.id}
-                      fixVersion={release.fixVersion}
-                      description={release.description}
-                      onTitleClick={() => onReleaseClick(release.title, release.date, release.type)}
-                    />
-                  </Grid>
+                  <ReleaseCard 
+                    key={release.id}
+                    title={release.title}
+                    type={release.type}
+                    status={release.status}
+                    date={release.date}
+                    releaseId={release.id}
+                    fixVersion={release.fixVersion}
+                    description={release.description}
+                    onTitleClick={() => onReleaseClick(release.title, release.date, release.type)}
+                  />
                 ))}
-              </Grid>
+              </Box>
             </AccordionDetails>
           </Accordion>
         </Box>

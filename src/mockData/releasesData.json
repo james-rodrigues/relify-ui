@@ -8,7 +8,9 @@
       "progress": 65,
       "date": "July 30, 2025",
       "description": "Monthly release with new features, bug fixes, and performance improvements.",
-      "fixVersion": "MS2025-07-30"
+      "fixVersion": "MS2025-07-30",
+      "releaseCoordinator": "Sarah Johnson",
+      "releaseSupervisor": "Michael Chen"
     },
     {
       "id": "july-offcycle-2025",
@@ -18,7 +20,9 @@
       "progress": 30,
       "date": "July 15, 2025",
       "description": "Critical hotfix release for security vulnerabilities and urgent issues.",
-      "fixVersion": "OS2025-07-15"
+      "fixVersion": "OS2025-07-15",
+      "releaseCoordinator": "Emily Rodriguez",
+      "releaseSupervisor": "David Kim"
     }
   ],
   "pastReleases": [
@@ -29,7 +33,9 @@
       "status": "completed",
       "date": "June 30, 2025",
       "description": "Major feature release with enhanced UI, new integrations, and performance optimizations.",
-      "fixVersion": "MS2025-06-30"
+      "fixVersion": "MS2025-06-30",
+      "releaseCoordinator": "Lisa Wang",
+      "releaseSupervisor": "James Taylor"
     },
     {
       "id": "june-offcycle-2025",
@@ -38,7 +44,9 @@
       "status": "completed",
       "date": "June 20, 2025",
       "description": "Emergency security patch and critical bug fixes deployed successfully.",
-      "fixVersion": "OS2025-06-20"
+      "fixVersion": "OS2025-06-20",
+      "releaseCoordinator": "Carlos Martinez",
+      "releaseSupervisor": "Angela Davis"
     },
     {
       "id": "may-monthly-2025",
@@ -47,7 +55,9 @@
       "status": "completed",
       "date": "May 31, 2025",
       "description": "Comprehensive release with new dashboard, analytics features, and mobile support.",
-      "fixVersion": "MS2025-05-31"
+      "fixVersion": "MS2025-05-31",
+      "releaseCoordinator": "Rachel Green",
+      "releaseSupervisor": "Thomas Anderson"
     },
     {
       "id": "may-offcycle-2025",
@@ -56,7 +66,9 @@
       "status": "completed",
       "date": "May 15, 2025",
       "description": "Quick deployment for API improvements and database optimizations.",
-      "fixVersion": "OS2025-05-15"
+      "fixVersion": "OS2025-05-15",
+      "releaseCoordinator": "Kevin Park",
+      "releaseSupervisor": "Michelle Robinson"
     },
     {
       "id": "april-monthly-2025",
@@ -65,7 +77,9 @@
       "status": "completed",
       "date": "April 30, 2025",
       "description": "Spring release featuring redesigned interface and enhanced automation capabilities.",
-      "fixVersion": "MS2025-04-30"
+      "fixVersion": "MS2025-04-30",
+      "releaseCoordinator": "Jennifer Lee",
+      "releaseSupervisor": "Robert Johnson"
     },
     {
       "id": "april-offcycle-2025",
@@ -74,7 +88,9 @@
       "status": "completed",
       "date": "April 10, 2025",
       "description": "Hotfix release addressing user-reported issues and performance bottlenecks.",
-      "fixVersion": "OS2025-04-10"
+      "fixVersion": "OS2025-04-10",
+      "releaseCoordinator": "Mark Thompson",
+      "releaseSupervisor": "Susan Wilson"
     }
   ]
 }

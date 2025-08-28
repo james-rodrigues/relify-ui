@@ -181,6 +181,8 @@ const Releases: React.FC<ReleasesProps> = ({ onReleaseClick }) => {
                       releaseId={release.id}
                       fixVersion={release.fixVersion}
                       description={release.description}
+                      releaseCoordinator={release.releaseCoordinator}
+                      releaseSupervisor={release.releaseSupervisor}
                       onTitleClick={() => onReleaseClick(release.title, release.date, release.type)}
                     />
                   ))}
@@ -259,6 +261,8 @@ const Releases: React.FC<ReleasesProps> = ({ onReleaseClick }) => {
                     releaseId={release.id}
                     fixVersion={release.fixVersion}
                     description={release.description}
+                    releaseCoordinator={release.releaseCoordinator}
+                    releaseSupervisor={release.releaseSupervisor}
                     onTitleClick={() => onReleaseClick(release.title, release.date, release.type)}
                   />
                 ))}
@@ -320,6 +324,8 @@ const Releases: React.FC<ReleasesProps> = ({ onReleaseClick }) => {
                     releaseId={release.id}
                     fixVersion={release.fixVersion}
                     description={release.description}
+                    releaseCoordinator={release.releaseCoordinator}
+                    releaseSupervisor={release.releaseSupervisor}
                     onTitleClick={() => onReleaseClick(release.title, release.date, release.type)}
                   />
                 ))}

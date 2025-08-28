@@ -17,10 +17,12 @@ interface ReleaseCardProps {
   releaseId?: string
   fixVersion?: string
   description?: string
+  releaseCoordinator?: string
+  releaseSupervisor?: string
   onTitleClick?: () => void
 }
 
-const ReleaseCard = ({ title, type, status, progress = 0, date, releaseId, fixVersion, description, onTitleClick }: ReleaseCardProps) => {
+const ReleaseCard = ({ title, type, status, progress = 0, date, releaseId, fixVersion, description, releaseCoordinator, releaseSupervisor, onTitleClick }: ReleaseCardProps) => {
   const [animatedProgress, setAnimatedProgress] = useState(0)
 
   useEffect(() => {
@@ -126,6 +128,16 @@ const ReleaseCard = ({ title, type, status, progress = 0, date, releaseId, fixVe
           {fixVersion && (
             <Typography variant="caption" color="text.secondary" className="info-item">
               <strong>Fix Version:</strong> {fixVersion}
+            </Typography>
+          )}
+          {releaseCoordinator && (
+            <Typography variant="caption" color="text.secondary" className="info-item">
+              <strong>Coordinator:</strong> {releaseCoordinator}
+            </Typography>
+          )}
+          {releaseSupervisor && (
+            <Typography variant="caption" color="text.secondary" className="info-item">
+              <strong>Supervisor:</strong> {releaseSupervisor}
             </Typography>
           )}
         </Box>

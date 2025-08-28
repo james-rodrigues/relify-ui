@@ -8,9 +8,11 @@ import {
 import { useState } from 'react'
 import Header from './components/Header'
 import HeroSection from './components/HeroSection'
+import ActivityBanner from './components/ActivityBanner'
 import Releases from './components/Releases'
 import ReleaseDetailView from './components/ReleaseDetailView'
 import AdminPanel from './components/AdminPanel'
+import { getReleasesData } from './utils/mockDataLoader'
 import './App.scss'
 import './components/NoAnimations.scss'
 
@@ -130,6 +132,9 @@ interface SelectedRelease {
 function App() {
   const [currentView, setCurrentView] = useState<'dashboard' | 'detail' | 'admin'>('dashboard')
   const [selectedRelease, setSelectedRelease] = useState<SelectedRelease | null>(null)
+  
+  // Get releases data for the activity banner
+  const { currentReleases } = getReleasesData()
 
   const handleReleaseClick = (name: string, date: string, type: 'monthly' | 'offcycle') => {
     setSelectedRelease({ name, date, type })
@@ -179,6 +184,10 @@ function App() {
             <Header onSettingsClick={handleSettingsClick} />
           </Box>
           <HeroSection />
+          <ActivityBanner 
+            currentReleases={currentReleases} 
+            onActivityClick={handleReleaseClick}
+          />
           <Box sx={{ 
             width: '100%',
             px: 0,

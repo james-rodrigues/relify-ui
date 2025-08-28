@@ -17,6 +17,8 @@ export interface Release {
   date: string
   description: string
   fixVersion: string
+  releaseCoordinator?: string
+  releaseSupervisor?: string
 }
 
 export interface ReleasesData {

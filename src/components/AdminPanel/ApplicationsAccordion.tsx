@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import {
   Typography,
   Button,
@@ -39,8 +39,6 @@ import {
   CloudQueue as CloudIcon,
   Search as SearchIcon
 } from '@mui/icons-material';
-import applicationsData from '../../mockData/applications.json';
-
 interface ApplicationEntry {
   id: string;
   applicationId: string;
@@ -62,6 +60,7 @@ interface ApplicationsAccordionProps {
   onEditEntry: (entry: ApplicationEntry) => void;
   searchTerm: string;
   onSearchChange: (searchTerm: string) => void;
+  data?: ApplicationEntry[];
 }
 
 const ApplicationsAccordion: React.FC<ApplicationsAccordionProps> = ({
@@ -69,6 +68,7 @@ const ApplicationsAccordion: React.FC<ApplicationsAccordionProps> = ({
   onEditEntry,
   searchTerm,
   onSearchChange,
+  data = [],
 }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
@@ -83,7 +83,6 @@ const ApplicationsAccordion: React.FC<ApplicationsAccordionProps> = ({
     deploymentPlatform: ''
   });
   const [editEntry, setEditEntry] = useState<ApplicationEntry | null>(null);
-  const [entries, setEntries] = useState<ApplicationEntry[]>(applicationsData as ApplicationEntry[]);
 
   const handleEntryChange = (field: keyof typeof newEntry, value: string) => {
     setNewEntry(prev => ({ ...prev, [field]: value }));
@@ -107,7 +106,6 @@ const ApplicationsAccordion: React.FC<ApplicationsAccordionProps> = ({
       backoutValidationSteps: defaultSteps
     };
     
-    setEntries(prev => [...prev, newApplicationEntry]);
     onAddEntry(newApplicationEntry);
     setDialogOpen(false);
     setNewEntry({
@@ -123,15 +121,12 @@ const ApplicationsAccordion: React.FC<ApplicationsAccordionProps> = ({
 
   const handleEditEntry = (index: number) => {
     setEditingIndex(index);
-    setEditEntry(entries[index]);
+    setEditEntry(data[index]);
     setEditDialogOpen(true);
   };
 
   const handleUpdateEntry = () => {
     if (editingIndex !== null && editEntry) {
-      setEntries(prev => prev.map((entry, index) => 
-        index === editingIndex ? editEntry : entry
-      ));
       onEditEntry(editEntry);
       setEditDialogOpen(false);
       setEditingIndex(null);
@@ -162,15 +157,8 @@ const ApplicationsAccordion: React.FC<ApplicationsAccordionProps> = ({
     }
   };
 
-  // Filter entries based on search term
-  const filteredEntries = useMemo(() => {
-    if (!searchTerm.trim()) {
-      return entries
-    }
-    return entries.filter(entry => 
-      entry.appName.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-  }, [entries, searchTerm])
+  // Filter entries based on search term (data is already filtered in parent component)
+  const filteredEntries = data
 
   const appTypeOptions = ['Backend Service', 'Web Application', 'Mobile App', 'Microservice', 'Data Visualization', 'API Service'];
   const platformOptions = ['AWS ECS', 'React/Node.js', 'React/Python', 'Java Spring Boot', 'Node.js', 'React Native', 'Kubernetes'];

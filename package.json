@@ -4,8 +4,14 @@
   "version": "0.0.1",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --mode mock",
+    "dev:mock": "vite --mode mock",
+    "dev:local": "vite --mode development",
+    "dev:aws": "vite --mode aws",
     "build": "tsc -b && vite build",
+    "build:mock": "tsc -b && vite build --mode mock",
+    "build:local": "tsc -b && vite build --mode development",
+    "build:aws": "tsc -b && vite build --mode aws",
     "lint": "eslint .",
     "preview": "vite preview"
   },

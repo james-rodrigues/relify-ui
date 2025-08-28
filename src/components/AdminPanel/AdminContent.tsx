@@ -1,4 +1,4 @@
-import { Box, Typography, Paper, TextField, InputAdornment, Button } from '@mui/material'
+import { Box, Typography, Paper, TextField, InputAdornment, Button, CircularProgress, Alert } from '@mui/material'
 import { useState, useMemo } from 'react'
 import { Search as SearchIcon, Refresh as RefreshIcon, Add as AddIcon } from '@mui/icons-material'
 import AdminTable from './AdminTable'
@@ -11,6 +11,8 @@ interface AdminContentProps {
   onAddEntry: (menuItem: string, newEntry: Record<string, any>) => void
   onEditEntry: (menuItem: string, editedEntry: Record<string, any>) => void
   onRefreshData: () => void
+  loading?: boolean
+  error?: string | null
 }
 
 // Table configurations with updated column definitions
@@ -100,11 +102,43 @@ const AdminContent = ({
   tableData, 
   onAddEntry, 
   onEditEntry,
-  onRefreshData 
+  onRefreshData,
+  loading = false,
+  error = null
 }: AdminContentProps) => {
+  // ALL HOOKS MUST BE CALLED FIRST - BEFORE ANY EARLY RETURNS
   const [dialogOpen, setDialogOpen] = useState(false)
   const [editingEntry, setEditingEntry] = useState<Record<string, any> | null>(null)
   const [searchTerm, setSearchTerm] = useState('')
+  
+  // Get the search field for current menu
+  const getSearchField = (menuItem: string) => {
+    const searchFields: Record<string, string> = {
+      'Release Governance Activities': 'governanceActivityName',
+      'Release Activities Categories': 'categoryName', 
+      'Release Activities': 'activityName',
+      'Release Schedule': 'scheduleId',
+      'Release Activity Owners': 'activityId',
+      'Point of Contacts': 'name',
+      'Applications': 'appName'
+    }
+    return searchFields[menuItem] || 'id'
+  }
+
+  // Filter data based on search term
+  const filteredData = useMemo(() => {
+    if (!searchTerm.trim()) {
+      return tableData[selectedMenuItem] || []
+    }
+    
+    const searchField = getSearchField(selectedMenuItem)
+    return (tableData[selectedMenuItem] || []).filter(item => {
+      const searchValue = item[searchField]?.toString().toLowerCase() || ''
+      return searchValue.includes(searchTerm.toLowerCase())
+    })
+  }, [tableData, selectedMenuItem, searchTerm])
+
+  // NOW WE CAN DO EARLY RETURNS AFTER ALL HOOKS ARE DEFINED
   const config = tableConfigs[selectedMenuItem as keyof typeof tableConfigs]
 
   const handleRefresh = () => {
@@ -138,32 +172,17 @@ const AdminContent = ({
     setEditingEntry(null)
   }
 
-  // Get the search field for current menu
-  const getSearchField = (menuItem: string) => {
-    const searchFields: Record<string, string> = {
-      'Release Governance Activities': 'governanceActivityName',
-      'Release Activities Categories': 'categoryName', 
-      'Release Activities': 'activityName',
-      'Release Schedule': 'scheduleId',
-      'Release Activity Owners': 'activityId',
-      'Point of Contacts': 'name',
-      'Applications': 'appName'
-    }
-    return searchFields[menuItem] || 'id'
+  // Show loading indicator
+  if (loading && (!tableData[selectedMenuItem] || tableData[selectedMenuItem].length === 0)) {
+    return (
+      <Box className="admin-content" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '400px' }}>
+        <Box sx={{ textAlign: 'center' }}>
+          <CircularProgress sx={{ mb: 2 }} />
+          <Typography variant="h6" sx={{ color: '#666' }}>Loading {selectedMenuItem}...</Typography>
+        </Box>
+      </Box>
+    )
   }
-
-  // Filter data based on search term
-  const filteredData = useMemo(() => {
-    if (!searchTerm.trim()) {
-      return tableData[selectedMenuItem] || []
-    }
-    
-    const searchField = getSearchField(selectedMenuItem)
-    return (tableData[selectedMenuItem] || []).filter(item => {
-      const searchValue = item[searchField]?.toString().toLowerCase() || ''
-      return searchValue.includes(searchTerm.toLowerCase())
-    })
-  }, [tableData, selectedMenuItem, searchTerm])
 
   if (!config) {
     return (
@@ -205,14 +224,37 @@ const AdminContent = ({
           sx={{ 
             borderRadius: 2, 
             overflow: 'hidden',
-            p: 3
+            p: 3,
+            position: 'relative'
           }}
         >
+          {error && (
+            <Alert severity="error" sx={{ mb: 2 }}>
+              {error}
+            </Alert>
+          )}
+          {loading && (
+            <Box sx={{ 
+              position: 'absolute', 
+              top: 0, 
+              left: 0, 
+              right: 0, 
+              bottom: 0, 
+              backgroundColor: 'rgba(255,255,255,0.8)', 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center', 
+              zIndex: 1000 
+            }}>
+              <CircularProgress />
+            </Box>
+          )}
           <ApplicationsAccordion
             onAddEntry={(entry) => onAddEntry(selectedMenuItem, entry)}
             onEditEntry={(entry) => onEditEntry(selectedMenuItem, entry)}
             searchTerm={searchTerm}
             onSearchChange={setSearchTerm}
+            data={filteredData}
           />
         </Paper>
       </Box>
@@ -248,9 +290,31 @@ const AdminContent = ({
         sx={{ 
           borderRadius: 2, 
           overflow: 'hidden',
-          p: 3 // Add padding inside the paper container
+          p: 3, // Add padding inside the paper container
+          position: 'relative'
         }}
       >
+        {error && (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {error}
+          </Alert>
+        )}
+        {loading && (
+          <Box sx={{ 
+            position: 'absolute', 
+            top: 0, 
+            left: 0, 
+            right: 0, 
+            bottom: 0, 
+            backgroundColor: 'rgba(255,255,255,0.8)', 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center', 
+            zIndex: 1000 
+          }}>
+            <CircularProgress />
+          </Box>
+        )}
         {/* Search and Action Bar */}
         <Box sx={{ 
           display: 'flex', 
@@ -296,6 +360,7 @@ const AdminContent = ({
               variant="contained"
               startIcon={<RefreshIcon />}
               onClick={handleRefresh}
+              disabled={loading}
               sx={{
                 background: 'linear-gradient(135deg, #6495ED 0%, #9370DB 100%)',
                 color: 'white',
@@ -309,6 +374,12 @@ const AdminContent = ({
                   boxShadow: '0 6px 12px rgba(100, 149, 237, 0.4)',
                   transform: 'translateY(-2px)',
                 },
+                '&:disabled': {
+                  background: '#ccc',
+                  color: '#999',
+                  boxShadow: 'none',
+                  transform: 'none',
+                },
                 transition: 'all 0.3s ease',
               }}
             >
@@ -318,6 +389,7 @@ const AdminContent = ({
               variant="contained"
               startIcon={<AddIcon />}
               onClick={handleAddEntryClick}
+              disabled={loading}
               sx={{
                 background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
                 color: 'white',

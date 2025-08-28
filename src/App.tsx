@@ -2,7 +2,6 @@ import {
   CssBaseline, 
   ThemeProvider, 
   createTheme,
-  Container,
   Box
 } from '@mui/material'
 import { useState } from 'react'
@@ -12,6 +11,7 @@ import ActivityBanner from './components/ActivityBanner'
 import Releases from './components/Releases'
 import ReleaseDetailView from './components/ReleaseDetailView'
 import AdminPanel from './components/AdminPanel'
+import ModeIndicator from './components/ModeIndicator'
 import { getReleasesData } from './utils/mockDataLoader'
 import './App.scss'
 import './components/NoAnimations.scss'
@@ -170,6 +170,7 @@ function App() {
             <Header onSettingsClick={handleCloseAdmin} />
           </Box>
           <AdminPanel onClose={handleCloseAdmin} />
+          <ModeIndicator position="top-right" showHealthStatus={true} />
         </Box>
       ) : currentView === 'dashboard' ? (
         <Box className="app-container">
@@ -196,15 +197,19 @@ function App() {
           }}>
             <Releases onReleaseClick={handleReleaseClick} />
           </Box>
+          <ModeIndicator position="bottom-right" showHealthStatus={true} />
         </Box>
       ) : (
         selectedRelease && (
-          <ReleaseDetailView
-            releaseName={selectedRelease.name}
-            releaseDate={selectedRelease.date}
-            releaseType={selectedRelease.type}
-            onBack={handleBackToDashboard}
-          />
+          <Box sx={{ position: 'relative' }}>
+            <ReleaseDetailView
+              releaseName={selectedRelease.name}
+              releaseDate={selectedRelease.date}
+              releaseType={selectedRelease.type}
+              onBack={handleBackToDashboard}
+            />
+            <ModeIndicator position="bottom-right" showHealthStatus={true} />
+          </Box>
         )
       )}
     </ThemeProvider>

@@ -14,7 +14,7 @@ Relify is a comprehensive release automation platform that eliminates the comple
 - **Complete Visibility** - Track every release with detailed analytics
 - **Zero Downtime** - Blue-green deployments with rollback capabilities
 
-## 🚀 Features
+## 🚀 Technical Features
 
 - **React 19.1.0** - Latest React version with improved performance and features
 - **Vite** - Lightning fast build tool and development server
@@ -66,31 +66,81 @@ src/
 ├── App.scss         # Component-specific SCSS styles with mixins
 ├── main.tsx         # Entry point with font imports
 ├── index.scss       # Global SCSS styles with variables and mixins
+├── mockData/        # JSON files with mock data for development
 └── assets/          # Static assets
 ```
 
 ## 🚀 Getting Started
 
-### Development
+### Development Scripts
 ```bash
+# Start development server with mock data
 npm run dev
+npm run dev:mock
+
+# Start development server with local environment
+npm run dev:local
+
+# Start development server with AWS environment
+npm run dev:aws
 ```
 Open [http://localhost:5173](http://localhost:5173) to view the app.
 
-### Build for Production
+### Build Scripts
 ```bash
+# Build for production
 npm run build
+
+# Build with specific environments
+npm run build:mock
+npm run build:local
+npm run build:aws
 ```
 
-### Preview Production Build
+### Other Scripts
 ```bash
+# Preview production build
 npm run preview
-```
 
-### Linting
-```bash
+# Run linting
 npm run lint
 ```
+
+## 📊 Mock Data Structure
+
+The `src/mockData/` directory contains JSON files with mock data for each component in the application. This separation makes it easier to edit and maintain test data for development purposes.
+
+### Available Mock Data Files:
+
+- **`applications.json`** - Application data for the main application list
+- **`releasesData.json`** - Release information and metadata
+- **`evidenceData.json`** - Evidence tab data with task instructions and evidence links
+- **`applicationPipelinesData.json`** - Application pipeline information for repositories
+- **`implementationPlanData.json`** - Implementation plan steps and procedures
+- **`jiraIntegrationData.json`** - Jira integration data and ticket information
+- **`overviewData.json`** - Overview tab data with activity timelines and release notes
+- **`releaseScopeData.json`** - Release scope information and change requests
+- **`releaseSchedule.json`** - Release scheduling information
+- **`releaseActivities.json`** - Release activity tracking
+- **`releaseGovernanceActivities.json`** - Governance and compliance activities
+- **`pointOfContacts.json`** - Contact information for team members
+- **`releaseActivityOwners.json`** - Activity ownership assignments
+- **`releaseActivitiesCategories.json`** - Activity categorization
+
+### Using Mock Data
+
+Each component imports its respective JSON file:
+
+```typescript
+import evidenceData from '../../mockData/evidenceData.json';
+
+// In component
+const [entries, setEntries] = useState<EvidenceEntry[]>(evidenceData as EvidenceEntry[]);
+```
+
+### Editing Mock Data
+
+To modify test data, simply edit the corresponding JSON file. Changes will be reflected immediately in the development environment after a page refresh.
 
 ## 📦 Dependencies
 
@@ -167,14 +217,31 @@ $transition-speed: 0.25s;
 - lg: 1200px
 - xl: 1536px
 
-## 📄 Original Vite Documentation
+## 🔧 Development Guidelines
+
+### Adding New Mock Data
+
+When adding new fields or data structures:
+
+1. Update the corresponding JSON file with the new structure
+2. Update the TypeScript interfaces in the component files
+3. Test the changes to ensure they work correctly
+
+### Environment Modes
+
+The application supports multiple environment modes:
+- **mock** - Uses local JSON mock data (default)
+- **local** - Connects to local development environment
+- **aws** - Connects to AWS environment
+
+## 📄 Vite Documentation
 
 Currently, two official plugins are available:
 
 - [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
 - [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## Expanding the ESLint configuration
+## ⚙️ ESLint Configuration
 
 If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 

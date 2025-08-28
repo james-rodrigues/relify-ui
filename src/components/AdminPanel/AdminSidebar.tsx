@@ -102,8 +102,8 @@ const AdminSidebar = ({ selectedItem, onItemSelect, onClose }: AdminSidebarProps
                   fontSize: '0.85rem',
                   fontWeight: selectedItem === item.label ? 600 : 500,
                   lineHeight: 1.3,
-                  wordBreak: 'break-word',
-                  whiteSpace: 'normal'
+                  whiteSpace: 'normal',
+                  sx: { wordBreak: 'break-word' }
                 }}
               />
             </ListItemButton>

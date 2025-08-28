@@ -14,6 +14,7 @@ export { default as ImplementationPlanTab } from './ImplementationPlanTab';
 export { default as JiraIntegrationTab } from './JiraIntegrationTab';
 export { default as ApplicationPipelinesTab } from './ApplicationPipelinesTab';
 export { default as EvidenceTab } from './EvidenceTab';
+export { default as ModeIndicator } from './ModeIndicator';
 
 // Export types
 export type { ReleaseFormData } from './CreateReleaseDialog';

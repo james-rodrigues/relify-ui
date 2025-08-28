@@ -38,6 +38,7 @@ export interface ReleaseFormData {
   releaseScopePageLink: string
   releaseCoordinatorName: string
   releaseSupervisorName: string
+  governanceContact: string
 }
 
 const CreateReleaseDialog: React.FC<CreateReleaseDialogProps> = ({
@@ -56,7 +57,8 @@ const CreateReleaseDialog: React.FC<CreateReleaseDialogProps> = ({
     implementationPlanLink: '',
     releaseScopePageLink: '',
     releaseCoordinatorName: '',
-    releaseSupervisorName: ''
+    releaseSupervisorName: '',
+    governanceContact: ''
   })
 
   const handleInputChange = (field: keyof ReleaseFormData) => (
@@ -82,7 +84,8 @@ const CreateReleaseDialog: React.FC<CreateReleaseDialogProps> = ({
       implementationPlanLink: '',
       releaseScopePageLink: '',
       releaseCoordinatorName: '',
-      releaseSupervisorName: ''
+      releaseSupervisorName: '',
+      governanceContact: ''
     })
     onClose()
   }
@@ -317,6 +320,21 @@ const CreateReleaseDialog: React.FC<CreateReleaseDialogProps> = ({
                 label="Release Supervisor Name"
                 value={formData.releaseSupervisorName}
                 onChange={handleInputChange('releaseSupervisorName')}
+                required
+                variant="outlined"
+                sx={{ 
+                  mb: 2,
+                  '& .MuiOutlinedInput-root': {
+                    borderRadius: '8px'
+                  }
+                }}
+              />
+              <TextField
+                fullWidth
+                label="Governance Contact"
+                value={formData.governanceContact}
+                onChange={handleInputChange('governanceContact')}
+                placeholder="Enter governance contact email or name"
                 required
                 variant="outlined"
                 sx={{ 

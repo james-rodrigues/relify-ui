@@ -19,6 +19,7 @@ import {
   Send as SendIcon,
 } from '@mui/icons-material';
 import Link from '@mui/material/Link';
+import RichTextEditor from '../RichTextEditor';
 
 interface OverviewTabProps {
   releaseName: string;
@@ -106,6 +107,82 @@ const OverviewTab: React.FC<OverviewTabProps> = ({
         </div>
       </div>
 
+      {/* Upcoming Activity Section */}
+      <div className="upcoming-activity-section">
+        <Typography variant="h6" className="section-title">
+          Next Upcoming Activity
+        </Typography>
+        {(() => {
+          // Find the next upcoming activity based on current date
+          const currentDate = new Date()
+          const upcomingActivities = activityTimeline
+            .filter(activity => {
+              const activityDate = new Date(activity.activityDueDate)
+              return activityDate >= currentDate && activity.status !== 'completed'
+            })
+            .sort((a, b) => new Date(a.activityDueDate).getTime() - new Date(b.activityDueDate).getTime())
+          
+          const nextActivity = upcomingActivities[0]
+          
+          if (!nextActivity) {
+            return (
+              <div className="no-upcoming-activity">
+                <Typography variant="body2" sx={{ color: '#666', fontStyle: 'italic' }}>
+                  No upcoming activities found
+                </Typography>
+              </div>
+            )
+          }
+          
+          return (
+            <div className="upcoming-activity-card">
+              <div className="activity-info">
+                <Typography variant="h6" className="activity-name">
+                  {nextActivity.activityName}
+                </Typography>
+                <Typography variant="body2" className="activity-date">
+                  Due: {formatDate(nextActivity.activityDueDate)}
+                </Typography>
+                <Chip
+                  label={nextActivity.status.charAt(0).toUpperCase() + nextActivity.status.slice(1)}
+                  color={getStatusColor(nextActivity.status) as any}
+                  size="small"
+                  className="activity-status-chip"
+                />
+              </div>
+              <div className="activity-action">
+                <Button
+                  variant="contained"
+                  startIcon={<SendIcon />}
+                  onClick={() => handleSendActivityEmail(nextActivity.id, nextActivity.activityName)}
+                  disabled={sendingActivityEmails.has(nextActivity.id)}
+                  sx={{
+                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                    color: 'white',
+                    fontWeight: 600,
+                    textTransform: 'none',
+                    borderRadius: '8px',
+                    padding: '8px 16px',
+                    boxShadow: '0 4px 12px rgba(102, 126, 234, 0.3)',
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                      transform: 'translateY(-2px)',
+                      boxShadow: '0 8px 20px rgba(102, 126, 234, 0.4)',
+                    },
+                    '&:disabled': {
+                      opacity: 0.6,
+                      transform: 'none',
+                    },
+                  }}
+                >
+                  {sendingActivityEmails.has(nextActivity.id) ? 'Sending...' : 'Send Email'}
+                </Button>
+              </div>
+            </div>
+          )
+        })()}
+      </div>
+
       <div className="overview-cards">
         {/* Release Notes Section */}
         <div className="overview-card">
@@ -124,15 +201,11 @@ const OverviewTab: React.FC<OverviewTabProps> = ({
 
           {isNotesEditMode ? (
             <div className="edit-container">
-              <TextField
-                multiline
-                rows={6}
-                fullWidth
+              <RichTextEditor
                 value={releaseNotes}
-                onChange={(e) => setReleaseNotes(e.target.value)}
-                placeholder="Enter release notes... Use • for bullet points or 1. for numbered lists"
-                className="editable-textarea"
-                variant="outlined"
+                onChange={setReleaseNotes}
+                placeholder="Enter release notes... Use the formatting toolbar above to style your text"
+                rows={6}
               />
               <div className="edit-actions">
                 <Button

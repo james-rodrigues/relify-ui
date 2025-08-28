@@ -1,0 +1,102 @@
+.rich-text-editor {
+  .toolbar {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    gap: 8px;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+    border: 1px solid rgba(102, 126, 234, 0.2);
+    border-bottom: none;
+    border-radius: 8px 8px 0 0;
+    margin-bottom: 0;
+
+    .toolbar-group {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+
+      .MuiIconButton-root {
+        padding: 6px;
+        border-radius: 6px;
+        color: #667eea;
+        transition: all 0.2s ease;
+
+        &:hover {
+          background-color: rgba(102, 126, 234, 0.1);
+          color: #5a6fd8;
+          transform: scale(1.05);
+        }
+
+        &:disabled {
+          color: rgba(102, 126, 234, 0.4);
+          transform: none;
+          
+          &:hover {
+            background-color: transparent;
+          }
+        }
+
+        .MuiSvgIcon-root {
+          font-size: 1rem;
+        }
+      }
+    }
+
+    .MuiDivider-root {
+      height: 24px;
+      margin: 0 4px;
+      background-color: rgba(102, 126, 234, 0.2);
+    }
+  }
+
+  .rich-textarea {
+    .MuiOutlinedInput-root {
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+      
+      .MuiOutlinedInput-notchedOutline {
+        border-top: none;
+      }
+
+      textarea {
+        font-family: 'Roboto', 'Inter', 'Segoe UI', sans-serif;
+        line-height: 1.6;
+        resize: vertical;
+        min-height: 120px;
+        
+        &::placeholder {
+          color: rgba(102, 126, 234, 0.6);
+          font-style: italic;
+        }
+      }
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .rich-text-editor {
+    .toolbar {
+      flex-wrap: wrap;
+      padding: 6px 8px;
+      gap: 6px;
+
+      .toolbar-group {
+        gap: 2px;
+        
+        .MuiIconButton-root {
+          padding: 4px;
+          
+          .MuiSvgIcon-root {
+            font-size: 0.9rem;
+          }
+        }
+      }
+
+      .MuiDivider-root {
+        height: 20px;
+        margin: 0 2px;
+      }
+    }
+  }
+}

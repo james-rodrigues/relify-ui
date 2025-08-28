@@ -1,4 +1,4 @@
-import { AppBar, Toolbar, Typography, Button, Box, IconButton } from '@mui/material'
+import { AppBar, Toolbar, Typography, Box, IconButton } from '@mui/material'
 import { Code as CodeIcon, Settings as SettingsIcon } from '@mui/icons-material'
 import './styles.scss'
 
@@ -51,39 +51,6 @@ const Header = ({ onSettingsClick }: HeaderProps) => {
           >
             <SettingsIcon />
           </IconButton>
-          <Button 
-            variant="outlined" 
-            sx={{ 
-              mr: 2,
-              color: 'white',
-              borderColor: 'rgba(255, 255, 255, 0.3)',
-              transition: 'none !important',
-              transform: 'none !important',
-              '&:hover': {
-                borderColor: 'white',
-                backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                transform: 'none !important'
-              }
-            }}
-          >
-            Login
-          </Button>
-        <Button 
-          variant="contained"
-          sx={{
-            background: 'linear-gradient(45deg, #ff6b6b, #ee5a52)',
-            boxShadow: '0 4px 15px rgba(238, 90, 82, 0.4)',
-            transition: 'none !important',
-            transform: 'none !important',
-            '&:hover': {
-              background: 'linear-gradient(45deg, #ee5a52, #ff6b6b)',
-              boxShadow: '0 6px 20px rgba(238, 90, 82, 0.6)',
-              transform: 'none !important'
-            }
-          }}
-        >
-          Sign Up
-        </Button>
         </Box>
       </Toolbar>
     </AppBar>

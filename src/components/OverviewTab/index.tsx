@@ -30,10 +30,6 @@ interface OverviewTabProps {
   setIsNotesEditMode: React.Dispatch<React.SetStateAction<boolean>>;
   releaseNotes: string;
   setReleaseNotes: React.Dispatch<React.SetStateAction<string>>;
-  isMetricsEditMode: boolean;
-  setIsMetricsEditMode: React.Dispatch<React.SetStateAction<boolean>>;
-  keyMetrics: string;
-  setKeyMetrics: React.Dispatch<React.SetStateAction<string>>;
   handleSendReleaseNotes: () => Promise<void>;
   sendingActivityEmails: Set<string>;
   handleSendActivityEmail: (activityId: string, activityName: string) => Promise<void>;
@@ -48,7 +44,6 @@ interface OverviewTabProps {
   }[];
   isSending: boolean;
   handleSaveNotes: () => Promise<void>;
-  handleSaveMetrics: () => Promise<void>;
 }
 
 const OverviewTab: React.FC<OverviewTabProps> = ({
@@ -58,10 +53,6 @@ const OverviewTab: React.FC<OverviewTabProps> = ({
   setIsNotesEditMode,
   releaseNotes,
   setReleaseNotes,
-  isMetricsEditMode,
-  setIsMetricsEditMode,
-  keyMetrics,
-  setKeyMetrics,
   handleSendReleaseNotes,
   sendingActivityEmails,
   handleSendActivityEmail,
@@ -70,7 +61,6 @@ const OverviewTab: React.FC<OverviewTabProps> = ({
   activityTimeline,
   isSending,
   handleSaveNotes,
-  handleSaveMetrics,
 }) => {
   // Extract change number from SNOW link
   const extractChangeNumber = (url: string): string => {
@@ -171,59 +161,6 @@ const OverviewTab: React.FC<OverviewTabProps> = ({
           )}
         </div>
 
-        {/* Key Metrics Section */}
-        <div className="overview-card">
-          <div className="card-header">
-            <Typography variant="h6" className="card-title">
-              Key Metrics
-            </Typography>
-            <IconButton
-              onClick={() => setIsMetricsEditMode(!isMetricsEditMode)}
-              className="edit-icon"
-              size="small"
-            >
-              <EditIcon fontSize="small" />
-            </IconButton>
-          </div>
-
-          {isMetricsEditMode ? (
-            <div className="edit-container">
-              <TextField
-                multiline
-                rows={6}
-                fullWidth
-                value={keyMetrics}
-                onChange={(e) => setKeyMetrics(e.target.value)}
-                placeholder="Enter key metrics... Use • for bullet points or 1. for numbered lists"
-                className="editable-textarea"
-                variant="outlined"
-              />
-              <div className="edit-actions">
-                <Button
-                  startIcon={<SaveIcon />}
-                  onClick={handleSaveMetrics}
-                  variant="contained"
-                  size="small"
-                  className="save-btn"
-                >
-                  Save Changes
-                </Button>
-                <Button
-                  onClick={() => setIsMetricsEditMode(false)}
-                  variant="outlined"
-                  size="small"
-                  className="cancel-btn"
-                >
-                  Cancel
-                </Button>
-              </div>
-            </div>
-          ) : (
-            <Typography variant="body2" className="card-content" style={{ whiteSpace: 'pre-line' }}>
-              {keyMetrics}
-            </Typography>
-          )}
-        </div>
       </div>
 
       {/* Activity Timeline Section */}
@@ -258,13 +195,6 @@ const OverviewTab: React.FC<OverviewTabProps> = ({
                   textTransform: 'uppercase',
                   letterSpacing: '0.5px',
                 }}>Activity Due Date</TableCell>
-                <TableCell sx={{
-                  fontWeight: 'bold',
-                  background: 'linear-gradient(135deg, #6495ED 0%, #9370DB 100%)',
-                  color: 'white',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.5px',
-                }}>Assignee</TableCell>
                 <TableCell sx={{
                   fontWeight: 'bold',
                   background: 'linear-gradient(135deg, #6495ED 0%, #9370DB 100%)',
@@ -313,14 +243,6 @@ const OverviewTab: React.FC<OverviewTabProps> = ({
                     fontWeight: 500,
                   }}>
                     {formatDate(activity.activityDueDate)}
-                  </TableCell>
-                  <TableCell sx={{
-                    padding: '16px',
-                    borderBottom: '1px solid rgba(0, 0, 0, 0.08)',
-                    color: '#666',
-                    fontWeight: 500,
-                  }}>
-                    {activity.assignee}
                   </TableCell>
                   <TableCell sx={{
                     padding: '16px',

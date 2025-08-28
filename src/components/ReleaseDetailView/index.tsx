@@ -61,7 +61,6 @@ interface ReleaseNotesData {
   fixVersion: string
   snowLink: string
   releaseNotes: string
-  keyMetrics: string
   recipientEmails: string[]
 }
 
@@ -115,9 +114,7 @@ const ReleaseDetailView: React.FC<ReleaseDetailViewProps> = ({
   // State management
   const [activeTab, setActiveTab] = useState(0)
   const [isNotesEditMode, setIsNotesEditMode] = useState(false)
-  const [isMetricsEditMode, setIsMetricsEditMode] = useState(false)
   const [releaseNotes, setReleaseNotes] = useState(overviewData.releaseNotes)
-  const [keyMetrics, setKeyMetrics] = useState(overviewData.keyMetrics)
   const [isSending, setIsSending] = useState(false)
   const [snackbarOpen, setSnackbarOpen] = useState(false)
   const [snackbarMessage, setSnackbarMessage] = useState('')
@@ -143,16 +140,6 @@ const ReleaseDetailView: React.FC<ReleaseDetailViewProps> = ({
     }
   }
 
-  const handleSaveMetrics = async () => {
-    // In a real app, you'd save to backend here
-    const response = await saveKeyMetrics(releaseName, keyMetrics)
-    if (response.success) {
-      setIsMetricsEditMode(false)
-      showSnackbar('Key metrics saved successfully!', 'success')
-    } else {
-      showSnackbar('Failed to save key metrics', 'error')
-    }
-  }
 
   const handleSendReleaseNotes = async () => {
     setIsSending(true)
@@ -161,7 +148,6 @@ const ReleaseDetailView: React.FC<ReleaseDetailViewProps> = ({
       fixVersion,
       snowLink,
       releaseNotes,
-      keyMetrics,
       recipientEmails: ['stakeholder1@company.com', 'stakeholder2@company.com'] // In real app, get from user input
     }
 
@@ -279,8 +265,23 @@ const ReleaseDetailView: React.FC<ReleaseDetailViewProps> = ({
       </Box>
 
       <Box className="detail-content">
-        <Container maxWidth={false} sx={{ maxWidth: '1400px', height: '100%' }}>
-          <Paper className="content-paper" sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+        <Container 
+          maxWidth={false} 
+          sx={{ 
+            maxWidth: '1400px', 
+            height: '100%',
+            px: { xs: 2, sm: 3, md: 4 },
+            '@media (max-width: 600px)': {
+              px: 1
+            }
+          }}
+        >
+          <Paper className="content-paper" sx={{ 
+            height: '100%', 
+            display: 'flex', 
+            flexDirection: 'column',
+            mx: { xs: 0, sm: 1, md: 2 }
+          }}>
             <Box className="tabs-container" sx={{ position: 'relative' }}>
               <Tabs
                 value={activeTab}
@@ -356,10 +357,6 @@ const ReleaseDetailView: React.FC<ReleaseDetailViewProps> = ({
                   setIsNotesEditMode={setIsNotesEditMode}
                   releaseNotes={releaseNotes}
                   setReleaseNotes={setReleaseNotes}
-                  isMetricsEditMode={isMetricsEditMode}
-                  setIsMetricsEditMode={setIsMetricsEditMode}
-                  keyMetrics={keyMetrics}
-                  setKeyMetrics={setKeyMetrics}
                   handleSendReleaseNotes={handleSendReleaseNotes}
                   sendingActivityEmails={sendingActivityEmails}
                   handleSendActivityEmail={handleSendActivityEmail}
@@ -368,7 +365,6 @@ const ReleaseDetailView: React.FC<ReleaseDetailViewProps> = ({
                   activityTimeline={overviewData.activityTimeline}
                   isSending={isSending}
                   handleSaveNotes={handleSaveNotes}
-                  handleSaveMetrics={handleSaveMetrics}
                 />
               </TabPanel>
               <TabPanel value={activeTab} index={1}>
